@@ -1,4 +1,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Run evaluate_train.sh and evaluate_test.sh against existing final method artifacts; populate scores_train.json and scores_test.json."
+notes: "Re-run split scoring after adding seed-answer novelty metric and unweighting raw variant counts."

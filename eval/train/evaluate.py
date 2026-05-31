@@ -153,6 +153,18 @@ def valid_spec_coverage_rate(rows: list[dict], expected_specs: set[str]) -> floa
     return len(covered) / len(expected_specs)
 
 
+def valid_seed_answer_novelty_rate(rows: list[dict], seed_answers: dict[str, float]) -> float:
+    if not rows:
+        return 0.0
+    novel_valid = 0
+    for row in rows:
+        seed_answer = seed_answers.get(row["spec_id"])
+        if seed_answer is None:
+            continue
+        novel_valid += int(answer_valid(row) and not approx_equal(float(row["numeric_answer"]), seed_answer))
+    return novel_valid / len(rows)
+
+
 def valid_hardness_diversity_rate(rows: list[dict]) -> float:
     if not rows:
         return 0.0
@@ -252,6 +264,11 @@ def score_artifact(artifact_dir: Path) -> dict[str, dict[str, float]]:
         for row in base_rows
         if row["spec_id"] in {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"}
     ]
+    seed_answers = {
+        row["spec_id"]: float(row["numeric_answer"])
+        for row in base_rows
+        if row.get("numeric_answer") is not None and base_check_valid(row)
+    }
     geometry_seed_consistency = mean(float(base_check_valid(row)) for row in geometry_base_rows) if geometry_base_rows else 0.0
     extra_seed_consistency = mean(float(base_check_valid(row)) for row in extra_base_rows) if extra_base_rows else 0.0
     geometry_replay_rows = [row for row in replay_rows if row["spec_id"] == "aime2024_ii_10_vera_e"]
@@ -280,6 +297,7 @@ def score_artifact(artifact_dir: Path) -> dict[str, dict[str, float]]:
             "seed_consistency_rate": geometry_seed_consistency,
             "valid_rate": geometry_valid,
             "valid_assignment_diversity_rate": valid_assignment_diversity_rate(geometry_e_rows),
+            "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(geometry_e_rows, seed_answers),
             "deterministic_replay_rate": geometry_replay,
         },
         "aime_additional_vera_e_generation": {
@@ -287,6 +305,7 @@ def score_artifact(artifact_dir: Path) -> dict[str, dict[str, float]]:
             "seed_consistency_rate": extra_seed_consistency,
             "valid_rate": extra_valid,
             "valid_assignment_diversity_rate": valid_assignment_diversity_rate(extra_e_rows),
+            "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(extra_e_rows, seed_answers),
             "valid_spec_coverage_rate": valid_spec_coverage_rate(
                 extra_e_rows,
                 {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"},
@@ -297,6 +316,7 @@ def score_artifact(artifact_dir: Path) -> dict[str, dict[str, float]]:
             "verified_variant_count": float(sum(int(answer_valid(row)) for row in h_rows)),
             "noise_judge_pass_rate": h_noise_judge,
             "valid_assignment_diversity_rate": valid_assignment_diversity_rate(h_rows),
+            "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(h_rows, seed_answers),
             "valid_hardness_diversity_rate": valid_hardness_diversity_rate(h_rows),
             "h_pro_selected_ranked": h_pro_selected_ranked,
         },
