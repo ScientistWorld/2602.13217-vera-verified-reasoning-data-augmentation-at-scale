@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Reactivation audit passed: reran the packaged offline VeRA reproduction and validate.py --compare, confirmed prior scheduler-backed core_claim_plus remains justified."
+notes: "Final verification passed: docs tightened, artifact evaluators and train/test checks validated, core_claim_plus remains justified."

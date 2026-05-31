@@ -27,7 +27,7 @@ candidates while preserving label integrity.
 
 ## Primary: aime_additional_vera_e_generation
 
-Tests the same renewable-evaluation mechanics on two additional paper-shown
+Tests the same renewable-evaluation mechanics on two additional provided seed
 families: chip-grid maximal placements and polygon rotation probability.
 
 - **Primary metric**: `valid_seed_answer_novelty_rate` (higher is better)

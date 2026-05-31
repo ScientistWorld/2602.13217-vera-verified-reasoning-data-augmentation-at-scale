@@ -39,5 +39,10 @@
 - Confirmed the current code implements VeRA's actual computation rather than a surrogate: sandboxed template/generator/verifier specs, seed-consistency validation, noise-discrimination validation, deterministic replay, independent evaluator label recomputation, and H-Pro selection from a verified candidate pool.
 - Reran `bash scripts/reproduce.sh` and `python validate.py --compare` locally; all checks passed with refreshed `scoring/scores.json`.
 
+### [2026-05-31 06:32] - core_claim_plus
+- Final verification reviewed folder structure, download portability, shared-path hygiene, method/eval separation, scoring weights and coefficients, and train/test evaluator behavior.
+- Tightened method-agnostic documentation in evaluation and scoring overview files for from-scratch scientist use.
+- Reran `bash scripts/evaluate.sh`, `bash scripts/evaluate_train.sh`, `bash scripts/evaluate_test.sh`, and `python validate.py --compare`; all checks passed.
+
 ## Stop Justification
 - Completed at milestone `core_claim_plus`.
