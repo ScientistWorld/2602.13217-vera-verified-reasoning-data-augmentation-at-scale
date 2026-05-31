@@ -49,3 +49,16 @@ large-scale model accuracy evaluation across all paper datasets.
 - Confidence: high
 - Key limitation: reduced offline reproduction of verified generation mechanics,
   not the paper's full frontier-model benchmark suite
+
+## Reactivation Audit
+
+On 2026-05-31 06:28 UTC, a follow-up audit re-read the paper's method and
+experiment sections with a subagent, checked the current implementation against
+the extracted workflow, and reran the packaged scripts locally:
+
+- `bash scripts/reproduce.sh`
+- `python validate.py --compare`
+
+Both passed. No new implementation defects were found, and the existing
+`core_claim_plus` milestone remains the honest stopping point for this reduced
+offline reproduction.

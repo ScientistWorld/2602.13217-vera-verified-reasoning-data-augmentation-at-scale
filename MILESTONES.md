@@ -34,5 +34,10 @@
 - Cleaned method-agnostic evaluation documentation and extended train/test evaluators so held-out scoring also checks validation-gate and candidate-pool artifacts.
 - Re-ran `bash scripts/reproduce.sh`, `bash scripts/evaluate_train.sh`, `bash scripts/evaluate_test.sh`, and `python validate.py --compare`; all checks passed.
 
+### [2026-05-31 06:28] - core_claim_plus
+- Reactivation audit used a subagent to re-extract the paper's executable-specification workflow and metric requirements from Sections 3 and 4.
+- Confirmed the current code implements VeRA's actual computation rather than a surrogate: sandboxed template/generator/verifier specs, seed-consistency validation, noise-discrimination validation, deterministic replay, independent evaluator label recomputation, and H-Pro selection from a verified candidate pool.
+- Reran `bash scripts/reproduce.sh` and `python validate.py --compare` locally; all checks passed with refreshed `scoring/scores.json`.
+
 ## Stop Justification
 - Completed at milestone `core_claim_plus`.
