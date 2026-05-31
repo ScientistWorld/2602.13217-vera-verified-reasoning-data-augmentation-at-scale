@@ -35,4 +35,4 @@
 - Re-ran `bash scripts/reproduce.sh`, `bash scripts/evaluate_train.sh`, `bash scripts/evaluate_test.sh`, and `python validate.py --compare`; all checks passed.
 
 ## Stop Justification
-- Final verifier accepted the workspace at milestone `core_claim_plus`.
+- Completed at milestone `core_claim_plus`.
