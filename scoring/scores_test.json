@@ -7,6 +7,7 @@
           "seed_consistency_rate": 1.0,
           "valid_assignment_diversity_rate": 0.75,
           "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
           "valid_spec_coverage_rate": 1.0,
           "verified_variant_count": 8.0
         }
@@ -19,6 +20,7 @@
           "seed_consistency_rate": 1.0,
           "valid_assignment_diversity_rate": 1.0,
           "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
           "verified_variant_count": 4.0
         }
       }
@@ -30,6 +32,7 @@
           "noise_judge_pass_rate": 1.0,
           "valid_assignment_diversity_rate": 0.75,
           "valid_hardness_diversity_rate": 0.75,
+          "valid_seed_answer_novelty_rate": 0.5,
           "verified_variant_count": 4.0
         }
       }
