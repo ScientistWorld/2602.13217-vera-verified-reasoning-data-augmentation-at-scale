@@ -5,7 +5,10 @@
         "vera_repro": {
           "deterministic_replay_rate": 1.0,
           "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
           "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.6875,
+          "valid_spec_coverage_rate": 1.0,
           "verified_variant_count": 16
         }
       }
@@ -15,7 +18,9 @@
         "vera_repro": {
           "deterministic_replay_rate": 1.0,
           "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.875,
           "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.875,
           "verified_variant_count": 8
         }
       }
@@ -25,6 +30,10 @@
         "vera_repro": {
           "h_pro_selected_ranked": 1.0,
           "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_hardness_diversity_rate": 0.5,
+          "valid_mean_hardness_rank_rate": 0.775,
+          "valid_seed_answer_novelty_rate": 0.5,
           "verified_variant_count": 8
         }
       }

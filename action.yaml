@@ -1,5 +1,5 @@
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Run full CPU reproduction plus split scoring after aligning unsplit evaluator with novelty/diversity metrics and removing stale paper-agreement target."
+notes: "Validation passes; core_claim_plus reproduction scores refreshed with novelty/diversity metrics; train/test primary metrics now differentiate, including H hardening 0.80 train vs 0.75 test."
