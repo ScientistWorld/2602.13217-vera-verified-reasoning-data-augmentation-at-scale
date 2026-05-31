@@ -29,5 +29,10 @@
 - Added an emitted H-Pro candidate-pool artifact and evaluator checks that the selected H-Pro row comes from the valid pool.
 - Local `bash scripts/reproduce.sh`, `bash scripts/evaluate_train.sh`, `bash scripts/evaluate_test.sh`, and `python validate.py --compare` pass; submitting a CPU scheduler job to verify these tightened artifacts in-container.
 
+### [2026-05-31 06:23] - core_claim_plus
+- Final verification found the milestone justified for a reduced offline gym: the method implements generator/verifier task families, deterministic replay, label recomputation, validation gates, and hard-case selection on three paper-shown reasoning families.
+- Cleaned method-agnostic evaluation documentation and extended train/test evaluators so held-out scoring also checks validation-gate and candidate-pool artifacts.
+- Re-ran `bash scripts/reproduce.sh`, `bash scripts/evaluate_train.sh`, `bash scripts/evaluate_test.sh`, and `python validate.py --compare`; all checks passed.
+
 ## Stop Justification
-- Completed at milestone `core_claim_plus`.
+- Final verifier accepted the workspace at milestone `core_claim_plus`.

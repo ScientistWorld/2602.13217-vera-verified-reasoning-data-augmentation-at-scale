@@ -2,6 +2,7 @@
   "experiments": {
     "aime_geometry_vera_e_generation": {
       "description": "VeRA-E executable specification on the AIME-2024-II-10 geometry seed: seed-consistent verifier and deterministic generation of equivalent variants.",
+      "notes": "Paper reports this family as a qualitative running example rather than this exact reduced metric suite. Values here are scaled gym targets for the packaged offline reproduction: perfect seed consistency, valid generation, replay, and nontrivial answer novelty.",
       "weight": 0.35,
       "primary_metric": "valid_seed_answer_novelty_rate",
       "metrics": {
@@ -27,6 +28,7 @@
     },
     "aime_additional_vera_e_generation": {
       "description": "Additional paper-shown VeRA-E executable specifications: chip-grid maximal placements and polygon rotation probability.",
+      "notes": "Paper shows these families as diagnostic examples rather than reporting this exact reduced metric suite. Values here document the packaged offline target for two additional seed families.",
       "weight": 0.3,
       "primary_metric": "valid_seed_answer_novelty_rate",
       "metrics": {
@@ -53,6 +55,7 @@
     },
     "aime_geometry_vera_h_hardening": {
       "description": "VeRA-H and VeRA-H Pro on the same geometry seed: verified hardened candidates and hardest-candidate selection.",
+      "notes": "Paper reports large-scale model Avg@5 drops for hardened splits; this gym target isolates the offline generation, validation, candidate-pool integrity, and fixed hard-case selection mechanics for the shown geometry family.",
       "weight": 0.35,
       "primary_metric": "valid_mean_hardness_rank_rate",
       "metrics": {

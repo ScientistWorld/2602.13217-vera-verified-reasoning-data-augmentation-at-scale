@@ -1,5 +1,5 @@
-action: submit
+action: done
 gpus: 0
-test: true
+test: false
 milestone: core_claim_plus
-notes: "CPU verification job for tightened VeRA validation-gate and H-Pro candidate-pool artifacts; run.sh reproduces and evaluates train/test splits."
+notes: "Final verification passed: reduced offline gym is clean, documented, and validated at core_claim_plus."

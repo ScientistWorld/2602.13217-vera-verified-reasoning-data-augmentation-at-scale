@@ -27,9 +27,8 @@ candidates while preserving label integrity.
 
 ## Primary: aime_additional_vera_e_generation
 
-Tests the same executable-specification evaluation on two additional
-paper-shown families: chip-grid maximal placements and polygon rotation
-probability.
+Tests the same renewable-evaluation mechanics on two additional paper-shown
+families: chip-grid maximal placements and polygon rotation probability.
 
 - **Primary metric**: `valid_seed_answer_novelty_rate` (higher is better)
 - **Constraint metrics**: `seed_consistency_rate`, `valid_rate`, and
