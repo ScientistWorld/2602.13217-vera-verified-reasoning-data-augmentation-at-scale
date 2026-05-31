@@ -17,6 +17,12 @@ def load_jsonl(path: Path) -> list[dict]:
         return [json.loads(line) for line in f if line.strip()]
 
 
+def load_optional_jsonl(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    return load_jsonl(path)
+
+
 def approx_equal(a: float, b: float, tol: float = 1e-6) -> bool:
     return abs(float(a) - float(b)) <= tol * max(1.0, abs(float(b)))
 
@@ -165,6 +171,27 @@ def valid_mean_hardness_rank_rate(rows: list[dict]) -> float:
     return rank_sum / (len(rows) * 5.0)
 
 
+def validation_gate_pass_rate(rows: list[dict], expected_specs: set[str]) -> float:
+    if not expected_specs:
+        return 0.0
+    accepted = {
+        row["spec_id"]
+        for row in rows
+        if row.get("spec_id") in expected_specs
+        and bool(row.get("schema_ok"))
+        and bool(row.get("compile_runtime_ok"))
+        and bool(row.get("nondegenerate_yield_ok"))
+        and bool(row.get("accepted"))
+    }
+    return len(accepted) / len(expected_specs)
+
+
+def h_candidate_pool_valid_rate(rows: list[dict]) -> float:
+    if not rows:
+        return 0.0
+    return mean(float(bool(row.get("validation_pass")) and answer_valid(row)) for row in rows)
+
+
 def noise_judge_pass(row: dict) -> bool:
     if not answer_valid(row):
         return False
@@ -199,6 +226,8 @@ def main() -> None:
     variants = load_jsonl(artifact_dir / "variants.jsonl")
     replay_rows = load_jsonl(artifact_dir / "replay_checks.jsonl")
     h_pro_rows = load_jsonl(artifact_dir / "vera_h_pro.jsonl")
+    validation_rows = load_optional_jsonl(artifact_dir / "spec_validation.jsonl")
+    h_candidate_pool = load_optional_jsonl(artifact_dir / "h_candidate_pool.jsonl")
     summary = load_json(artifact_dir / "method_summary.json")
 
     geometry_e_rows = [row for row in variants if row["spec_id"] == "aime2024_ii_10_vera_e"]
@@ -240,6 +269,15 @@ def main() -> None:
     h_pro_selected_ranked = (
         1.0 if h_pro_rows and h_hardness_rank(h_pro_rows[0]) == h_best_rank and answer_valid(h_pro_rows[0]) else 0.0
     )
+    h_pool_best_rank = max((h_hardness_rank(row) for row in h_candidate_pool if answer_valid(row)), default=-1)
+    h_pro_selected_from_valid_pool = (
+        1.0
+        if h_pro_rows
+        and h_candidate_pool
+        and h_hardness_rank(h_pro_rows[0]) == h_pool_best_rank
+        and answer_valid(h_pro_rows[0])
+        else 0.0
+    )
     summary_h_pro = summary.get("h_pro_selected") or {}
     if summary_h_pro and h_pro_rows and summary_h_pro.get("variant_id") != h_pro_rows[0].get("variant_id"):
         raise ValueError("method_summary.json and vera_h_pro.jsonl disagree on selected H-Pro variant")
@@ -255,6 +293,9 @@ def main() -> None:
                         "valid_assignment_diversity_rate": valid_assignment_diversity_rate(geometry_e_rows),
                         "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(
                             geometry_e_rows, seed_answers
+                        ),
+                        "validation_gate_pass_rate": validation_gate_pass_rate(
+                            validation_rows, {"aime2024_ii_10_vera_e"}
                         ),
                         "deterministic_replay_rate": geometry_replay,
                     }
@@ -272,6 +313,10 @@ def main() -> None:
                             extra_e_rows,
                             {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"},
                         ),
+                        "validation_gate_pass_rate": validation_gate_pass_rate(
+                            validation_rows,
+                            {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"},
+                        ),
                         "deterministic_replay_rate": extra_replay,
                     }
                 }
@@ -285,6 +330,11 @@ def main() -> None:
                         "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(h_rows, seed_answers),
                         "valid_hardness_diversity_rate": valid_hardness_diversity_rate(h_rows),
                         "valid_mean_hardness_rank_rate": valid_mean_hardness_rank_rate(h_rows),
+                        "validation_gate_pass_rate": validation_gate_pass_rate(
+                            validation_rows, {"aime2024_ii_10_vera_h"}
+                        ),
+                        "h_candidate_pool_valid_rate": h_candidate_pool_valid_rate(h_candidate_pool),
+                        "h_pro_selected_from_valid_pool": h_pro_selected_from_valid_pool,
                         "h_pro_selected_ranked": h_pro_selected_ranked,
                     }
                 }

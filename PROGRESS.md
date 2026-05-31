@@ -56,6 +56,11 @@
   - `aime_geometry_vera_h_hardening`: 8 verified variants, noise-judge pass
     rate 1.0, ranked H-Pro selection 1.0, paper example absolute error
     `1.2037162377964705e-09`.
+- Added explicit method artifacts for the paper's validation gates:
+  `spec_validation.jsonl` records schema, compile/runtime, non-degenerate yield,
+  seed-consistency, and noise-discrimination checks before sampling is
+  amortized; `h_candidate_pool.jsonl` records the verified candidate pool used
+  for H-Pro selection.
 
 ## Remaining
 
@@ -78,6 +83,10 @@
 - Continuing audit found the sandbox exposed full Python builtins. This was
   fixed in `method/vera_repro/core.py` with restricted builtins and a math-only
   import hook.
+- Follow-up audit found that validation gates and H-Pro candidate-pool evidence
+  were too implicit. This was fixed by rejecting specs that fail validation,
+  emitting validation and candidate-pool artifacts, and scoring those artifacts
+  independently in `eval/`.
 
 ## Deviations from Paper
 

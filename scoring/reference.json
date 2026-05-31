@@ -10,6 +10,7 @@
         "valid_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Fraction of generated slice variants with verifier-consistent numeric answers."},
         "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of slice rows that are distinct valid slot assignments, penalizing duplicated or memorized variants."},
         "valid_seed_answer_novelty_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of slice rows that are valid and have an answer different from the corresponding seed answer, penalizing seed replay."},
+        "validation_gate_pass_rate": {"higher_is_better": true, "coefficient": 0.8, "description": "Fraction of expected executable specifications that pass schema, compile/runtime, yield, and mode-specific validation gates before amortized sampling."},
         "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of slice rows that regenerate the same assignment and answer under deterministic replay."}
       },
       "results": {
@@ -19,6 +20,7 @@
           "seed_consistency_rate": 1.0,
           "valid_rate": 1.0,
           "valid_seed_answer_novelty_rate": 0.875,
+          "validation_gate_pass_rate": 1.0,
           "deterministic_replay_rate": 1.0
         }
       }
@@ -34,6 +36,7 @@
         "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of slice rows that are distinct valid slot assignments across the additional specifications."},
         "valid_seed_answer_novelty_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of additional slice rows that are valid and have answers different from their corresponding seed answers."},
         "valid_spec_coverage_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of expected additional specifications represented by at least one valid slice variant."},
+        "validation_gate_pass_rate": {"higher_is_better": true, "coefficient": 0.8, "description": "Fraction of expected additional executable specifications that pass schema, compile/runtime, yield, and seed-consistency validation gates before amortized sampling."},
         "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of additional slice rows that regenerate the same assignment and answer under deterministic replay."}
       },
       "results": {
@@ -43,6 +46,7 @@
           "seed_consistency_rate": 1.0,
           "valid_rate": 1.0,
           "valid_seed_answer_novelty_rate": 0.6875,
+          "validation_gate_pass_rate": 1.0,
           "deterministic_replay_rate": 1.0
         }
       }
@@ -58,6 +62,9 @@
         "valid_seed_answer_novelty_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of hardened slice rows that are valid and have answers different from the original hardened seed answer."},
         "valid_hardness_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of hardened slice rows covering distinct valid difficulty ranks."},
         "valid_mean_hardness_rank_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Mean valid hardened-candidate difficulty rank normalized by the maximum fixed rank."},
+        "validation_gate_pass_rate": {"higher_is_better": true, "coefficient": 0.8, "description": "Fraction of expected hardened executable specifications that pass schema, compile/runtime, yield, and noise-discrimination validation gates before amortized sampling."},
+        "h_candidate_pool_valid_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of emitted H-Pro candidate-pool rows that remain valid under independent evaluator recomputation."},
+        "h_pro_selected_from_valid_pool": {"higher_is_better": true, "coefficient": 0.6, "description": "Whether the H-Pro artifact is selected from the emitted verified candidate pool as the highest-ranked valid candidate."},
         "h_pro_selected_ranked": {"higher_is_better": true, "coefficient": 0.6, "description": "Whether the selected VeRA-H Pro artifact is valid and matches the hardest generated rank."}
       },
       "results": {
@@ -66,6 +73,9 @@
           "verified_variant_count": 5,
           "noise_judge_pass_rate": 1.0,
           "valid_mean_hardness_rank_rate": 0.775,
+          "validation_gate_pass_rate": 1.0,
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
           "h_pro_selected_ranked": 1.0
         }
       }

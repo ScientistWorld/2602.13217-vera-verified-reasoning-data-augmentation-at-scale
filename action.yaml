@@ -1,5 +1,5 @@
-action: done
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: core_claim_plus
-notes: "Packaging audit passed: no external pre-run artifacts are required, download.sh is self-contained, and validate.py passes."
+notes: "CPU verification job for tightened VeRA validation-gate and H-Pro candidate-pool artifacts; run.sh reproduces and evaluates train/test splits."

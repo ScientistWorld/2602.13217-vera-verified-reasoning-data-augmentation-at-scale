@@ -41,10 +41,85 @@ def hardness_rank(row: dict) -> int:
     return ranking.get(key, 0)
 
 
+def validate_spec(spec, base_seed: int, validation_samples: int) -> dict:
+    """Run the paper's pre-amortization validity gates for one executable spec."""
+
+    schema_ok = all(
+        [
+            bool(spec.spec_id),
+            spec.mode in {"VeRA-E", "VeRA-H"},
+            bool(spec.template),
+            bool(spec.generator_code),
+            bool(spec.verifier_code),
+        ]
+    )
+    compile_runtime_ok = False
+    nondegenerate_yield_ok = False
+    seed_consistency_ok = True
+    noise_discrimination_ok = True
+    generated = 0
+    passing_noise = 0
+    errors: list[str] = []
+
+    try:
+        if spec.mode == "VeRA-E":
+            seed_valid, seed_answer = verify_assignment(spec, spec.base_assignment or {})
+            seed_consistency_ok = (
+                seed_valid
+                and seed_answer is not None
+                and spec.base_answer is not None
+                and approx_equal(float(seed_answer), float(spec.base_answer))
+            )
+            if not seed_consistency_ok:
+                errors.append("seed answer mismatch")
+
+        for i in range(1, validation_samples + 1):
+            instance = sample_instance(spec, i, base_seed)
+            generated += 1
+            if spec.mode == "VeRA-H":
+                trials = noise_trials(float(instance["numeric_answer"]))
+                successes = sum(
+                    int(offline_noise_judge(float(instance["numeric_answer"]), cand) == expected)
+                    for cand, expected in trials
+                )
+                passing_noise += int(successes >= 4)
+
+        compile_runtime_ok = True
+        nondegenerate_yield_ok = generated >= validation_samples
+        if spec.mode == "VeRA-H":
+            noise_discrimination_ok = passing_noise >= validation_samples
+            if not noise_discrimination_ok:
+                errors.append("noise discrimination failure")
+    except Exception as exc:
+        errors.append(f"{type(exc).__name__}: {exc}")
+
+    accepted = (
+        schema_ok
+        and compile_runtime_ok
+        and nondegenerate_yield_ok
+        and seed_consistency_ok
+        and noise_discrimination_ok
+    )
+    return {
+        "spec_id": spec.spec_id,
+        "mode": spec.mode,
+        "schema_ok": schema_ok,
+        "compile_runtime_ok": compile_runtime_ok,
+        "nondegenerate_yield_ok": nondegenerate_yield_ok,
+        "seed_consistency_ok": seed_consistency_ok,
+        "noise_discrimination_ok": noise_discrimination_ok,
+        "validation_samples": validation_samples,
+        "generated_validation_instances": generated,
+        "accepted": accepted,
+        "errors": errors,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out_dir", default="outputs/vera_repro")
     parser.add_argument("--samples_per_spec", type=int, default=8)
+    parser.add_argument("--validation_samples", type=int, default=5)
     parser.add_argument("--base_seed", type=int, default=0)
     args = parser.parse_args()
 
@@ -53,8 +128,14 @@ def main() -> None:
     rows = []
     replay_rows = []
     base_rows = []
+    validation_rows = []
     spec_summaries = []
     for spec in specs:
+        validation = validate_spec(spec, args.base_seed, args.validation_samples)
+        validation_rows.append(validation)
+        if not validation["accepted"]:
+            raise RuntimeError(f"spec {spec.spec_id} failed validation gates: {validation['errors']}")
+
         base_ok, base_answer = verify_assignment(spec, spec.base_assignment or {})
         seed_consistent = base_ok and spec.base_answer is not None and approx_equal(float(base_answer), spec.base_answer)
         base_rows.append(
@@ -117,7 +198,7 @@ def main() -> None:
             }
         )
 
-    h_rows = [r for r in rows if r["mode"] == "VeRA-H"]
+    h_rows = [dict(r, hardness_rank=hardness_rank(r), validation_pass=True) for r in rows if r["mode"] == "VeRA-H"]
     h_pro = max(h_rows, key=hardness_rank) if h_rows else None
     summary = {
         "method": "VeRA executable specification reproduction",
@@ -126,14 +207,16 @@ def main() -> None:
         "specs": spec_summaries,
         "h_pro_selected": h_pro,
         "artifact_contract": (
-            "eval reads base_checks.jsonl, variants.jsonl, replay_checks.jsonl, vera_h_pro.jsonl, "
-            "and method_summary.json; it does not import method code."
+            "eval reads spec_validation.jsonl, base_checks.jsonl, variants.jsonl, replay_checks.jsonl, "
+            "h_candidate_pool.jsonl, vera_h_pro.jsonl, and method_summary.json; it does not import method code."
         ),
     }
     out_dir.mkdir(parents=True, exist_ok=True)
+    write_jsonl(out_dir / "spec_validation.jsonl", validation_rows)
     write_jsonl(out_dir / "base_checks.jsonl", base_rows)
     write_jsonl(out_dir / "variants.jsonl", rows)
     write_jsonl(out_dir / "replay_checks.jsonl", replay_rows)
+    write_jsonl(out_dir / "h_candidate_pool.jsonl", h_rows)
     if h_pro:
         write_jsonl(out_dir / "vera_h_pro.jsonl", [h_pro])
     with (out_dir / "method_summary.json").open("w", encoding="utf-8") as f:

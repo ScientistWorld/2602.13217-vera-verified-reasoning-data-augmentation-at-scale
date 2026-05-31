@@ -3,8 +3,8 @@
 Evaluation reads generated artifacts from `outputs/vera_repro/`; it does not
 import from `method/`. The evaluator independently recomputes labels from the
 emitted slot assignments, checks replay pairs, and verifies that the H-Pro
-artifact is the highest-ranked verified hardened candidate under a fixed
-selection rule.
+artifact is selected from the emitted verified hardened candidate pool under a
+fixed selection rule.
 
 ## Metrics
 
@@ -16,10 +16,15 @@ selection rule.
   same identifiers. Higher is better.
 - `noise_judge_pass_rate`: fraction of answer-noise checks that distinguish the
   verifier label from nearby incorrect labels. Higher is better.
+- `validation_gate_pass_rate`: fraction of expected executable specifications
+  that pass schema, compile/runtime, yield, and mode-specific validation gates
+  before amortized sampling. Higher is better.
+- `h_candidate_pool_valid_rate`: fraction of H-Pro candidate-pool rows that
+  remain valid under independent evaluator recomputation. Higher is better.
+- `h_pro_selected_from_valid_pool`: whether the paired H-Pro output is selected
+  from the emitted valid candidate pool. Higher is better.
 - `h_pro_selected_ranked`: whether the paired H-Pro output is the highest-ranked
   verified candidate. Higher is better.
-- `paper_example_answer_abs_error`: absolute error on the paper's shown hardened
-  geometry example. Lower is better.
 
 ## Baselines and Targets
 
@@ -34,4 +39,5 @@ Run `bash scripts/reproduce.sh`, which generates artifacts and then calls
 `scripts/evaluate.sh`. The evaluator writes `scoring/scores.json` using the
 same experiment names as `scoring/reference.json`. Standalone evaluation expects
 `base_checks.jsonl`, `variants.jsonl`, `replay_checks.jsonl`,
-`vera_h_pro.jsonl`, and `method_summary.json` under the artifact directory.
+`spec_validation.jsonl`, `h_candidate_pool.jsonl`, `vera_h_pro.jsonl`, and
+`method_summary.json` under the artifact directory.

@@ -24,5 +24,10 @@
 - Confirmed three scored experiments: the original AIME-2024-II-10 geometry VeRA-E family, two additional paper-shown VeRA-E families, and the AIME-2024-II-10 VeRA-H/H-Pro family.
 - Reproduced perfect seed consistency, valid generation, deterministic replay, noise-check pass rate, and ranked H-Pro selection on the packaged benchmark.
 
+### [2026-05-31 06:20] - core_claim_plus
+- Added explicit pre-amortization validation artifacts for schema, compile/runtime, non-degenerate yield, VeRA-E seed consistency, and VeRA-H noise discrimination gates.
+- Added an emitted H-Pro candidate-pool artifact and evaluator checks that the selected H-Pro row comes from the valid pool.
+- Local `bash scripts/reproduce.sh`, `bash scripts/evaluate_train.sh`, `bash scripts/evaluate_test.sh`, and `python validate.py --compare` pass; submitting a CPU scheduler job to verify these tightened artifacts in-container.
+
 ## Stop Justification
 - Completed at milestone `core_claim_plus`.

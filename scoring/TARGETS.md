@@ -7,7 +7,8 @@ answer while generating replayable valid variants.
 
 - **Primary metric**: `valid_seed_answer_novelty_rate` (higher is better)
 - **Constraint metrics**: `seed_consistency_rate`, `valid_rate`, and
-  `deterministic_replay_rate` (higher is better)
+  `validation_gate_pass_rate`, and `deterministic_replay_rate` (higher is
+  better)
 - **How to run**: `bash scripts/reproduce.sh`, then inspect
   `scoring/scores.json`
 
@@ -18,7 +19,9 @@ candidates while preserving label integrity.
 
 - **Primary metric**: `valid_mean_hardness_rank_rate` (higher is better)
 - **Constraint metrics**: `h_pro_selected_ranked`, `valid_hardness_diversity_rate`,
-  `valid_seed_answer_novelty_rate`, and `noise_judge_pass_rate` (higher is better)
+  `h_pro_selected_from_valid_pool`, `h_candidate_pool_valid_rate`,
+  `valid_seed_answer_novelty_rate`, `validation_gate_pass_rate`, and
+  `noise_judge_pass_rate` (higher is better)
 - **How to run**: `bash scripts/reproduce.sh`, then inspect
   `scoring/scores.json`
 
@@ -30,6 +33,7 @@ probability.
 
 - **Primary metric**: `valid_seed_answer_novelty_rate` (higher is better)
 - **Constraint metrics**: `seed_consistency_rate`, `valid_rate`, and
-  `deterministic_replay_rate` (higher is better)
+  `validation_gate_pass_rate`, and `deterministic_replay_rate` (higher is
+  better)
 - **How to run**: `bash scripts/reproduce.sh`, then inspect
   `scoring/scores.json`
