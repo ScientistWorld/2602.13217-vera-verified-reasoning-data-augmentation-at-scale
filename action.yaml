@@ -1,4 +1,5 @@
-action: done
+action: submit
 gpus: 0
 test: false
-notes: "Odd/even sample-index split; 19 train metrics and 19 test metrics for vera_repro; novelty/diversity gaps are within 0.25 while validity/replay constraints saturate as expected; raw variant counts are diagnostic-only with zero coefficient."
+milestone: core_claim_plus
+notes: "Run full CPU reproduction plus split scoring after aligning unsplit evaluator with novelty/diversity metrics and removing stale paper-agreement target."

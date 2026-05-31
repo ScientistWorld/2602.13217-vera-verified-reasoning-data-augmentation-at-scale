@@ -3,7 +3,7 @@
     "aime_geometry_vera_e_generation": {
       "description": "VeRA-E executable specification on the AIME-2024-II-10 geometry seed: seed-consistent verifier and deterministic generation of equivalent variants.",
       "weight": 0.35,
-      "primary_metric": "seed_consistency_rate",
+      "primary_metric": "valid_seed_answer_novelty_rate",
       "metrics": {
         "verified_variant_count": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic count of slice variants whose labels match the executable verifier; unweighted because raw output volume is gameable."},
         "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of seed checks whose executable verifier reproduces the known seed answer."},
@@ -18,6 +18,7 @@
           "verified_variant_count": 5,
           "seed_consistency_rate": 1.0,
           "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.875,
           "deterministic_replay_rate": 1.0
         }
       }
@@ -25,7 +26,7 @@
     "aime_additional_vera_e_generation": {
       "description": "Additional paper-shown VeRA-E executable specifications: chip-grid maximal placements and polygon rotation probability.",
       "weight": 0.3,
-      "primary_metric": "seed_consistency_rate",
+      "primary_metric": "valid_seed_answer_novelty_rate",
       "metrics": {
         "verified_variant_count": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic count of slice variants whose labels match the executable verifier across the additional specifications; unweighted because raw output volume is gameable."},
         "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of additional seed checks whose executable verifiers reproduce the known seed answers."},
@@ -41,6 +42,7 @@
           "verified_variant_count": 10,
           "seed_consistency_rate": 1.0,
           "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.6875,
           "deterministic_replay_rate": 1.0
         }
       }
@@ -48,13 +50,14 @@
     "aime_geometry_vera_h_hardening": {
       "description": "VeRA-H and VeRA-H Pro on the same geometry seed: verified hardened candidates and hardest-candidate selection.",
       "weight": 0.35,
-      "primary_metric": "noise_judge_pass_rate",
+      "primary_metric": "valid_mean_hardness_rank_rate",
       "metrics": {
         "verified_variant_count": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic count of hardened slice variants whose labels match the executable verifier; unweighted because raw output volume is gameable."},
         "noise_judge_pass_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of hardened slice variants whose correct answer is accepted and nearby wrong answers are rejected by the offline checker."},
         "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of hardened slice rows that are distinct valid slot assignments."},
         "valid_seed_answer_novelty_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of hardened slice rows that are valid and have answers different from the original hardened seed answer."},
         "valid_hardness_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of hardened slice rows covering distinct valid difficulty ranks."},
+        "valid_mean_hardness_rank_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Mean valid hardened-candidate difficulty rank normalized by the maximum fixed rank."},
         "h_pro_selected_ranked": {"higher_is_better": true, "coefficient": 0.6, "description": "Whether the selected VeRA-H Pro artifact is valid and matches the hardest generated rank."}
       },
       "results": {
@@ -62,6 +65,7 @@
           "type": "proposed",
           "verified_variant_count": 5,
           "noise_judge_pass_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 0.775,
           "h_pro_selected_ranked": 1.0
         }
       }

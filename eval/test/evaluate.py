@@ -172,6 +172,13 @@ def valid_hardness_diversity_rate(rows: list[dict]) -> float:
     return len(unique_valid) / len(rows)
 
 
+def valid_mean_hardness_rank_rate(rows: list[dict]) -> float:
+    if not rows:
+        return 0.0
+    rank_sum = sum(h_hardness_rank(row) for row in rows if answer_valid(row))
+    return rank_sum / (len(rows) * 5.0)
+
+
 def noise_judge_pass(row: dict) -> bool:
     if not answer_valid(row):
         return False
@@ -318,6 +325,7 @@ def score_artifact(artifact_dir: Path) -> dict[str, dict[str, float]]:
             "valid_assignment_diversity_rate": valid_assignment_diversity_rate(h_rows),
             "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(h_rows, seed_answers),
             "valid_hardness_diversity_rate": valid_hardness_diversity_rate(h_rows),
+            "valid_mean_hardness_rank_rate": valid_mean_hardness_rank_rate(h_rows),
             "h_pro_selected_ranked": h_pro_selected_ranked,
         },
     }
