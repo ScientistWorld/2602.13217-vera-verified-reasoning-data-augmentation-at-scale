@@ -27,9 +27,15 @@
 - VeRA-H Pro selected the paper's hardest shown geometry candidate
   `R=38, r=10, theta=75`, producing answer `2755.941038021204`; the absolute
   difference from the paper's displayed value is about `1.2e-9`.
+- `python validate.py --compare` passes all structure checks, including method
+  output evaluation, import separation, and absence of committed `shared/`
+  dependencies.
 
 ## Remaining
 
+- Current milestone is `core_claim`: the executable-specification generation,
+  deterministic replay, verifier-label integrity, and H-Pro selection mechanics
+  are reproduced for one paper-shown family.
 - Higher milestones would require broader coverage across the released VeRA
   datasets and a local open model or accessible evaluator for Avg@5 model
   scores.
