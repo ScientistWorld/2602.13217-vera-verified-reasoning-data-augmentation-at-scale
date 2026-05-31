@@ -5,4 +5,5 @@ action: submit
 gpus: 0
 test: true
 milestone: method_runs
-notes: "CPU smoke job to run scripts/reproduce.sh inside the container and verify the packaged VeRA executable-spec reproduction writes scores."
+milestone: core_claim
+notes: "CPU smoke job to run scripts/reproduce.sh inside the container after tightening eval to independently score VeRA artifacts."

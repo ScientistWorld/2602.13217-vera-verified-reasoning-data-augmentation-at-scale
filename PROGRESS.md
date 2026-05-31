@@ -12,6 +12,9 @@
   AIME-2024-II-10 geometry family shown in the paper.
 - `bash scripts/reproduce.sh` runs end-to-end locally and writes
   `scoring/scores.json`.
+- Audited and fixed the evaluator so it recomputes geometry labels from
+  generated variants, checks replay artifacts, and verifies H-Pro selection
+  independently of `method/`.
 
 ## Results
 
@@ -35,6 +38,9 @@
 - The upstream release's online LLM hooks are not directly runnable because they
   depend on private endpoints. The runnable reproduction therefore focuses on
   the executable-specification mechanics and a paper-shown geometry family.
+- Initial audit found that evaluation trusted method summary rates too much.
+  This was fixed by scoring from `variants.jsonl`, `replay_checks.jsonl`, and
+  `vera_h_pro.jsonl` with independent label recomputation in `eval/`.
 
 ## Deviations from Paper
 

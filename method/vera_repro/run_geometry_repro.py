@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from .core import deterministic_replay, sample_instance, verify_assignment, write_jsonl
+from .core import sample_instance, verify_assignment, write_jsonl
 from .geometry_specs import build_specs
 
 
@@ -38,6 +38,7 @@ def main() -> None:
     out_dir = Path(args.out_dir)
     specs = build_specs()
     rows = []
+    replay_rows = []
     spec_summaries = []
     for spec in specs:
         base_ok, base_answer = verify_assignment(spec, spec.base_assignment or {})
@@ -48,10 +49,28 @@ def main() -> None:
         generated = []
         for i in range(1, args.samples_per_spec + 1):
             instance = sample_instance(spec, i, args.base_seed)
+            replay = sample_instance(spec, i, args.base_seed)
             generated.append(instance)
             rows.append(instance)
             valid_count += 1
-            replay_count += int(deterministic_replay(spec, i, args.base_seed))
+            replay_match = (
+                json.dumps(instance["assignment"], sort_keys=True) == json.dumps(replay["assignment"], sort_keys=True)
+                and abs(float(instance["numeric_answer"]) - float(replay["numeric_answer"])) <= 1e-12
+            )
+            replay_count += int(replay_match)
+            replay_rows.append(
+                {
+                    "variant_id": instance["variant_id"],
+                    "spec_id": spec.spec_id,
+                    "mode": spec.mode,
+                    "sample_index": i,
+                    "first_assignment": instance["assignment"],
+                    "second_assignment": replay["assignment"],
+                    "first_answer": instance["numeric_answer"],
+                    "second_answer": replay["numeric_answer"],
+                    "match": replay_match,
+                }
+            )
             trials = noise_trials(float(instance["numeric_answer"]))
             successes = sum(int(offline_noise_judge(float(instance["numeric_answer"]), cand) == expected) for cand, expected in trials)
             judge_pass_count += int(successes >= 4)
@@ -81,10 +100,14 @@ def main() -> None:
         "base_seed": args.base_seed,
         "specs": spec_summaries,
         "h_pro_selected": h_pro,
-        "artifact_contract": "eval reads variants.jsonl and method_summary.json; it does not import method code.",
+        "artifact_contract": (
+            "eval reads variants.jsonl, replay_checks.jsonl, vera_h_pro.jsonl, and method_summary.json; "
+            "it does not import method code."
+        ),
     }
     out_dir.mkdir(parents=True, exist_ok=True)
     write_jsonl(out_dir / "variants.jsonl", rows)
+    write_jsonl(out_dir / "replay_checks.jsonl", replay_rows)
     if h_pro:
         write_jsonl(out_dir / "vera_h_pro.jsonl", [h_pro])
     with (out_dir / "method_summary.json").open("w", encoding="utf-8") as f:
@@ -94,4 +117,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim**
 
 ## Progress Log
 
@@ -14,7 +14,14 @@
 - `scripts/reproduce.sh` runs end-to-end locally and writes reproducible
   scores.
 
+### [2026-05-31 05:47] - core_claim
+- Audited the previous implementation and fixed evaluator trust in
+  method-produced summary rates.
+- Local reproduction and validation support VeRA's core claim on a scaled-down
+  paper-shown geometry family: deterministic executable specifications produce
+  verified variants and select a verified hardened candidate.
+
 ## Stop Justification
 
 Not stopped. A scheduler job is being submitted to verify the packaged
-environment.
+environment after the evaluator fix.

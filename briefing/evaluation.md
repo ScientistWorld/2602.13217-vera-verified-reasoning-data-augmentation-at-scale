@@ -1,8 +1,9 @@
 # Evaluation
 
 Evaluation reads generated artifacts from `outputs/vera_repro/`; it does not
-import from `method/`. Each artifact must contain generated variants with a
-question, slot assignment, mode, and numeric answer.
+import from `method/`. The evaluator independently recomputes geometry labels
+from the emitted slot assignments, checks replay pairs, and verifies that the
+H-Pro artifact is the maximum-answer verified hardened candidate.
 
 ## Metrics
 
@@ -27,4 +28,6 @@ paper's AIME-2024-II-10 running example.
 
 Run `bash scripts/reproduce.sh`, which generates artifacts and then calls
 `scripts/evaluate.sh`. The evaluator writes `scoring/scores.json` using the
-same experiment names as `scoring/reference.json`.
+same experiment names as `scoring/reference.json`. Standalone evaluation expects
+`variants.jsonl`, `replay_checks.jsonl`, `vera_h_pro.jsonl`, and
+`method_summary.json` under the artifact directory.
