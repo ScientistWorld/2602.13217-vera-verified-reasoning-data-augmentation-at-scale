@@ -12,7 +12,8 @@ The paper argues that static reasoning benchmarks invite memorization and lose
 discriminative power as models improve. VeRA compiles a seed problem into a
 template, generator, and verifier so new variants can be sampled and labeled
 deterministically. It supports equivalent rewrites for robustness diagnostics
-and hardened variants for renewed difficulty.
+and hardened variants for renewed difficulty. This workspace reproduces those
+mechanics offline on paper-shown AIME executable families.
 
 ## Key Results
 
@@ -64,6 +65,8 @@ Each specification contains a natural-language template, a deterministic
 generator for valid slot assignments, and a deterministic verifier that checks
 the assignment and computes the canonical answer. Sampling uses a hash of
 immutable identifiers, so variants are reproducible.
+Generator and verifier snippets are executed in a restricted sandbox with
+deterministic builtins and math-only imports.
 
 VeRA-E keeps the seed semantics fixed and accepts a specification only when the
 verifier reproduces the seed answer. VeRA-H changes the task to make it harder
@@ -73,8 +76,10 @@ candidate from a fixed hardened candidate pool.
 This reproduction clones the upstream release in `method/VeRA` and adds a small
 offline implementation in `method/vera_repro`. The released live Teacher, Judge,
 and Student hooks require private endpoints, so the runnable experiment uses
-the paper's AIME-2024-II-10 geometry specification family directly while
-preserving the core executable-specification computation.
+paper-shown AIME executable families directly: the AIME-2024-II-10 geometry
+family, the AIME-2024-II-9 chip-grid family, and the AIME-2024-I-11
+polygon-rotation family. The reproduction preserves the core
+executable-specification computation.
 
 ## Main Claims
 
@@ -88,9 +93,10 @@ selected from verified candidates under a paired VeRA-H Pro protocol.
 # Evaluation
 
 Evaluation reads generated artifacts from `outputs/vera_repro/`; it does not
-import from `method/`. The evaluator independently recomputes geometry labels
-from the emitted slot assignments, checks replay pairs, and verifies that the
-H-Pro artifact is the maximum-answer verified hardened candidate.
+import from `method/`. The evaluator independently recomputes labels from the
+emitted slot assignments, checks replay pairs, and verifies that the H-Pro
+artifact is the highest-ranked verified hardened candidate under a fixed
+selection rule.
 
 ## Metrics
 
@@ -102,6 +108,8 @@ H-Pro artifact is the maximum-answer verified hardened candidate.
   same identifiers. Higher is better.
 - `noise_judge_pass_rate`: fraction of answer-noise checks that distinguish the
   verifier label from nearby incorrect labels. Higher is better.
+- `h_pro_selected_ranked`: whether the paired H-Pro output is the highest-ranked
+  verified candidate. Higher is better.
 - `paper_example_answer_abs_error`: absolute error on the paper's shown hardened
   geometry example. Lower is better.
 
@@ -109,15 +117,16 @@ H-Pro artifact is the maximum-answer verified hardened candidate.
 
 The reference target is perfect seed consistency, valid generation,
 deterministic replay, and label validation on the geometry family used in the
-paper's AIME-2024-II-10 running example.
+paper's AIME-2024-II-10 running example, plus two additional paper-shown
+VeRA-E families.
 
 ## Evaluation Protocol
 
 Run `bash scripts/reproduce.sh`, which generates artifacts and then calls
 `scripts/evaluate.sh`. The evaluator writes `scoring/scores.json` using the
 same experiment names as `scoring/reference.json`. Standalone evaluation expects
-`variants.jsonl`, `replay_checks.jsonl`, `vera_h_pro.jsonl`, and
-`method_summary.json` under the artifact directory.
+`base_checks.jsonl`, `variants.jsonl`, `replay_checks.jsonl`,
+`vera_h_pro.jsonl`, and `method_summary.json` under the artifact directory.
 
 ---
 
@@ -199,12 +208,42 @@ same experiment names as `scoring/reference.json`. Standalone evaluation expects
 
 </details>
 
+### Iteration 3: gpt-5.5
+- **Milestone**: `core_claim_plus` | **Status**: done
+- **Working time**: 13m | **GPU**: 0.0h
+- **Jobs**: 2 total (2 completed, 0 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-05-31 05:44] - core_claim
+- Implemented the paper's executable specification computation for the paper-shown AIME-2024-II-10 geometry family.
+- Verified deterministic generation, seed consistency, verifier label integrity, replay, and VeRA-H Pro selection.
+- Scheduler job `1e1b5dd0-1ee` ran `scripts/run.sh` successfully inside the container.
+
+### [2026-05-31 05:44] - core_claim
+- Expanded the local implementation to two additional paper-shown VeRA-E families: AIME-2024-II-9 chip-grid counting and AIME-2024-I-11 polygon rotation.
+- Updated evaluation to recompute labels independently for all three families and to check base seed consistency from method artifacts.
+- Local `bash scripts/reproduce.sh` and `python validate.py --compare` pass; a scheduler job is being submitted to confirm the expanded suite in the container before claiming `core_claim_plus`.
+
+### [2026-05-31 05:49] - core_claim
+- Continuing-agent audit found the active implementation is a real VeRA executable-specification reproduction, not a surrogate.
+- Fixed the executable-spec sandbox to use restricted builtins and a math-only import hook instead of exposing full Python builtins.
+- Re-ran `bash scripts/reproduce.sh`, negative sandbox checks, and `python validate.py --compare` locally; all passed.
+
+### [2026-05-31 05:51] - core_claim_plus
+- Scheduler job `67ba94e2-6fe` ran the hardened, expanded reproduction successfully inside the container with exit code 0.
+- Confirmed three scored experiments: the original AIME-2024-II-10 geometry VeRA-E family, two additional paper-shown VeRA-E families, and the AIME-2024-II-10 VeRA-H/H-Pro family.
+- Reproduced perfect seed consistency, valid generation, deterministic replay, noise-check pass rate, and ranked H-Pro selection on the packaged benchmark.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim_plus**
 
 ## Stop Justification
-- Completed at milestone `method_runs`.
+- Completed at milestone `core_claim_plus`.

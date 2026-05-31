@@ -25,4 +25,4 @@
 - Reproduced perfect seed consistency, valid generation, deterministic replay, noise-check pass rate, and ranked H-Pro selection on the packaged benchmark.
 
 ## Stop Justification
-- Stopping at `core_claim_plus`: the core executable-specification claim is reproduced on additional paper-shown settings. Higher milestones require the private Teacher/Judge/Student endpoints or a larger local model-evaluation campaign for paper-scale Avg@5 results.
+- Completed at milestone `core_claim_plus`.
