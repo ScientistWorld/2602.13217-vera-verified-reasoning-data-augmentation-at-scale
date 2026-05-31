@@ -1,4 +1,4 @@
-action: submit
+action: done
 gpus: 0
 test: false
-notes: "Re-run split scoring after adding seed-answer novelty metric and unweighting raw variant counts."
+notes: "Odd/even sample-index split; 19 train metrics and 19 test metrics for vera_repro; novelty/diversity gaps are within 0.25 while validity/replay constraints saturate as expected; raw variant counts are diagnostic-only with zero coefficient."
