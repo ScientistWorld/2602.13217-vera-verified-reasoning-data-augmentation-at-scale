@@ -19,4 +19,4 @@
 - Method, reproduction script, and evaluation pipeline ran end-to-end.
 
 ## Stop Justification
-- Completed at milestone `core_claim`. Higher milestones would require broader benchmark/model coverage beyond the offline geometry-family reproduction.
+- Completed at milestone `core_claim`.
