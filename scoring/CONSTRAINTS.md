@@ -2,10 +2,11 @@
 
 ## Data
 
-Use the provided AIME-2024-II-10 geometry seed family and the artifact contract
-defined by this workspace. Do not add external benchmark datasets when reporting
-scores for the existing experiments; doing so would change the evaluation
-surface rather than improve the method.
+Use the provided paper-shown AIME seed families and the artifact contract
+defined by this workspace: AIME-2024-II-10 geometry, AIME-2024-II-9 chip grid,
+and AIME-2024-I-11 polygon rotation. Do not add external benchmark datasets
+when reporting scores for the existing experiments; doing so would change the
+evaluation surface rather than improve the method.
 
 ## Evaluation Protocol
 

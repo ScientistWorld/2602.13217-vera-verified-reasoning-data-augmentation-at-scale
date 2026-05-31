@@ -12,10 +12,13 @@
   Teacher/Judge/Student hooks point to private endpoints.
 - Implemented an offline reproduction in `method/vera_repro` for the
   AIME-2024-II-10 geometry family shown in the paper.
+- Expanded the executable-specification reproduction to the paper-shown
+  AIME-2024-II-9 chip-grid family and AIME-2024-I-11 polygon-rotation family.
 - `bash scripts/reproduce.sh` runs end-to-end locally and writes
   `scoring/scores.json`.
 - Audited and fixed the evaluator so it recomputes geometry labels from
-  generated variants, checks replay artifacts, and verifies H-Pro selection
+  generated variants, recomputes labels for the added AIME families, checks
+  replay and seed-consistency artifacts, and verifies H-Pro selection
   independently of `method/`.
 - Scheduler job `1e1b5dd0-1ee` ran `scripts/run.sh` successfully inside the
   container with exit code 0.
@@ -29,6 +32,9 @@
 - VeRA-H Pro selected the paper's hardest shown geometry candidate
   `R=38, r=10, theta=75`, producing answer `2755.941038021204`; the absolute
   difference from the paper's displayed value is about `1.2e-9`.
+- Additional VeRA-E reproduction generated 16 verified variants across the
+  chip-grid and polygon-rotation families with seed consistency 1.0, valid
+  rate 1.0, and deterministic replay rate 1.0.
 - `python validate.py --compare` passes all structure checks, including method
   output evaluation, import separation, and absence of committed `shared/`
   dependencies.
@@ -39,7 +45,9 @@
 
 - Current milestone is `core_claim`: the executable-specification generation,
   deterministic replay, verifier-label integrity, and H-Pro selection mechanics
-  are reproduced for one paper-shown family.
+  were reproduced in a completed scheduler job for one paper-shown family.
+- The expanded three-family suite passes locally and is being submitted for a
+  container job. If it passes, the workspace reaches `core_claim_plus`.
 - Higher milestones would require broader coverage across the released VeRA
   datasets and a local open model or accessible evaluator for Avg@5 model
   scores.
@@ -57,8 +65,9 @@
 
 - Paper used frontier LLM Teacher/Judge/Student services for large-scale
   synthesis and model evaluation. This reproduction uses the paper's shown
-  geometry executable family directly and an offline deterministic noise checker
+  AIME executable families directly and an offline deterministic noise checker
   for the validation role because paid/private endpoints are not available.
 - Paper reports large benchmark suites. This reproduction scales down to one
-  seed family while preserving the procedure: generate assignments, execute
-  verifiers, validate labels, replay deterministically, and select VeRA-H Pro.
+  hardened family plus two additional equivalent-family settings while
+  preserving the procedure: generate assignments, execute verifiers, validate
+  labels, replay deterministically, and select VeRA-H Pro.

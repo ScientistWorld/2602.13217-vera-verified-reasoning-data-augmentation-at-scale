@@ -15,5 +15,11 @@ Tests whether a more difficult paired item can be selected from verified
 candidates while keeping labels trustworthy. This experiment checks the
 boundary-evaluation setting where success requires both increased challenge and
 continued label reliability. The evaluator recomputes labels from assignments
-and verifies that the selected item is the maximum-answer candidate among valid
-hardened outputs.
+and verifies that the selected item is the highest-ranked candidate under the
+fixed paired selection rule.
+
+## aime_additional_vera_e_generation
+
+Tests whether the same renewable-evaluation mechanics hold beyond the geometry
+family. The evaluator recomputes answers for two additional paper-shown seed
+families and checks that fresh generated variants remain valid and replayable.

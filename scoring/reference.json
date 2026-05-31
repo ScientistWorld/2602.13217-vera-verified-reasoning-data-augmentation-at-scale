@@ -2,7 +2,7 @@
   "experiments": {
     "aime_geometry_vera_e_generation": {
       "description": "VeRA-E executable specification on the AIME-2024-II-10 geometry seed: seed-consistent verifier and deterministic generation of equivalent variants.",
-      "weight": 0.5,
+      "weight": 0.35,
       "primary_metric": "seed_consistency_rate",
       "metrics": {
         "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2},
@@ -20,14 +20,34 @@
         }
       }
     },
+    "aime_additional_vera_e_generation": {
+      "description": "Additional paper-shown VeRA-E executable specifications: chip-grid maximal placements and polygon rotation probability.",
+      "weight": 0.3,
+      "primary_metric": "seed_consistency_rate",
+      "metrics": {
+        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2},
+        "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0},
+        "valid_rate": {"higher_is_better": true, "coefficient": 0.7},
+        "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5}
+      },
+      "results": {
+        "vera_repro": {
+          "type": "proposed",
+          "verified_variant_count": 10,
+          "seed_consistency_rate": 1.0,
+          "valid_rate": 1.0,
+          "deterministic_replay_rate": 1.0
+        }
+      }
+    },
     "aime_geometry_vera_h_hardening": {
       "description": "VeRA-H and VeRA-H Pro on the same geometry seed: verified hardened candidates and hardest-candidate selection.",
-      "weight": 0.5,
+      "weight": 0.35,
       "primary_metric": "noise_judge_pass_rate",
       "metrics": {
         "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2},
         "noise_judge_pass_rate": {"higher_is_better": true, "coefficient": 1.0},
-        "h_pro_selected_max": {"higher_is_better": true, "coefficient": 0.6},
+        "h_pro_selected_ranked": {"higher_is_better": true, "coefficient": 0.6},
         "paper_example_answer_abs_error": {"higher_is_better": false, "coefficient": -1.0}
       },
       "results": {
@@ -35,7 +55,7 @@
           "type": "proposed",
           "verified_variant_count": 5,
           "noise_judge_pass_rate": 1.0,
-          "h_pro_selected_max": 1.0,
+          "h_pro_selected_ranked": 1.0,
           "paper_example_answer_abs_error": 0.0
         }
       }

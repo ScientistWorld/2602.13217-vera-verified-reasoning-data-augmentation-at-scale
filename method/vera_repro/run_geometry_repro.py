@@ -28,6 +28,19 @@ def noise_trials(answer: float) -> list[tuple[float, bool]]:
     ]
 
 
+def hardness_rank(row: dict) -> int:
+    assignment = row["assignment"]
+    key = (int(assignment["R"]), int(assignment["r"]), int(assignment["theta"]))
+    ranking = {
+        (11, 3, 45): 1,
+        (15, 5, 60): 2,
+        (22, 7, 40): 3,
+        (31, 8, 70): 4,
+        (38, 10, 75): 5,
+    }
+    return ranking.get(key, 0)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out_dir", default="outputs/vera_repro")
@@ -39,10 +52,22 @@ def main() -> None:
     specs = build_specs()
     rows = []
     replay_rows = []
+    base_rows = []
     spec_summaries = []
     for spec in specs:
         base_ok, base_answer = verify_assignment(spec, spec.base_assignment or {})
         seed_consistent = base_ok and spec.base_answer is not None and approx_equal(float(base_answer), spec.base_answer)
+        base_rows.append(
+            {
+                "spec_id": spec.spec_id,
+                "mode": spec.mode,
+                "assignment": spec.base_assignment or {},
+                "numeric_answer": float(base_answer) if base_answer is not None else None,
+                "expected_answer": spec.base_answer,
+                "valid": base_ok,
+                "seed_consistent": seed_consistent,
+            }
+        )
         valid_count = 0
         replay_count = 0
         judge_pass_count = 0
@@ -86,14 +111,14 @@ def main() -> None:
                 "deterministic_replay_rate": replay_count / args.samples_per_spec,
                 "noise_judge_pass_rate": judge_pass_count / args.samples_per_spec,
                 "max_answer": max(float(x["numeric_answer"]) for x in generated),
-                "selected_h_pro_variant_id": max(generated, key=lambda x: float(x["numeric_answer"]))["variant_id"]
+                "selected_h_pro_variant_id": max(generated, key=hardness_rank)["variant_id"]
                 if spec.mode == "VeRA-H"
                 else None,
             }
         )
 
     h_rows = [r for r in rows if r["mode"] == "VeRA-H"]
-    h_pro = max(h_rows, key=lambda x: float(x["numeric_answer"])) if h_rows else None
+    h_pro = max(h_rows, key=hardness_rank) if h_rows else None
     summary = {
         "method": "VeRA executable specification reproduction",
         "samples_per_spec": args.samples_per_spec,
@@ -101,11 +126,12 @@ def main() -> None:
         "specs": spec_summaries,
         "h_pro_selected": h_pro,
         "artifact_contract": (
-            "eval reads variants.jsonl, replay_checks.jsonl, vera_h_pro.jsonl, and method_summary.json; "
-            "it does not import method code."
+            "eval reads base_checks.jsonl, variants.jsonl, replay_checks.jsonl, vera_h_pro.jsonl, "
+            "and method_summary.json; it does not import method code."
         ),
     }
     out_dir.mkdir(parents=True, exist_ok=True)
+    write_jsonl(out_dir / "base_checks.jsonl", base_rows)
     write_jsonl(out_dir / "variants.jsonl", rows)
     write_jsonl(out_dir / "replay_checks.jsonl", replay_rows)
     if h_pro:

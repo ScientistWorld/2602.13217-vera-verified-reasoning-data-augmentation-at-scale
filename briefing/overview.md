@@ -12,7 +12,8 @@ The paper argues that static reasoning benchmarks invite memorization and lose
 discriminative power as models improve. VeRA compiles a seed problem into a
 template, generator, and verifier so new variants can be sampled and labeled
 deterministically. It supports equivalent rewrites for robustness diagnostics
-and hardened variants for renewed difficulty.
+and hardened variants for renewed difficulty. This workspace reproduces those
+mechanics offline on paper-shown AIME executable families.
 
 ## Key Results
 

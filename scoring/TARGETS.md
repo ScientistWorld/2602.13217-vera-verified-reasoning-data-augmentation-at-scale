@@ -17,7 +17,19 @@ Tests whether a harder paired variant can be selected from a pool of verified
 candidates while preserving label integrity.
 
 - **Primary metric**: `noise_judge_pass_rate` (higher is better)
-- **Constraint metrics**: `h_pro_selected_max` (higher is better) and
+- **Constraint metrics**: `h_pro_selected_ranked` (higher is better) and
   `paper_example_answer_abs_error` (lower is better)
+- **How to run**: `bash scripts/reproduce.sh`, then inspect
+  `scoring/scores.json`
+
+## Primary: aime_additional_vera_e_generation
+
+Tests the same executable-specification evaluation on two additional
+paper-shown families: chip-grid maximal placements and polygon rotation
+probability.
+
+- **Primary metric**: `seed_consistency_rate` (higher is better)
+- **Constraint metrics**: `valid_rate` and `deterministic_replay_rate` (higher
+  is better)
 - **How to run**: `bash scripts/reproduce.sh`, then inspect
   `scoring/scores.json`

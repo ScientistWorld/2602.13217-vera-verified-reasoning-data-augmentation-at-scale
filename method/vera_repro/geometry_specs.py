@@ -62,6 +62,87 @@ def verifier(assign):
     return True, answer
 """
 
+CHIP_GENERATOR = r"""
+def generator(rng):
+    cases = [
+        (1, 2, 4, 3, "red", "purple"),
+        (2, 3, 6, 6, "white", "black"),
+        (3, 3, 9, 9, "green", "orange"),
+        (4, 2, 8, 8, "blue", "yellow"),
+        (5, 5, 25, 25, "white", "black"),
+    ]
+    rows, cols, color_a_count, color_b_count, color_a, color_b = rng.choice(cases)
+    return {
+        "rows": rows,
+        "cols": cols,
+        "color_a_count": color_a_count,
+        "color_b_count": color_b_count,
+        "color_a": color_a,
+        "color_b": color_b,
+    }
+"""
+
+CHIP_VERIFIER = r"""
+def verifier(assign):
+    rows = int(assign["rows"])
+    cols = int(assign["cols"])
+    cap_a = int(assign["color_a_count"])
+    cap_b = int(assign["color_b_count"])
+    if rows <= 0 or cols <= 0 or cap_a < 0 or cap_b < 0:
+        return False, None
+
+    total = 0
+    row_masks = range(1 << rows)
+    col_masks = range(1 << cols)
+    for row_mask in row_masks:
+        a_rows = row_mask.bit_count()
+        b_rows = rows - a_rows
+        for col_mask in col_masks:
+            a_cols = col_mask.bit_count()
+            b_cols = cols - a_cols
+            row_set = (a_rows > 0, b_rows > 0)
+            col_set = (a_cols > 0, b_cols > 0)
+            if row_set != col_set:
+                continue
+            used_a = a_rows * a_cols
+            used_b = b_rows * b_cols
+            if used_a <= cap_a and used_b <= cap_b:
+                total += 1
+    return True, total
+"""
+
+POLYGON_GENERATOR = r"""
+def generator(rng):
+    n, target, other = rng.choice([
+        (6, "blue", "red"),
+        (8, "blue", "red"),
+        (10, "purple", "green"),
+        (12, "purple", "green"),
+        (14, "violet", "amber"),
+    ])
+    return {"n": n, "target_color": target, "other_color": other}
+"""
+
+POLYGON_VERIFIER = r"""
+def verifier(assign):
+    import math
+    n = int(assign["n"])
+    if n < 3 or n > 20:
+        return False, None
+    favorable = 0
+    for mask in range(1 << n):
+        works = False
+        for shift in range(1, n):
+            shifted = ((mask << shift) | (mask >> (n - shift))) & ((1 << n) - 1)
+            if mask & shifted == 0:
+                works = True
+                break
+        favorable += int(works)
+    denom = 1 << n
+    g = math.gcd(favorable, denom)
+    return True, favorable // g + denom // g
+"""
+
 
 def build_specs() -> list[ExecutableSpec]:
     e_template = (
@@ -73,6 +154,21 @@ def build_specs() -> list[ExecutableSpec]:
         "Let triangle ABC have incenter I and circumcenter O. The angle between "
         "segments IA and OI is {theta} degrees. Its circumradius is {R} and "
         "its inradius is {r}. Find the value of AB * AC."
+    )
+    chip_template = (
+        "You have {color_a_count} indistinguishable chips of color {color_a} and "
+        "{color_b_count} indistinguishable chips of color {color_b}. Some chips "
+        "are placed into the unit cells of a {rows} by {cols} grid, with at most "
+        "one chip per cell. All chips in any row have the same color, all chips "
+        "in any column have the same color, and the placement is maximal. How "
+        "many distinct placements are possible?"
+    )
+    polygon_template = (
+        "Each vertex of a regular {n}-gon is independently colored {target_color} "
+        "or {other_color} with equal probability. Let the probability that the "
+        "polygon can be rotated so that every {target_color} vertex lands on a "
+        "position that was originally {other_color} be m/n in lowest terms. "
+        "Compute m + n."
     )
     return [
         ExecutableSpec(
@@ -86,6 +182,33 @@ def build_specs() -> list[ExecutableSpec]:
             hardness_rank=1,
         ),
         ExecutableSpec(
+            spec_id="aime2024_ii_9_chip_grid_vera_e",
+            mode="VeRA-E",
+            template=chip_template,
+            generator_code=CHIP_GENERATOR,
+            verifier_code=CHIP_VERIFIER,
+            base_assignment={
+                "rows": 5,
+                "cols": 5,
+                "color_a_count": 25,
+                "color_b_count": 25,
+                "color_a": "white",
+                "color_b": "black",
+            },
+            base_answer=902.0,
+            hardness_rank=1,
+        ),
+        ExecutableSpec(
+            spec_id="aime2024_i_11_polygon_rotation_vera_e",
+            mode="VeRA-E",
+            template=polygon_template,
+            generator_code=POLYGON_GENERATOR,
+            verifier_code=POLYGON_VERIFIER,
+            base_assignment={"n": 8, "target_color": "blue", "other_color": "red"},
+            base_answer=371.0,
+            hardness_rank=1,
+        ),
+        ExecutableSpec(
             spec_id="aime2024_ii_10_vera_h",
             mode="VeRA-H",
             template=h_template,
@@ -96,4 +219,3 @@ def build_specs() -> list[ExecutableSpec]:
             hardness_rank=2,
         ),
     ]
-

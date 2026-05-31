@@ -21,8 +21,10 @@ candidate from a fixed hardened candidate pool.
 This reproduction clones the upstream release in `method/VeRA` and adds a small
 offline implementation in `method/vera_repro`. The released live Teacher, Judge,
 and Student hooks require private endpoints, so the runnable experiment uses
-the paper's AIME-2024-II-10 geometry specification family directly while
-preserving the core executable-specification computation.
+paper-shown AIME executable families directly: the AIME-2024-II-10 geometry
+family, the AIME-2024-II-9 chip-grid family, and the AIME-2024-I-11
+polygon-rotation family. The reproduction preserves the core
+executable-specification computation.
 
 ## Main Claims
 
