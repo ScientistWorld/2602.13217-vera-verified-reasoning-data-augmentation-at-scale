@@ -15,6 +15,8 @@
 - Audited and fixed the evaluator so it recomputes geometry labels from
   generated variants, checks replay artifacts, and verifies H-Pro selection
   independently of `method/`.
+- Scheduler job `1e1b5dd0-1ee` ran `scripts/run.sh` successfully inside the
+  container with exit code 0.
 
 ## Results
 
@@ -28,7 +30,6 @@
 
 ## Remaining
 
-- Run the packaged reproduction inside the scheduler-managed container.
 - Higher milestones would require broader coverage across the released VeRA
   datasets and a local open model or accessible evaluator for Avg@5 model
   scores.

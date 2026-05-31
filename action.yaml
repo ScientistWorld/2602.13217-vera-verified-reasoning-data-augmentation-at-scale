@@ -1,9 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
 test: true
-milestone: method_runs
 milestone: core_claim
-notes: "CPU smoke job to run scripts/reproduce.sh inside the container after tightening eval to independently score VeRA artifacts."
+notes: "Core claim reproduced on the scaled-down VeRA geometry family; scheduler job 1e1b5dd0-1ee completed successfully with exit code 0."

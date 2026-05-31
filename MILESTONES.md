@@ -20,8 +20,12 @@
 - Local reproduction and validation support VeRA's core claim on a scaled-down
   paper-shown geometry family: deterministic executable specifications produce
   verified variants and select a verified hardened candidate.
+- Scheduler job `1e1b5dd0-1ee` completed with exit code 0 and reproduced the
+  same score artifacts inside the container.
 
 ## Stop Justification
 
-Not stopped. A scheduler job is being submitted to verify the packaged
-environment after the evaluator fix.
+Stopped at `core_claim`: the environment is packaged, the runnable method
+implements VeRA executable specifications on a paper-shown geometry family, the
+evaluator independently scores emitted artifacts, and the container smoke job
+completed successfully.
