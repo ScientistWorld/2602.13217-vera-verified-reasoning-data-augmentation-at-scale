@@ -19,7 +19,7 @@ Check off items as you complete them. Order doesn't matter — work however make
 
 ## Code
 - [x] Evaluation code in `eval/`
-- [x] Method implementation in `method/`
+- [x] Method implementation in `method/` (sandbox hardened after continuing audit)
 - [x] Baseline implementation in `baseline/` (if applicable)
 
 ## Scripts

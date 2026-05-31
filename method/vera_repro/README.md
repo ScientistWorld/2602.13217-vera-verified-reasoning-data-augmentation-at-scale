@@ -7,6 +7,11 @@ family. It implements deterministic hash seeding, sandboxed generator/verifier
 execution, VeRA-E seed consistency, VeRA-H noise-answer validation, and VeRA-H
 Pro selection from verified hardened candidates.
 
+Executable snippets run in subprocesses with memory/time limits, restricted
+builtins, and a math-only import hook. This keeps the reproduction close to the
+paper's no-network/no-filesystem executable-spec validation setting while
+remaining fully offline.
+
 The upstream release is cloned in `method/VeRA`. That release includes full CSV
 datasets and generator artifacts, but its live Teacher/Judge/Student hooks point
 to private endpoints. This package keeps the core computation offline and

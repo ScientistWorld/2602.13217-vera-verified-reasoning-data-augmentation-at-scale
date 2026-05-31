@@ -40,6 +40,37 @@ class RNGShim:
         return x
 
 
+SAFE_BUILTINS = {
+    "abs": abs,
+    "all": all,
+    "any": any,
+    "bool": bool,
+    "dict": dict,
+    "enumerate": enumerate,
+    "float": float,
+    "int": int,
+    "len": len,
+    "list": list,
+    "max": max,
+    "min": min,
+    "pow": pow,
+    "range": range,
+    "round": round,
+    "set": set,
+    "sorted": sorted,
+    "str": str,
+    "sum": sum,
+    "tuple": tuple,
+    "zip": zip,
+}
+
+
+def safe_import(name: str, globals=None, locals=None, fromlist=(), level: int = 0):
+    if level == 0 and name == "math":
+        return math
+    raise ImportError(f"module {name!r} is not allowed in executable specs")
+
+
 @dataclass(frozen=True)
 class ExecutableSpec:
     spec_id: str
@@ -64,7 +95,9 @@ def _worker(q: mp.Queue, code: str, fn_name: str, payload: dict[str, Any], mem_b
     except Exception:
         pass
     try:
-        glob = {"__builtins__": __builtins__, "math": math, "random": random}
+        builtins = dict(SAFE_BUILTINS)
+        builtins["__import__"] = safe_import
+        glob = {"__builtins__": builtins, "math": math}
         loc: dict[str, Any] = {}
         exec(code, glob, loc)
         fn = loc[fn_name]
@@ -151,4 +184,3 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as f:
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
-

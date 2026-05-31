@@ -12,6 +12,8 @@ Each specification contains a natural-language template, a deterministic
 generator for valid slot assignments, and a deterministic verifier that checks
 the assignment and computes the canonical answer. Sampling uses a hash of
 immutable identifiers, so variants are reproducible.
+Generator and verifier snippets are executed in a restricted sandbox with
+deterministic builtins and math-only imports.
 
 VeRA-E keeps the seed semantics fixed and accepts a specification only when the
 verifier reproduces the seed answer. VeRA-H changes the task to make it harder

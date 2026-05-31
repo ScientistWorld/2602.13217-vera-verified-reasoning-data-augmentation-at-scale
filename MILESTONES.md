@@ -14,5 +14,10 @@
 - Updated evaluation to recompute labels independently for all three families and to check base seed consistency from method artifacts.
 - Local `bash scripts/reproduce.sh` and `python validate.py --compare` pass; a scheduler job is being submitted to confirm the expanded suite in the container before claiming `core_claim_plus`.
 
+### [2026-05-31 05:49] - core_claim
+- Continuing-agent audit found the active implementation is a real VeRA executable-specification reproduction, not a surrogate.
+- Fixed the executable-spec sandbox to use restricted builtins and a math-only import hook instead of exposing full Python builtins.
+- Re-ran `bash scripts/reproduce.sh`, negative sandbox checks, and `python validate.py --compare` locally; all passed.
+
 ## Stop Justification
 - Work is continuing toward `core_claim_plus`; no stop requested.
