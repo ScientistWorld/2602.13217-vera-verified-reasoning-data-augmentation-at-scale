@@ -68,6 +68,7 @@ docker_*.tar.xz
 # Swarm/worker artifacts
 trajectory/
 .empty_*/
+.git-shims/
 outputs/
 logs/
 .venv/
@@ -92,6 +93,9 @@ AGENTS.md
 CLAUDE.md
 
 # Python package / build directories (agents install under many names)
+__pycache__/
+**/__pycache__/
+*.py[cod]
 .python_packages/
 .cache/
 # Pip cache variants (beyond .cache/)
@@ -221,8 +225,8 @@ Thumbs.db
 *.orig
 *.rej
 
-# Core dumps
-core.*
+# Core dumps at the workspace root
+/core.*
 # Auto-added by swarm
 environment/overlay.img
 jobs/

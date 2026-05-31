@@ -1,14 +1,10 @@
 #!/bin/bash
-# Run the paper's proposed method.
-#
-# This script trains/runs the paper's method using code in method/.
-#
-# Usage:
-#   bash scripts/method.sh
+# Run the paper's method reproduction and write scoreable artifacts.
 
-set -e
+set -euo pipefail
 
 cd /home/user
-
-# TODO: run the paper's method
-# TODO: call scripts/evaluate.sh to score
+python -m method.vera_repro.run_geometry_repro \
+  --out_dir outputs/vera_repro \
+  --samples_per_spec "${SAMPLES_PER_SPEC:-8}" \
+  --base_seed "${BASE_SEED:-0}"

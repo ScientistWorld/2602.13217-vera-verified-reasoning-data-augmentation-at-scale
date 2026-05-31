@@ -1,17 +1,22 @@
 # Problem Definition
 
-What problem does this paper address? Write this so that someone with no knowledge of the paper can understand what needs to be solved and how success is measured.
-
-Do NOT describe the paper's method or solution here — only the problem itself. Think about if a future scientist agent try to solve this problem from scratch without knowing what approach the paper took. If you leak the solution, you compromise the benchmark.
+Static reasoning benchmarks become less useful when their items are repeatedly
+reused, memorized, or saturated. The problem is to turn a fixed reasoning seed
+into a renewable family of fresh benchmark items with reliable labels.
 
 ## Research Question
 
-<!-- What problem or challenge does this paper tackle? What gap in existing work does it address? -->
+Can a benchmark item be transformed into many new, valid reasoning questions
+whose labels remain trustworthy without requiring per-item human annotation or
+model-voting agreement?
 
 ## Why It Matters
 
-<!-- Why is this problem important? What would a good solution enable? Make it short -->
+Renewable benchmark families make it harder to exploit memorized static answers
+and keep evaluation useful after a finite benchmark saturates.
 
 ## Success Criteria
 
-<!-- What would a successful solution look like? What properties should it have? This is about the goal, not the paper's specific approach. Make it short -->
+A successful system produces fresh question instances, labels them
+deterministically, reproduces the known seed answer, and can replay the same
+instance from the same immutable identifiers.
