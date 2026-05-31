@@ -26,6 +26,8 @@
   executable-specification reproduction rather than a surrogate.
 - Tightened sandbox execution so generated specs run with restricted builtins
   and a math-only import hook, blocking filesystem and arbitrary module access.
+- Scheduler job `67ba94e2-6fe` ran the sandbox-hardened expanded suite inside
+  the container with exit code 0.
 
 ## Results
 
@@ -46,15 +48,21 @@
   `scripts/reproduce.sh`.
 - Negative sandbox checks block `import os` and `open(...)`, while the full
   reproduction and `python validate.py --compare` still pass.
+- Container-confirmed scores from job `67ba94e2-6fe`:
+  - `aime_geometry_vera_e_generation`: 8 verified variants, seed consistency
+    1.0, valid rate 1.0, deterministic replay rate 1.0.
+  - `aime_additional_vera_e_generation`: 16 verified variants, seed
+    consistency 1.0, valid rate 1.0, deterministic replay rate 1.0.
+  - `aime_geometry_vera_h_hardening`: 8 verified variants, noise-judge pass
+    rate 1.0, ranked H-Pro selection 1.0, paper example absolute error
+    `1.2037162377964705e-09`.
 
 ## Remaining
 
-- Current milestone is `core_claim`: the executable-specification generation,
-  deterministic replay, verifier-label integrity, and H-Pro selection mechanics
-  were reproduced in a completed scheduler job for one paper-shown family.
-- The expanded three-family suite passes locally and is being submitted for a
-  container job after the sandbox hardening. If it passes, the workspace reaches
-  `core_claim_plus`.
+- Current milestone is `core_claim_plus`: the executable-specification
+  generation, deterministic replay, verifier-label integrity, and H-Pro
+  selection mechanics are reproduced in completed scheduler jobs, including
+  additional paper-shown VeRA-E families beyond the minimum geometry setting.
 - Higher milestones would require broader coverage across the released VeRA
   datasets and a local open model or accessible evaluator for Avg@5 model
   scores.
