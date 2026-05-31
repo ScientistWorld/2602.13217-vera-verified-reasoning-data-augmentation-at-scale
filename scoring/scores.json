@@ -25,7 +25,6 @@
         "vera_repro": {
           "h_pro_selected_ranked": 1.0,
           "noise_judge_pass_rate": 1.0,
-          "paper_example_answer_abs_error": 1.2037162377964705e-09,
           "verified_variant_count": 8
         }
       }

@@ -6,4 +6,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Improvements: removed paper-agreement metric from train/test reference schema; added diversity and spec/hardness coverage metrics to both split evaluators; documented checks and runtime concerns. Notes: bash -n passed for both split wrappers; legacy unsplit scores/evaluator still mention the removed paper-example metric and are flagged in DESIGN_NOTES.md."
+notes: "Improvements: removed paper-agreement metric from reference, split evaluators, legacy unsplit evaluator, and scores.json; added diversity and spec/hardness coverage metrics to both split evaluators; documented checks and runtime concerns. Notes: bash -n passed for both split wrappers."

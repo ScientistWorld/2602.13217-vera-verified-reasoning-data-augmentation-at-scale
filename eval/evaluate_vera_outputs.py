@@ -187,14 +187,6 @@ def main() -> None:
     geometry_valid = mean(float(answer_valid(row)) for row in geometry_e_rows) if geometry_e_rows else 0.0
     extra_valid = mean(float(answer_valid(row)) for row in extra_e_rows) if extra_e_rows else 0.0
 
-    h_reference = 2755.94103802
-    paper_example_rows = [
-        row
-        for row in h_rows
-        if row["assignment"].get("R") == 38 and row["assignment"].get("r") == 10 and row["assignment"].get("theta") == 75
-    ]
-    h_observed = float(paper_example_rows[0]["numeric_answer"]) if paper_example_rows else float("nan")
-    h_answer_error = abs(h_observed - h_reference) if paper_example_rows else 1e9
     h_best_rank = max((h_hardness_rank(row) for row in h_rows if answer_valid(row)), default=-1)
     h_pro_selected_ranked = (
         1.0 if h_pro_rows and h_hardness_rank(h_pro_rows[0]) == h_best_rank and answer_valid(h_pro_rows[0]) else 0.0
@@ -231,7 +223,6 @@ def main() -> None:
                         "verified_variant_count": sum(int(flag) for flag in h_valid_flags),
                         "noise_judge_pass_rate": h_noise_judge,
                         "h_pro_selected_ranked": h_pro_selected_ranked,
-                        "paper_example_answer_abs_error": h_answer_error,
                     }
                 }
             },

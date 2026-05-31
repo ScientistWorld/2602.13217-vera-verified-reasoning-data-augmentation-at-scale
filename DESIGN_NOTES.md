@@ -21,4 +21,4 @@
 
 - The split is still an odd/even split over method-produced `sample_index` values. It is lightweight and matches the current artifact contract, but it is not as strong as a fully hidden resampling seed because the artifact already contains all variants.
 - `noise_judge_pass_rate` is an offline checker over generated numeric answers and nearby perturbations, not a real model-judge artifact. It is useful as a validity-adjacent constraint but may saturate when `valid_rate` saturates.
-- The legacy top-level `eval/evaluate_vera_outputs.py` and existing `scoring/scores.json` still mention `paper_example_answer_abs_error`. This pass was scoped to the train/test split and reference schema, so the train/test evaluators no longer emit it, but a future cleanup should align the legacy unsplit evaluator or regenerate `scores.json` if full-workspace validation is required.
+- The legacy top-level `eval/evaluate_vera_outputs.py` and existing `scoring/scores.json` were also aligned to stop emitting `paper_example_answer_abs_error`, because full-workspace validation checks the unsplit score file against `scoring/reference.json`.
