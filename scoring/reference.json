@@ -5,10 +5,11 @@
       "weight": 0.35,
       "primary_metric": "seed_consistency_rate",
       "metrics": {
-        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2},
-        "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0},
-        "valid_rate": {"higher_is_better": true, "coefficient": 0.7},
-        "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5}
+        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2, "description": "Number of slice variants whose labels match the executable verifier."},
+        "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of seed checks whose executable verifier reproduces the known seed answer."},
+        "valid_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Fraction of generated slice variants with verifier-consistent numeric answers."},
+        "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of slice rows that are distinct valid slot assignments, penalizing duplicated or memorized variants."},
+        "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of slice rows that regenerate the same assignment and answer under deterministic replay."}
       },
       "results": {
         "vera_repro": {
@@ -25,10 +26,12 @@
       "weight": 0.3,
       "primary_metric": "seed_consistency_rate",
       "metrics": {
-        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2},
-        "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0},
-        "valid_rate": {"higher_is_better": true, "coefficient": 0.7},
-        "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5}
+        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2, "description": "Number of slice variants whose labels match the executable verifier across the additional specifications."},
+        "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of additional seed checks whose executable verifiers reproduce the known seed answers."},
+        "valid_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Fraction of generated slice variants with verifier-consistent numeric answers across the additional specifications."},
+        "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of slice rows that are distinct valid slot assignments across the additional specifications."},
+        "valid_spec_coverage_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of expected additional specifications represented by at least one valid slice variant."},
+        "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of additional slice rows that regenerate the same assignment and answer under deterministic replay."}
       },
       "results": {
         "vera_repro": {
@@ -45,18 +48,18 @@
       "weight": 0.35,
       "primary_metric": "noise_judge_pass_rate",
       "metrics": {
-        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2},
-        "noise_judge_pass_rate": {"higher_is_better": true, "coefficient": 1.0},
-        "h_pro_selected_ranked": {"higher_is_better": true, "coefficient": 0.6},
-        "paper_example_answer_abs_error": {"higher_is_better": false, "coefficient": -1.0}
+        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.2, "description": "Number of hardened slice variants whose labels match the executable verifier."},
+        "noise_judge_pass_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of hardened slice variants whose correct answer is accepted and nearby wrong answers are rejected by the offline checker."},
+        "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of hardened slice rows that are distinct valid slot assignments."},
+        "valid_hardness_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of hardened slice rows covering distinct valid difficulty ranks."},
+        "h_pro_selected_ranked": {"higher_is_better": true, "coefficient": 0.6, "description": "Whether the selected VeRA-H Pro artifact is valid and matches the hardest generated rank."}
       },
       "results": {
         "vera_repro": {
           "type": "proposed",
           "verified_variant_count": 5,
           "noise_judge_pass_rate": 1.0,
-          "h_pro_selected_ranked": 1.0,
-          "paper_example_answer_abs_error": 0.0
+          "h_pro_selected_ranked": 1.0
         }
       }
     }

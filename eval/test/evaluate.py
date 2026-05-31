@@ -135,6 +135,31 @@ def replay_match(row: dict) -> bool:
     )
 
 
+def assignment_key(row: dict) -> str:
+    return json.dumps(row.get("assignment", {}), sort_keys=True, separators=(",", ":"))
+
+
+def valid_assignment_diversity_rate(rows: list[dict]) -> float:
+    if not rows:
+        return 0.0
+    unique_valid = {assignment_key(row) for row in rows if answer_valid(row)}
+    return len(unique_valid) / len(rows)
+
+
+def valid_spec_coverage_rate(rows: list[dict], expected_specs: set[str]) -> float:
+    if not expected_specs:
+        return 0.0
+    covered = {row["spec_id"] for row in rows if row["spec_id"] in expected_specs and answer_valid(row)}
+    return len(covered) / len(expected_specs)
+
+
+def valid_hardness_diversity_rate(rows: list[dict]) -> float:
+    if not rows:
+        return 0.0
+    unique_valid = {h_hardness_rank(row) for row in rows if answer_valid(row)}
+    return len(unique_valid) / len(rows)
+
+
 def noise_judge_pass(row: dict) -> bool:
     if not answer_valid(row):
         return False
@@ -254,17 +279,25 @@ def score_artifact(artifact_dir: Path) -> dict[str, dict[str, float]]:
             "verified_variant_count": float(sum(int(answer_valid(row)) for row in geometry_e_rows)),
             "seed_consistency_rate": geometry_seed_consistency,
             "valid_rate": geometry_valid,
+            "valid_assignment_diversity_rate": valid_assignment_diversity_rate(geometry_e_rows),
             "deterministic_replay_rate": geometry_replay,
         },
         "aime_additional_vera_e_generation": {
             "verified_variant_count": float(sum(int(answer_valid(row)) for row in extra_e_rows)),
             "seed_consistency_rate": extra_seed_consistency,
             "valid_rate": extra_valid,
+            "valid_assignment_diversity_rate": valid_assignment_diversity_rate(extra_e_rows),
+            "valid_spec_coverage_rate": valid_spec_coverage_rate(
+                extra_e_rows,
+                {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"},
+            ),
             "deterministic_replay_rate": extra_replay,
         },
         "aime_geometry_vera_h_hardening": {
             "verified_variant_count": float(sum(int(answer_valid(row)) for row in h_rows)),
             "noise_judge_pass_rate": h_noise_judge,
+            "valid_assignment_diversity_rate": valid_assignment_diversity_rate(h_rows),
+            "valid_hardness_diversity_rate": valid_hardness_diversity_rate(h_rows),
             "h_pro_selected_ranked": h_pro_selected_ranked,
         },
     }
