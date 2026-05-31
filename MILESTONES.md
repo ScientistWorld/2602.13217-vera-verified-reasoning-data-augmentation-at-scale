@@ -24,8 +24,4 @@
   same score artifacts inside the container.
 
 ## Stop Justification
-
-Stopped at `core_claim`: the environment is packaged, the runnable method
-implements VeRA executable specifications on a paper-shown geometry family, the
-evaluator independently scores emitted artifacts, and the container smoke job
-completed successfully.
+- Completed at milestone `core_claim`.
