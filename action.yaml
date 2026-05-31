@@ -1,9 +1,4 @@
-# This iteration writes files only — do NOT submit compute jobs.
-# Once you set action to 'done', STOP immediately.
-# Do NOT sleep, poll, or wait. The system reads this file
-# only after your turn ends.
-action: done
+action: submit
 gpus: 0
 test: false
-milestone: core_claim_plus
-notes: "Improvements: removed paper-agreement metric from reference, split evaluators, legacy unsplit evaluator, and scores.json; added diversity and spec/hardness coverage metrics to both split evaluators; documented checks and runtime concerns. Notes: bash -n passed for both split wrappers."
+notes: "Run evaluate_train.sh and evaluate_test.sh against existing final method artifacts; populate scores_train.json and scores_test.json."
