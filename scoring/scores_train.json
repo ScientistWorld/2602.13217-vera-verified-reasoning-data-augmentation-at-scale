@@ -1,0 +1,39 @@
+{
+  "experiments": {
+    "aime_additional_vera_e_generation": {
+      "results": {
+        "vera_repro": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "verified_variant_count": 8.0
+        }
+      }
+    },
+    "aime_geometry_vera_e_generation": {
+      "results": {
+        "vera_repro": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      }
+    },
+    "aime_geometry_vera_h_hardening": {
+      "results": {
+        "vera_repro": {
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_hardness_diversity_rate": 0.75,
+          "verified_variant_count": 4.0
+        }
+      }
+    }
+  },
+  "slice": "train"
+}
