@@ -1,8 +1,9 @@
-# IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
+# This iteration writes files only — do NOT submit compute jobs.
+# Once you set action to 'done', STOP immediately.
+# Do NOT sleep, poll, or wait. The system reads this file
+# only after your turn ends.
+action: pending
 gpus: 0
-test: true
+test: false
 milestone: core_claim_plus
-notes: "Scheduler job 67ba94e2-6fe confirmed the sandbox-hardened expanded VeRA executable-spec reproduction. Stopping at core_claim_plus; higher milestones require private Teacher/Judge/Student endpoints or a larger local model-evaluation campaign."
+notes: ""
