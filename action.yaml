@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Validation passes; core_claim_plus reproduction scores refreshed with novelty/diversity metrics; train/test primary metrics now differentiate, including H hardening 0.80 train vs 0.75 test."
+notes: "Packaging audit passed: no external pre-run artifacts are required, download.sh is self-contained, and validate.py passes."
