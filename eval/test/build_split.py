@@ -60,6 +60,7 @@ CUES = {
 }
 MIN_SLOTS, MAX_SLOTS = 2, 6
 MIN_STEPS = 2
+MIN_SCORED_STEPS = 3
 
 
 def question_numbers(q: str) -> list[dict]:
@@ -167,6 +168,7 @@ def main() -> None:
     ap.add_argument("--root", default=".")
     ap.add_argument("--n_train", type=int, default=300)
     ap.add_argument("--n_test", type=int, default=800)
+    ap.add_argument("--extra_test_fraction", type=float, default=0.76)
     args = ap.parse_args()
     root = Path(args.root)
 
@@ -226,21 +228,34 @@ def main() -> None:
             "origin": r["origin"],
         }
 
+    # Two-step seeds are dropped: exhaustive enumeration of arithmetic programs
+    # (baseline/expression_search.py) already solves most of them, so they cannot
+    # separate spec synthesizers.  Original ids are kept; unused >=3-step seeds
+    # from the clean pool are appended with new ids (test first, then train).
+    test_ids = [(f"te{i:04d}", r) for i, r in enumerate(test) if len(r["steps"]) >= MIN_SCORED_STEPS]
+    train_ids = [(f"tr{i:04d}", r) for i, r in enumerate(train) if len(r["steps"]) >= MIN_SCORED_STEPS]
+    taken = {r["origin"] for r in test + train}
+    extra = [r for r in gsm_test + gsm_train if r["origin"] not in taken and len(r["steps"]) >= MIN_SCORED_STEPS]
+    extra = sorted(extra, key=lambda r: stable_hash("extra|" + r["origin"]))
+    n_extra_test = round(len(extra) * args.extra_test_fraction)
+    test_ids += [(f"te{len(test) + i:04d}", r) for i, r in enumerate(extra[:n_extra_test])]
+    train_ids += [(f"tr{len(train) + i:04d}", r) for i, r in enumerate(extra[n_extra_test:])]
+
     (root / "data/gsm8k_vera").mkdir(parents=True, exist_ok=True)
-    for split, rows, prefix, with_solution, ref_dir in (
-        ("train", train, "tr", True, "eval/train"),
-        ("test", test, "te", False, "eval/test"),
+    for split, rows, with_solution, ref_dir in (
+        ("train", train_ids, True, "eval/train"),
+        ("test", test_ids, False, "eval/test"),
     ):
-        seeds = [seed_row(r, f"{prefix}{i:04d}", with_solution) for i, r in enumerate(rows)]
-        refs = [ref_row(r, f"{prefix}{i:04d}") for i, r in enumerate(rows)]
+        seeds = [seed_row(r, sid, with_solution) for sid, r in rows]
+        refs = [ref_row(r, sid) for sid, r in rows]
         with open(root / f"data/gsm8k_vera/{split}_seeds.jsonl", "w", encoding="utf-8") as f:
             for s in seeds:
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
         with open(root / ref_dir / "references.jsonl", "w", encoding="utf-8") as f:
             for s in refs:
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
-        print(split, len(rows), "steps", sorted(Counter(len(r["steps"]) for r in rows).items()),
-              "slots", sorted(Counter(len(r["slots"]) for r in rows).items()))
+        print(split, len(rows), "steps", sorted(Counter(len(r["steps"]) for _, r in rows).items()),
+              "slots", sorted(Counter(len(r["slots"]) for _, r in rows).items()))
 
 
 if __name__ == "__main__":

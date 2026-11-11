@@ -65,3 +65,43 @@ class ChatLM:
             pos += len(batch)
             print(f"[llm] {pos}/{len(order)} prompts, {time.time() - start:.0f}s, bs={bs}", flush=True)
         return [self.cache[k] for k in keys]
+
+
+class ReplayLM:
+    """Cache-only stand-in for ChatLM: replays logged Teacher generations on CPU.
+
+    Renders the Qwen2.5 chat template by hand so cache keys match ChatLM's."""
+
+    def __init__(self):
+        self.cache: dict[tuple, str] = {}
+        self.tokens_generated = 0
+
+    @staticmethod
+    def _render(messages: list[dict]) -> str:
+        out = "".join(f"<|im_start|>{m['role']}\n{m['content']}<|im_end|>\n" for m in messages)
+        return out + "<|im_start|>assistant\n"
+
+    @staticmethod
+    def _loose(text: str) -> str:
+        # Feedback quotes Python exception messages, which differ across Python
+        # versions; match on everything except the quoted issue text.
+        i, j = text.find("Issues to fix:\n"), text.find("\nPrevious output:")
+        return text[:i] + text[j:] if 0 <= i < j else text
+
+    def generate(self, convs, temperature: float = 0.0, seed: int = 0, max_new_tokens=None):
+        if not hasattr(self, "_index"):
+            self._index = {}
+            for k, v in self.cache.items():
+                self._index.setdefault((self._loose(k[0]),) + tuple(k[1:]), []).append(v)
+        outs = []
+        for m in convs:
+            text = self._render(m)
+            key = (text, temperature, seed if temperature > 0 else 0, max_new_tokens)
+            if key in self.cache:
+                outs.append(self.cache[key])
+                continue
+            hits = self._index.get((self._loose(text),) + key[1:], [])
+            if len(hits) != 1:
+                raise KeyError("replay cache miss; run without --replay_only on a GPU")
+            outs.append(hits[0])
+        return outs

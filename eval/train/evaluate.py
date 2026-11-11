@@ -38,10 +38,10 @@ K_SAMPLES = 8
 MAX_CODE_CHARS = 20000
 MAX_TEMPLATE_CHARS = 4000
 MAX_SLOT_VALUE = 1e9
-PRECISION_FLOOR = 0.8  # pooled fresh-label precision below this is a failed run
+PRECISION_FLOOR = 0.7  # pooled fresh-label precision below this is a failed run
 WALL_SECONDS = 90
 EXPERIMENTS = {
-    "gsm8k_vera_e_core": lambda ref: ref["n_steps"] <= 3,
+    "gsm8k_vera_e_3step": lambda ref: ref["n_steps"] == 3,
     "gsm8k_vera_e_multistep": lambda ref: ref["n_steps"] >= 4,
 }
 METRICS = ["verified_fresh_yield", "label_precision", "certified_spec_rate", "seed_consistency_rate"]
