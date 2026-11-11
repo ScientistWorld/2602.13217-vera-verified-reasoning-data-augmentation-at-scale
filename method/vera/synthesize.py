@@ -16,6 +16,8 @@ and written to outputs/<variant>/specs.jsonl.
 Variants written by one run (they share the Teacher calls):
   vera_e         paper gates, up to --max_attempts attempts (reference)
   vera_e_1try    the same pipeline restricted to the first attempt (Table 1 "1 try")
+  vera_e_seed1   the reference pipeline with a different retry sampling seed
+                 (measures run-to-run noise of the reference)
   vera_e_xcheck  paper gates + a randomized cross-check gate (Sec. 5.2:
                  "spec-level tests ... randomized fuzzing"): the verifier must not
                  ignore any slot, and must agree with an independently derived
@@ -295,7 +297,8 @@ def main() -> None:
                     already.add(k)
 
     flushed = set(lm.cache)
-    variants = {"vera_e": False, "vera_e_xcheck": True}
+    # name -> (cross-check gate?, retry sampling-seed offset)
+    variants = {"vera_e": (False, 0), "vera_e_xcheck": (True, 0), "vera_e_seed1": (False, 1)}
     state = {v: {s["seed_id"]: {"attempts": [], "accepted": None, "feedback": None, "previous": None, "fallback": None}
                  for s in seeds} for v in variants}
     by_id = {s["seed_id"]: s for s in seeds}
@@ -306,13 +309,16 @@ def main() -> None:
         if not pending:
             break
         temp = 0.0 if attempt == 1 else args.temperature
-        convs = []
-        for v, sid in pending:
-            st = state[v][sid]
-            convs.append(prompts.teacher_messages(by_id[sid], st["feedback"], st["previous"]))
-        texts = lm.generate(convs, temperature=temp, seed=attempt)
+        texts_by_key: dict[tuple, str] = {}
+        for offset in sorted({variants[v][1] for v, _ in pending}):
+            group = [(v, sid) for v, sid in pending if variants[v][1] == offset]
+            convs = [prompts.teacher_messages(by_id[sid], state[v][sid]["feedback"], state[v][sid]["previous"])
+                     for v, sid in group]
+            for key, txt in zip(group, lm.generate(convs, temperature=temp, seed=attempt + 7919 * offset)):
+                texts_by_key[key] = txt
+        texts = [texts_by_key[key] for key in pending]
         solves: dict[tuple, str | None] = {}
-        x_pending = [(v, sid) for v, sid in pending if variants[v]]
+        x_pending = [(v, sid) for v, sid in pending if variants[v][0]]
         if x_pending:
             s_convs = [prompts.solve_messages(by_id[sid]) for _, sid in x_pending]
             s_texts = lm.generate(s_convs, temperature=temp, seed=attempt + 1000, max_new_tokens=400)
@@ -322,7 +328,7 @@ def main() -> None:
 
         def check(i):
             v, sid = pending[i]
-            return validate(texts[i], by_id[sid], attempt, variants[v], solves.get((v, sid)))
+            return validate(texts[i], by_id[sid], attempt, variants[v][0], solves.get((v, sid)))
 
         with cf.ThreadPoolExecutor(max_workers=args.workers) as pool:
             results = list(pool.map(check, range(len(pending))))
@@ -350,6 +356,7 @@ def main() -> None:
         ("vera_e_1try", {sid: (st["accepted"] if st["accepted"] and st["accepted"]["attempt"] == 1 else None)
                          for sid, st in state["vera_e"].items()}),
         ("vera_e_xcheck", {sid: (st["accepted"] or st["fallback"]) for sid, st in state["vera_e_xcheck"].items()}),
+        ("vera_e_seed1", {sid: st["accepted"] for sid, st in state["vera_e_seed1"].items()}),
     ):
         d = out_root / name
         d.mkdir(parents=True, exist_ok=True)
@@ -359,7 +366,7 @@ def main() -> None:
                 if row:
                     f.write(json.dumps({k: row[k] for k in ("seed_id", "template", "generator_code", "verifier_code")},
                                        ensure_ascii=False) + "\n")
-        src = "vera_e_xcheck" if name == "vera_e_xcheck" else "vera_e"
+        src = name if name in variants else "vera_e"
         attempts_hist = Counter(st["accepted"]["attempt"] for st in state[src].values()
                                 if st["accepted"] and (name != "vera_e_1try" or st["accepted"]["attempt"] == 1))
         summary[name] = {
