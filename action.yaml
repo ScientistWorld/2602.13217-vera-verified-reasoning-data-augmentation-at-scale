@@ -1,5 +1,8 @@
-action: done
+# Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends.
+action: pending
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Final verification passed: docs tightened, artifact evaluators and train/test checks validated, core_claim_plus remains justified."
+notes: ""
