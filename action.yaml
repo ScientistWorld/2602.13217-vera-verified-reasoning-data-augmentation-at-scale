@@ -1,8 +1,8 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: pending
-gpus: 0
+action: submit
+gpus: 1
 test: false
 milestone: core_claim_plus
-notes: ""
+notes: "Resume VeRA-E Teacher synthesis from cache on 848 >=3-step GSM8K seeds (6 attempts; reference, retry-seed rerun, 1-try, cross-check variants) + baselines, then train/test scoring."
