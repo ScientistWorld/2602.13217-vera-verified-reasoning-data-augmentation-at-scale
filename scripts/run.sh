@@ -1,11 +1,7 @@
 #!/bin/bash
-# Job script executed by the scheduler inside the container. This reruns the
-# packaged reproduction, then refreshes the visible train and held-out test
-# split scores from the resulting method artifacts.
+# Temporary audit job entrypoint; restored after the audit.
 
 set -euo pipefail
 
 cd /home/user
-bash scripts/reproduce.sh
-bash scripts/evaluate_train.sh
-bash scripts/evaluate_test.sh
+bash redteam/run_all.sh

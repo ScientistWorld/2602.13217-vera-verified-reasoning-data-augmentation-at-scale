@@ -1,0 +1,8 @@
+__pycache__/
+state/
+*/artifacts/
+*.log
+*/stdout.txt
+*/stderr.txt
+*/train_stdout.txt
+*/test_stdout.txt
