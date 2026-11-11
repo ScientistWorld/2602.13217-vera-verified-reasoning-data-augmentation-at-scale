@@ -1,18 +1,9 @@
 #!/bin/bash
-# Evaluate held-out test-slice method outputs and write scoring/scores_test.json.
+# Score every method directory under outputs/ on the hidden test split.
+# Writes scoring/scores_test.json. Takes no arguments; every subdirectory of
+# outputs/ (except names starting with "_" or ".") is scored, and a directory
+# without a readable specs.jsonl is scored as a failed run.
 
 set -euo pipefail
-
 cd /home/user
-
-args=(
-  --artifacts-root "${ARTIFACTS_ROOT:-outputs}"
-  --method-list scoring/scores_train.json
-  --scores scoring/scores_test.json
-)
-
-if [[ -n "${ARTIFACT_DIR:-}" ]]; then
-  args+=(--artifacts "$ARTIFACT_DIR")
-fi
-
-python eval/test/evaluate.py "${args[@]}"
+python eval/test/evaluate.py

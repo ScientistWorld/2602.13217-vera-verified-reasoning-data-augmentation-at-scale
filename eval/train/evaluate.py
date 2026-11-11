@@ -1,401 +1,388 @@
+"""Train-split evaluator for GSM8K VeRA-E executable specifications.
+
+Scores every method directory under outputs/ (each immediate subdirectory is
+one method).  A method submits ``outputs/<method>/specs.jsonl`` with one
+executable specification per seed:
+
+    {"seed_id": ..., "template": "... {n0} ... {n1} ...",
+     "generator_code": "def generator(rng): ...",
+     "verifier_code": "def verifier(assign): ... return valid, answer"}
+
+Nothing else the method writes is read.  For every train seed the evaluator
+itself executes the submitted code in a sandboxed subprocess on RNG keys, then
+recomputes every label with the seed's reference program
+(eval/train/references.jsonl).  The hidden split uses the same protocol on
+different seeds, references and keys.  Scores are computed from those raw
+executions only.
+"""
 from __future__ import annotations
 
 import argparse
+import ast
+import concurrent.futures as cf
+import hashlib
 import json
 import math
+import os
+import string
+import subprocess
+import sys
 from pathlib import Path
-from statistics import mean
-
 
 SLICE = "train"
-REQUIRED_FILES = {
-    "base_checks.jsonl",
-    "variants.jsonl",
-    "replay_checks.jsonl",
-    "spec_validation.jsonl",
-    "h_candidate_pool.jsonl",
-    "vera_h_pro.jsonl",
-    "method_summary.json",
+HERE = Path(__file__).resolve().parent
+REFERENCES = HERE / "references.jsonl"
+RUNNER = HERE / "sandbox_runner.py"
+KEY_SALT = "vera-e-public-train-keys"
+K_SAMPLES = 8
+MAX_CODE_CHARS = 20000
+MAX_TEMPLATE_CHARS = 4000
+MAX_SLOT_VALUE = 1e9
+PRECISION_FLOOR = 0.8  # pooled fresh-label precision below this is a failed run
+WALL_SECONDS = 90
+EXPERIMENTS = {
+    "gsm8k_vera_e_core": lambda ref: ref["n_steps"] <= 3,
+    "gsm8k_vera_e_multistep": lambda ref: ref["n_steps"] >= 4,
+}
+METRICS = ["verified_fresh_yield", "label_precision", "certified_spec_rate", "seed_consistency_rate"]
+WORST = {m: 0.0 for m in METRICS}
+ALLOWED_IMPORTS = {"math", "random", "fractions", "itertools", "functools"}
+FORBIDDEN_NAMES = {
+    "eval", "exec", "compile", "open", "getattr", "setattr", "delattr", "globals",
+    "locals", "vars", "input", "breakpoint", "memoryview", "type", "object", "super",
+    "classmethod", "staticmethod", "property", "help", "dir", "id", "hash",
+}
+FORBIDDEN_ATTRS = {
+    "gi_frame", "gi_code", "gi_yieldfrom", "gi_running", "cr_frame", "cr_code", "cr_await",
+    "ag_frame", "ag_code", "f_back", "f_globals", "f_builtins", "f_locals", "f_code", "f_trace",
+    "tb_frame", "tb_next", "co_code", "co_consts", "mro", "format_map", "with_traceback",
 }
 
 
-def load_json(path: Path) -> dict:
-    with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
+# ----------------------------------------------------------------------------
+# Reference programs
+# ----------------------------------------------------------------------------
+
+def _eval_node(node: ast.AST, env: dict) -> float:
+    if isinstance(node, ast.Expression):
+        return _eval_node(node.body, env)
+    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+        return float(node.value)
+    if isinstance(node, ast.Name):
+        return float(env[node.id])
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
+        return -_eval_node(node.operand, env)
+    if isinstance(node, ast.BinOp):
+        a = _eval_node(node.left, env)
+        b = _eval_node(node.right, env)
+        if isinstance(node.op, ast.Add):
+            return a + b
+        if isinstance(node.op, ast.Sub):
+            return a - b
+        if isinstance(node.op, ast.Mult):
+            return a * b
+        if isinstance(node.op, ast.Div):
+            if b == 0:
+                raise ZeroDivisionError
+            return a / b
+    raise ValueError("unsupported reference node")
 
 
-def load_jsonl(path: Path) -> list[dict]:
-    with path.open("r", encoding="utf-8") as f:
-        return [json.loads(line) for line in f if line.strip()]
+def reference_label(ref: dict, assign: dict) -> tuple[bool, int | None]:
+    """Validity rule: no division by zero, every intermediate >= 0, and a
+    non-negative integer final answer (as every seed answer is)."""
+    env = dict(assign)
+    try:
+        value = 0.0
+        for j, step in enumerate(ref["_compiled"]):
+            value = _eval_node(step, env)
+            if not math.isfinite(value) or value < -1e-9:
+                return False, None
+            env[f"r{j}"] = value
+    except (ZeroDivisionError, OverflowError, ValueError, KeyError):
+        return False, None
+    if abs(value - round(value)) > 1e-6 * max(1.0, abs(value)) or value < -1e-9:
+        return False, None
+    return True, int(round(value))
 
 
-def approx_equal(a: float, b: float, tol: float = 1e-6) -> bool:
-    return abs(float(a) - float(b)) <= tol * max(1.0, abs(float(b)))
+def load_references() -> list[dict]:
+    refs = []
+    with REFERENCES.open(encoding="utf-8") as f:
+        for line in f:
+            if line.strip():
+                ref = json.loads(line)
+                ref["_compiled"] = [ast.parse(s, mode="eval") for s in ref["steps"]]
+                refs.append(ref)
+    return refs
 
 
-def in_slice(row: dict) -> bool:
-    return int(row["sample_index"]) % 2 == 1
+# ----------------------------------------------------------------------------
+# Static checks on submitted specs
+# ----------------------------------------------------------------------------
+
+def static_problem(spec: dict, slot_names: list[str]) -> str | None:
+    for field in ("template", "generator_code", "verifier_code"):
+        if not isinstance(spec.get(field), str):
+            return f"missing_{field}"
+    if len(spec["template"]) > MAX_TEMPLATE_CHARS:
+        return "template_too_long"
+    for field in ("generator_code", "verifier_code"):
+        code = spec[field]
+        if len(code) > MAX_CODE_CHARS:
+            return f"{field}_too_long"
+        try:
+            tree = ast.parse(code)
+        except SyntaxError:
+            return f"{field}_syntax"
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Attribute) and (node.attr.startswith("_") or node.attr in FORBIDDEN_ATTRS):
+                return "private_attribute"
+            if isinstance(node, ast.Name) and (node.id.startswith("__") or node.id in FORBIDDEN_NAMES):
+                return "forbidden_name"
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name.startswith("__"):
+                return "dunder_def"
+            if isinstance(node, (ast.ClassDef, ast.AsyncFunctionDef, ast.Await, ast.Global, ast.Nonlocal)):
+                return "forbidden_construct"
+            if isinstance(node, ast.Import):
+                if any(a.name not in ALLOWED_IMPORTS for a in node.names):
+                    return "forbidden_import"
+            if isinstance(node, ast.ImportFrom):
+                if node.level or node.module not in ALLOWED_IMPORTS:
+                    return "forbidden_import"
+            if isinstance(node, ast.Constant) and isinstance(node.value, str) and "__" in node.value:
+                return "dunder_string"
+    try:
+        fields = [f for _, f, _, _ in string.Formatter().parse(spec["template"]) if f is not None]
+    except ValueError:
+        return "template_format"
+    if set(fields) != set(slot_names) or any(not f.isidentifier() for f in fields):
+        return "template_fields"
+    return None
 
 
-def expected_answer(row: dict) -> tuple[bool, float | None]:
-    spec_id = row["spec_id"]
-    assignment = row["assignment"]
+# ----------------------------------------------------------------------------
+# Execution and per-seed scoring
+# ----------------------------------------------------------------------------
 
-    if spec_id == "aime2024_ii_10_vera_e":
-        R = float(assignment["R"])
-        r = float(assignment["r"])
-        if R <= 0 or r <= 0 or R <= 2 * r:
-            return False, None
-        oi2 = R * (R - 2 * r)
-        ai2 = R * R - oi2
-        return True, ai2 + 4 * R * r
-
-    if spec_id == "aime2024_ii_10_vera_h":
-        R = float(assignment["R"])
-        r = float(assignment["r"])
-        if R <= 0 or r <= 0 or R <= 2 * r:
-            return False, None
-        theta = float(assignment["theta"])
-        if not (0 < theta < 180):
-            return False, None
-        d = math.sqrt(R * (R - 2 * r))
-        th = math.radians(theta)
-        disc = R * R - (d * math.sin(th)) ** 2
-        if disc < -1e-9:
-            return False, None
-        ai = d * math.cos(th) + math.sqrt(max(0.0, disc))
-        return True, ai * ai + 4 * R * r
-
-    if spec_id == "aime2024_ii_9_chip_grid_vera_e":
-        rows = int(assignment["rows"])
-        cols = int(assignment["cols"])
-        cap_a = int(assignment["color_a_count"])
-        cap_b = int(assignment["color_b_count"])
-        if rows <= 0 or cols <= 0 or cap_a < 0 or cap_b < 0:
-            return False, None
-        total = 0
-        for row_mask in range(1 << rows):
-            a_rows = row_mask.bit_count()
-            b_rows = rows - a_rows
-            for col_mask in range(1 << cols):
-                a_cols = col_mask.bit_count()
-                b_cols = cols - a_cols
-                if (a_rows > 0, b_rows > 0) != (a_cols > 0, b_cols > 0):
-                    continue
-                used_a = a_rows * a_cols
-                used_b = b_rows * b_cols
-                if used_a <= cap_a and used_b <= cap_b:
-                    total += 1
-        return True, float(total)
-
-    if spec_id == "aime2024_i_11_polygon_rotation_vera_e":
-        n = int(assignment["n"])
-        if n < 3 or n > 20:
-            return False, None
-        favorable = 0
-        for mask in range(1 << n):
-            works = False
-            for shift in range(1, n):
-                shifted = ((mask << shift) | (mask >> (n - shift))) & ((1 << n) - 1)
-                if mask & shifted == 0:
-                    works = True
-                    break
-            favorable += int(works)
-        denom = 1 << n
-        gcd = math.gcd(favorable, denom)
-        return True, float(favorable // gcd + denom // gcd)
-
-    return False, None
+def sample_keys(seed_id: str) -> list[int]:
+    return [int(hashlib.sha256(f"{KEY_SALT}|{seed_id}|{k}".encode()).hexdigest()[:15], 16) for k in range(K_SAMPLES)]
 
 
-def answer_valid(row: dict) -> bool:
-    valid, expected = expected_answer(row)
-    return valid and expected is not None and approx_equal(float(row["numeric_answer"]), expected)
-
-
-def base_check_valid(row: dict) -> bool:
-    valid, expected = expected_answer(row)
-    expected_seed = row.get("expected_answer")
-    observed = row.get("numeric_answer")
-    return (
-        valid
-        and expected is not None
-        and expected_seed is not None
-        and observed is not None
-        and approx_equal(float(observed), expected)
-        and approx_equal(float(observed), float(expected_seed))
-        and bool(row.get("valid", False))
-        and bool(row.get("seed_consistent", False))
-    )
-
-
-def replay_match(row: dict) -> bool:
-    return (
-        json.dumps(row["first_assignment"], sort_keys=True) == json.dumps(row["second_assignment"], sort_keys=True)
-        and approx_equal(float(row["first_answer"]), float(row["second_answer"]), tol=1e-12)
-        and bool(row.get("match", False))
-    )
-
-
-def assignment_key(row: dict) -> str:
-    return json.dumps(row.get("assignment", {}), sort_keys=True, separators=(",", ":"))
-
-
-def valid_assignment_diversity_rate(rows: list[dict]) -> float:
-    if not rows:
-        return 0.0
-    unique_valid = {assignment_key(row) for row in rows if answer_valid(row)}
-    return len(unique_valid) / len(rows)
-
-
-def valid_spec_coverage_rate(rows: list[dict], expected_specs: set[str]) -> float:
-    if not expected_specs:
-        return 0.0
-    covered = {row["spec_id"] for row in rows if row["spec_id"] in expected_specs and answer_valid(row)}
-    return len(covered) / len(expected_specs)
-
-
-def valid_seed_answer_novelty_rate(rows: list[dict], seed_answers: dict[str, float]) -> float:
-    if not rows:
-        return 0.0
-    novel_valid = 0
-    for row in rows:
-        seed_answer = seed_answers.get(row["spec_id"])
-        if seed_answer is None:
-            continue
-        novel_valid += int(answer_valid(row) and not approx_equal(float(row["numeric_answer"]), seed_answer))
-    return novel_valid / len(rows)
-
-
-def valid_hardness_diversity_rate(rows: list[dict]) -> float:
-    if not rows:
-        return 0.0
-    unique_valid = {h_hardness_rank(row) for row in rows if answer_valid(row)}
-    return len(unique_valid) / len(rows)
-
-
-def valid_mean_hardness_rank_rate(rows: list[dict]) -> float:
-    if not rows:
-        return 0.0
-    rank_sum = sum(h_hardness_rank(row) for row in rows if answer_valid(row))
-    return rank_sum / (len(rows) * 5.0)
-
-
-def validation_gate_pass_rate(rows: list[dict], expected_specs: set[str]) -> float:
-    if not expected_specs:
-        return 0.0
-    accepted = {
-        row["spec_id"]
-        for row in rows
-        if row.get("spec_id") in expected_specs
-        and bool(row.get("schema_ok"))
-        and bool(row.get("compile_runtime_ok"))
-        and bool(row.get("nondegenerate_yield_ok"))
-        and bool(row.get("accepted"))
+def run_sandbox(spec: dict, ref: dict) -> dict:
+    request = {
+        "generator_code": spec["generator_code"],
+        "verifier_code": spec["verifier_code"],
+        "seed_assignment": ref["seed_assignment"],
+        "keys": sample_keys(ref["seed_id"]),
     }
-    return len(accepted) / len(expected_specs)
+    env = {"PATH": os.environ.get("PATH", "/usr/bin:/bin"), "PYTHONHASHSEED": "0"}
+    try:
+        proc = subprocess.run(
+            [sys.executable, "-I", "-S", str(RUNNER)],
+            input=json.dumps(request), capture_output=True, text=True,
+            timeout=WALL_SECONDS, cwd="/", env=env,
+        )
+        return json.loads(proc.stdout)
+    except Exception as exc:  # noqa: BLE001
+        return {"ok": False, "error": f"sandbox:{type(exc).__name__}", "samples": []}
 
 
-def h_candidate_pool_valid_rate(rows: list[dict]) -> float:
-    if not rows:
-        return 0.0
-    return mean(float(bool(row.get("validation_pass")) and answer_valid(row)) for row in rows)
+def normalize_assign(assign, ref: dict):
+    if not isinstance(assign, dict) or set(assign) != set(ref["slot_kinds"]):
+        return None
+    out = {}
+    for name, kind in ref["slot_kinds"].items():
+        v = assign[name]
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            return None
+        v = float(v)
+        if not math.isfinite(v) or v <= 0 or v > MAX_SLOT_VALUE:
+            return None
+        if kind == "int":
+            if abs(v - round(v)) > 1e-9:
+                return None
+            out[name] = int(round(v))
+        else:
+            out[name] = v
+    return out
 
 
-def noise_judge_pass(row: dict) -> bool:
-    if not answer_valid(row):
+def value_strings(v) -> set[str]:
+    if isinstance(v, int):
+        return {str(v), f"{v:,}"}
+    s = {repr(v), f"{v:g}", f"{v:.2f}".rstrip("0").rstrip(".")}
+    if float(v).is_integer():
+        s.add(str(int(v)))
+    return s
+
+
+def renders(template: str, assign: dict, min_len: int) -> bool:
+    try:
+        text = template.format(**{k: (v if isinstance(v, int) else (int(v) if float(v).is_integer() else v)) for k, v in assign.items()})
+    except Exception:  # noqa: BLE001
         return False
-    answer = float(row["numeric_answer"])
-    candidates = [answer, answer + 1.0, max(0.0, answer - 1.0), answer * 1.1 + 0.5]
-    expected = [True, False, False, False]
-    observed = [approx_equal(answer, candidate) for candidate in candidates]
-    return observed == expected
+    if len(text) < min_len:
+        return False
+    return all(any(s in text for s in value_strings(v)) for v in assign.values())
 
 
-def h_hardness_rank(row: dict) -> int:
-    assignment = row["assignment"]
-    key = (int(assignment["R"]), int(assignment["r"]), int(assignment["theta"]))
-    ranking = {
-        (11, 3, 45): 1,
-        (15, 5, 60): 2,
-        (22, 7, 40): 3,
-        (31, 8, 70): 4,
-        (38, 10, 75): 5,
-    }
-    return ranking.get(key, 0)
+def close(a: float, b: float) -> bool:
+    return abs(float(a) - float(b)) <= 1e-6 * max(1.0, abs(float(b)))
 
 
-def artifact_complete(path: Path) -> bool:
-    return path.is_dir() and all((path / name).is_file() for name in REQUIRED_FILES)
-
-
-def method_names_from_scores(path: Path) -> list[str]:
-    if not path.is_file():
-        return []
-    data = load_json(path)
-    experiments = data.get("experiments", data)
-    names: set[str] = set()
-    for exp in experiments.values():
-        if not isinstance(exp, dict):
+def score_seed(spec: dict | None, ref: dict, question_len: int) -> dict:
+    res = {"seed_consistent": False, "certified": False, "yield": 0.0, "accepted_fresh": 0, "correct_fresh": 0}
+    if spec is None:
+        res["error"] = "no_spec"
+        return res
+    problem = static_problem(spec, list(ref["slot_kinds"]))
+    if problem:
+        res["error"] = problem
+        return res
+    out = run_sandbox(spec, ref)
+    if not out.get("ok"):
+        res["error"] = out.get("error", "sandbox_failed")
+        return res
+    seed_v = out.get("seed") or {}
+    res["seed_consistent"] = (
+        seed_v.get("valid") is True
+        and isinstance(seed_v.get("label"), (int, float))
+        and not isinstance(seed_v.get("label"), bool)
+        and close(seed_v["label"], ref["answer"])
+    )
+    seed_key = tuple(ref["seed_assignment"][k] for k in ref["slot_kinds"])
+    counted = set()
+    wrong = 0
+    min_len = int(0.25 * question_len)
+    for sample in out.get("samples", [])[:K_SAMPLES]:
+        raw = sample.get("assign")
+        verdict = sample.get("verdict") or {}
+        accepted = verdict.get("valid") is True
+        assign = normalize_assign(raw, ref)
+        key = tuple(assign[k] for k in ref["slot_kinds"]) if assign else None
+        fresh = key is not None and key != seed_key
+        if raw is not None and accepted and (key is None or fresh):
+            res["accepted_fresh"] += 1
+        if not accepted:
             continue
-        results = exp.get("results", exp)
-        if isinstance(results, dict):
-            names.update(name for name in results if not name.startswith("_"))
-    return sorted(names)
+        label = verdict.get("label")
+        if assign is None:
+            wrong += 1
+            continue
+        if not fresh:
+            continue
+        ref_ok, ref_label = reference_label(ref, assign)
+        label_ok = isinstance(label, (int, float)) and not isinstance(label, bool) and ref_ok and close(label, ref_label)
+        if not label_ok:
+            wrong += 1
+            continue
+        res["correct_fresh"] += 1
+        replay = normalize_assign(sample.get("replay"), ref)
+        if replay != assign:
+            continue
+        if not renders(spec["template"], assign, min_len):
+            continue
+        counted.add(key)
+    res["wrong_fresh"] = wrong
+    # A seed counts as seed-consistent only if its spec is also renewable
+    # (it certifies at least one fresh variant); replaying the seed alone is not.
+    res["seed_consistent"] = bool(res["seed_consistent"] and res["accepted_fresh"] >= 1)
+    res["certified"] = bool(res["seed_consistent"] and wrong == 0 and counted)
+    res["yield"] = len(counted) / K_SAMPLES if res["certified"] else 0.0
+    return res
 
 
-def discover_artifacts(root: Path, explicit: list[Path], wanted: list[str]) -> dict[str, Path]:
-    candidates: dict[str, Path] = {}
-    for path in explicit:
-        if artifact_complete(path):
-            candidates[path.name] = path
-    if artifact_complete(root):
-        candidates[root.name] = root
-    if root.is_dir():
-        for child in sorted(root.iterdir()):
-            if artifact_complete(child):
-                candidates[child.name] = child
+# ----------------------------------------------------------------------------
+# Method discovery and aggregation
+# ----------------------------------------------------------------------------
 
-    if wanted:
-        missing = [name for name in wanted if name not in candidates]
-        if missing:
-            raise FileNotFoundError(
-                "Missing artifact directories for methods: "
-                + ", ".join(missing)
-                + f". Looked under {root} and explicit paths {[str(p) for p in explicit]}."
-            )
-        return {name: candidates[name] for name in wanted}
-
-    if not candidates:
-        raise FileNotFoundError(f"No complete method artifact directories found under {root}.")
-    return candidates
+def load_specs(path: Path) -> tuple[dict | None, str | None]:
+    if not path.is_file():
+        return None, "missing specs.jsonl"
+    specs: dict[str, dict] = {}
+    try:
+        with path.open(encoding="utf-8") as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                if not isinstance(row, dict) or not isinstance(row.get("seed_id"), str):
+                    return None, "malformed row"
+                if row["seed_id"] in specs:
+                    return None, f"duplicate seed_id {row['seed_id']}"
+                specs[row["seed_id"]] = row
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        return None, f"unreadable specs.jsonl ({type(exc).__name__})"
+    return specs, None
 
 
-def score_artifact(artifact_dir: Path) -> dict[str, dict[str, float]]:
-    base_rows = load_jsonl(artifact_dir / "base_checks.jsonl")
-    variants = [row for row in load_jsonl(artifact_dir / "variants.jsonl") if in_slice(row)]
-    all_variants = load_jsonl(artifact_dir / "variants.jsonl")
-    replay_rows = [row for row in load_jsonl(artifact_dir / "replay_checks.jsonl") if in_slice(row)]
-    validation_rows = load_jsonl(artifact_dir / "spec_validation.jsonl")
-    h_candidate_pool = load_jsonl(artifact_dir / "h_candidate_pool.jsonl")
-    h_pro_rows = load_jsonl(artifact_dir / "vera_h_pro.jsonl")
-    summary = load_json(artifact_dir / "method_summary.json")
-
-    geometry_e_rows = [row for row in variants if row["spec_id"] == "aime2024_ii_10_vera_e"]
-    extra_e_rows = [
-        row
-        for row in variants
-        if row["spec_id"] in {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"}
-    ]
-    h_rows = [row for row in variants if row["spec_id"] == "aime2024_ii_10_vera_h"]
-    all_h_rows = [row for row in all_variants if row["spec_id"] == "aime2024_ii_10_vera_h"]
-
-    geometry_base_rows = [row for row in base_rows if row["spec_id"] == "aime2024_ii_10_vera_e"]
-    extra_base_rows = [
-        row
-        for row in base_rows
-        if row["spec_id"] in {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"}
-    ]
-    seed_answers = {
-        row["spec_id"]: float(row["numeric_answer"])
-        for row in base_rows
-        if row.get("numeric_answer") is not None and base_check_valid(row)
-    }
-    geometry_seed_consistency = mean(float(base_check_valid(row)) for row in geometry_base_rows) if geometry_base_rows else 0.0
-    extra_seed_consistency = mean(float(base_check_valid(row)) for row in extra_base_rows) if extra_base_rows else 0.0
-    geometry_replay_rows = [row for row in replay_rows if row["spec_id"] == "aime2024_ii_10_vera_e"]
-    geometry_replay = mean(float(replay_match(row)) for row in geometry_replay_rows) if geometry_replay_rows else 0.0
-    extra_replay_rows = [
-        row
-        for row in replay_rows
-        if row["spec_id"] in {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"}
-    ]
-    extra_replay = mean(float(replay_match(row)) for row in extra_replay_rows) if extra_replay_rows else 0.0
-    h_noise_judge = mean(float(noise_judge_pass(row)) for row in h_rows) if h_rows else 0.0
-    geometry_valid = mean(float(answer_valid(row)) for row in geometry_e_rows) if geometry_e_rows else 0.0
-    extra_valid = mean(float(answer_valid(row)) for row in extra_e_rows) if extra_e_rows else 0.0
-
-    h_best_rank = max((h_hardness_rank(row) for row in all_h_rows if answer_valid(row)), default=-1)
-    h_pro_selected_ranked = (
-        1.0 if h_pro_rows and h_hardness_rank(h_pro_rows[0]) == h_best_rank and answer_valid(h_pro_rows[0]) else 0.0
-    )
-    h_pool_best_rank = max((h_hardness_rank(row) for row in h_candidate_pool if answer_valid(row)), default=-1)
-    h_pro_selected_from_valid_pool = (
-        1.0
-        if h_pro_rows
-        and h_candidate_pool
-        and h_hardness_rank(h_pro_rows[0]) == h_pool_best_rank
-        and answer_valid(h_pro_rows[0])
-        else 0.0
-    )
-    summary_h_pro = summary.get("h_pro_selected") or {}
-    if summary_h_pro and h_pro_rows and summary_h_pro.get("variant_id") != h_pro_rows[0].get("variant_id"):
-        raise ValueError(f"{artifact_dir}: method_summary.json and vera_h_pro.jsonl disagree on selected H-Pro variant")
-
+def aggregate(rows: list[dict]) -> dict:
+    n = len(rows)
+    acc = sum(r["accepted_fresh"] for r in rows)
+    cor = sum(r["correct_fresh"] for r in rows)
     return {
-        "aime_geometry_vera_e_generation": {
-            "verified_variant_count": float(sum(int(answer_valid(row)) for row in geometry_e_rows)),
-            "seed_consistency_rate": geometry_seed_consistency,
-            "valid_rate": geometry_valid,
-            "valid_assignment_diversity_rate": valid_assignment_diversity_rate(geometry_e_rows),
-            "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(geometry_e_rows, seed_answers),
-            "validation_gate_pass_rate": validation_gate_pass_rate(validation_rows, {"aime2024_ii_10_vera_e"}),
-            "deterministic_replay_rate": geometry_replay,
-        },
-        "aime_additional_vera_e_generation": {
-            "verified_variant_count": float(sum(int(answer_valid(row)) for row in extra_e_rows)),
-            "seed_consistency_rate": extra_seed_consistency,
-            "valid_rate": extra_valid,
-            "valid_assignment_diversity_rate": valid_assignment_diversity_rate(extra_e_rows),
-            "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(extra_e_rows, seed_answers),
-            "valid_spec_coverage_rate": valid_spec_coverage_rate(
-                extra_e_rows,
-                {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"},
-            ),
-            "validation_gate_pass_rate": validation_gate_pass_rate(
-                validation_rows,
-                {"aime2024_ii_9_chip_grid_vera_e", "aime2024_i_11_polygon_rotation_vera_e"},
-            ),
-            "deterministic_replay_rate": extra_replay,
-        },
-        "aime_geometry_vera_h_hardening": {
-            "verified_variant_count": float(sum(int(answer_valid(row)) for row in h_rows)),
-            "noise_judge_pass_rate": h_noise_judge,
-            "valid_assignment_diversity_rate": valid_assignment_diversity_rate(h_rows),
-            "valid_seed_answer_novelty_rate": valid_seed_answer_novelty_rate(h_rows, seed_answers),
-            "valid_hardness_diversity_rate": valid_hardness_diversity_rate(h_rows),
-            "valid_mean_hardness_rank_rate": valid_mean_hardness_rank_rate(h_rows),
-            "validation_gate_pass_rate": validation_gate_pass_rate(validation_rows, {"aime2024_ii_10_vera_h"}),
-            "h_candidate_pool_valid_rate": h_candidate_pool_valid_rate(h_candidate_pool),
-            "h_pro_selected_from_valid_pool": h_pro_selected_from_valid_pool,
-            "h_pro_selected_ranked": h_pro_selected_ranked,
-        },
+        "verified_fresh_yield": sum(r["yield"] for r in rows) / n,
+        "label_precision": cor / acc if acc else 0.0,
+        "certified_spec_rate": sum(r["certified"] for r in rows) / n,
+        "seed_consistency_rate": sum(r["seed_consistent"] for r in rows) / n,
     }
+
+
+def score_method(method_dir: Path, refs: list[dict], questions: dict) -> tuple[dict, dict]:
+    specs, problem = load_specs(method_dir / "specs.jsonl")
+    if specs is None:
+        return {exp: dict(WORST) for exp in EXPERIMENTS}, {"status": "failed", "reason": problem}
+    with cf.ThreadPoolExecutor(max_workers=max(1, min(16, os.cpu_count() or 1))) as pool:
+        per_seed = list(pool.map(lambda r: score_seed(specs.get(r["seed_id"]), r, questions.get(r["seed_id"], 0)), refs))
+    by_id = {r["seed_id"]: row for r, row in zip(refs, per_seed)}
+    overall = aggregate(per_seed)
+    status = {"status": "ok", "overall": overall,
+              "errors": {}}
+    for row in per_seed:
+        if row.get("error"):
+            status["errors"][row["error"]] = status["errors"].get(row["error"], 0) + 1
+    if overall["label_precision"] < PRECISION_FLOOR:
+        status.update(status="failed", reason=f"label precision {overall['label_precision']:.3f} < {PRECISION_FLOOR}")
+        return {exp: dict(WORST) for exp in EXPERIMENTS}, status
+    results = {}
+    for exp, member in EXPERIMENTS.items():
+        rows = [by_id[r["seed_id"]] for r in refs if member(r)]
+        results[exp] = aggregate(rows)
+    return results, status
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--artifacts-root", default="outputs")
-    parser.add_argument("--artifacts", action="append", default=[])
-    parser.add_argument("--method-list", default="")
-    parser.add_argument("--scores", default="scoring/scores_train.json")
-    args = parser.parse_args()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--outputs", default="outputs")
+    ap.add_argument("--seeds", default="data/gsm8k_vera/train_seeds.jsonl")
+    ap.add_argument("--scores", default="scoring/scores_train.json")
+    args = ap.parse_args()
 
-    wanted = method_names_from_scores(Path(args.method_list)) if args.method_list else []
-    artifact_map = discover_artifacts(Path(args.artifacts_root), [Path(p) for p in args.artifacts], wanted)
+    refs = load_references()
+    questions = {}
+    seeds_path = Path(args.seeds)
+    if seeds_path.is_file():
+        for line in seeds_path.open(encoding="utf-8"):
+            if line.strip():
+                row = json.loads(line)
+                questions[row["seed_id"]] = len(row["question"])
+    root = Path(args.outputs)
+    methods = sorted(p for p in root.iterdir() if p.is_dir() and not p.name.startswith((".", "_"))) if root.is_dir() else []
 
-    scores = {"slice": SLICE, "experiments": {}}
-    for method_name, artifact_dir in artifact_map.items():
-        method_scores = score_artifact(artifact_dir)
-        for exp_name, metrics in method_scores.items():
-            scores["experiments"].setdefault(exp_name, {"results": {}})
-            scores["experiments"][exp_name]["results"][method_name] = metrics
+    scores: dict = {"slice": SLICE, "experiments": {exp: {"results": {}} for exp in EXPERIMENTS}, "_meta": {
+        "k_samples": K_SAMPLES, "n_seeds": {exp: sum(1 for r in refs if m(r)) for exp, m in EXPERIMENTS.items()},
+        "methods": {}}}
+    for method_dir in methods:
+        results, status = score_method(method_dir, refs, questions)
+        for exp, metrics in results.items():
+            scores["experiments"][exp]["results"][method_dir.name] = metrics
+        scores["_meta"]["methods"][method_dir.name] = status
+        print(f"[{SLICE}] {method_dir.name}: {status['status']} {json.dumps(results)}", flush=True)
 
-    score_path = Path(args.scores)
-    score_path.parent.mkdir(parents=True, exist_ok=True)
-    with score_path.open("w", encoding="utf-8") as f:
-        json.dump(scores, f, indent=2, sort_keys=True)
-    print(json.dumps(scores, indent=2, sort_keys=True))
+    out = Path(args.scores)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(scores, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

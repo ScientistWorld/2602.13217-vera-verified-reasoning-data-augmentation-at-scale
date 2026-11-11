@@ -1,17 +1,7 @@
 #!/bin/bash
-# Evaluate visible train-slice method outputs and write scoring/scores_train.json.
+# Score every method directory under outputs/ on the visible train split.
+# Writes scoring/scores_train.json. Takes no arguments.
 
 set -euo pipefail
-
 cd /home/user
-
-args=(
-  --artifacts-root "${ARTIFACTS_ROOT:-outputs}"
-  --scores scoring/scores_train.json
-)
-
-if [[ -n "${ARTIFACT_DIR:-}" ]]; then
-  args+=(--artifacts "$ARTIFACT_DIR")
-fi
-
-python eval/train/evaluate.py "${args[@]}"
+python eval/train/evaluate.py

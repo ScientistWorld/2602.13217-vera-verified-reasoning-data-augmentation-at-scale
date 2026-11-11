@@ -1,12 +1,9 @@
 #!/bin/bash
-# Run a trivial random-answer baseline against generated variants.
+# Baseline spec writers (CPU): naive label copying and brute-force expression search.
 
 set -euo pipefail
-
-cd /home/user
-if [ ! -e outputs/vera_repro/variants.jsonl ]; then
-  bash scripts/method.sh
-fi
-python baseline/random_answer.py \
-  --source outputs/vera_repro/variants.jsonl \
-  --out outputs/baseline/random_predictions.jsonl
+cd /home/user/baseline
+python label_copy.py --out ../outputs/label_copy \
+  --seeds ../data/gsm8k_vera/train_seeds.jsonl ../data/gsm8k_vera/test_seeds.jsonl
+python expression_search.py --out ../outputs/expression_search \
+  --seeds ../data/gsm8k_vera/train_seeds.jsonl ../data/gsm8k_vera/test_seeds.jsonl
