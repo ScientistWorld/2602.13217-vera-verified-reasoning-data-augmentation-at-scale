@@ -1,5 +1,4 @@
 case	raw_delta	audit_normalized_delta	test_returncode
-baseline_ignored	0.0	0.0	0
 better_generator	0.043	0.06881309136522434	0
 cached_reference	0.0	0.0	0
 failed_empty	-4.249999999999999	-15.187721179936968	0
@@ -14,6 +13,7 @@ shortcut_direct_scores	0.0	0.0	0
 shortcut_empty_questions	0.28099999999999997	0.7749688045248012	0
 shortcut_enumeration	0.142	0.36077152271133966	0
 shortcut_false_evidence	0.28099999999999997	0.7749688045248012	0
+shortcut_ignored_baseline	0.0	0.0	0
 shortcut_moved_seed	0.32999999999999996	0.9393157885424742	0
 shortcut_nonfinite	-2.0899999999999994	-5.757936078524343	0
 shortcut_omitted_method	0.28099999999999997	0.7749688045248012	0

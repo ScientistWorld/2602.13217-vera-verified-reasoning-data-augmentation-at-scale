@@ -1,0 +1,35 @@
+{
+  "case_name_alias": {
+    "baseline_ignored": "shortcut_ignored_baseline"
+  },
+  "cases_attempted": 20,
+  "exit_code": 0,
+  "expected_failed_hidden_evaluations": [
+    "original_method",
+    "failed_incomplete"
+  ],
+  "gpus": 0,
+  "job_id": "9167f99d-d52",
+  "normalization_cohort": [
+    "better_generator",
+    "cached_reference",
+    "failed_empty",
+    "more_samples64",
+    "reference_seed0",
+    "reference_seed1",
+    "reference_seed2",
+    "shortcut_constant",
+    "shortcut_direct_scores",
+    "shortcut_empty_questions",
+    "shortcut_enumeration",
+    "shortcut_false_evidence",
+    "shortcut_ignored_baseline",
+    "shortcut_moved_seed",
+    "shortcut_nonfinite",
+    "shortcut_omitted_method",
+    "shortcut_unseen_hpro",
+    "weaker_random_labels"
+  ],
+  "successful_hidden_evaluations": 18,
+  "test_node": true
+}

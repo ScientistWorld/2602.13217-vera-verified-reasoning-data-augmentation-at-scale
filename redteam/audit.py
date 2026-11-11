@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RT = ROOT / "redteam"
 CASES = ["original_method", "cached_reference", "reference_seed0", "reference_seed1",
          "reference_seed2", "better_generator", "more_samples64", "weaker_random_labels",
-         "baseline_ignored", "shortcut_enumeration", "shortcut_constant",
+         "shortcut_ignored_baseline", "shortcut_enumeration", "shortcut_constant",
          "shortcut_empty_questions", "shortcut_false_evidence", "shortcut_moved_seed",
          "shortcut_unseen_hpro", "shortcut_direct_scores", "shortcut_nonfinite",
          "failed_empty", "failed_incomplete", "shortcut_omitted_method"]
@@ -154,7 +154,7 @@ def build(case, folder, original_outputs):
         shutil.rmtree(art)
     if case=="original_method":
         return notes
-    if case in {"cached_reference", "baseline_ignored", "shortcut_direct_scores"}:
+    if case in {"cached_reference", "shortcut_ignored_baseline", "shortcut_direct_scores"}:
         shutil.copytree(original_outputs/"vera_repro", art)
         return {"reuse":"cached reference artifacts; no labels inferred from hidden scores"}
     if case.startswith("reference_seed") or case in {"better_generator", "more_samples64", "weaker_random_labels"}:
@@ -260,7 +260,7 @@ def run_case(case):
             shutil.copytree(art,outputs/"vera_repro")
         else:
             result["method_run"]=command(["bash","scripts/method.sh"],folder,"method")
-        if case=="baseline_ignored":
+        if case=="shortcut_ignored_baseline":
             result["baseline_run"]=command(["bash","scripts/baseline.sh"],folder,"baseline")
         if case=="shortcut_omitted_method":
             failed=outputs/"shortcut_failed_method"

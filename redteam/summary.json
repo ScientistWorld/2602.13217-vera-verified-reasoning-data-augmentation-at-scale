@@ -1,66 +1,5 @@
 {
   "cases": {
-    "baseline_ignored": {
-      "artifact_stats": {
-        "aime2024_i_11_polygon_rotation_vera_e": {
-          "distinct_numeric_assignments": 5,
-          "row_count": 8
-        },
-        "aime2024_ii_10_vera_e": {
-          "distinct_numeric_assignments": 6,
-          "row_count": 8
-        },
-        "aime2024_ii_10_vera_h": {
-          "distinct_numeric_assignments": 4,
-          "row_count": 8
-        },
-        "aime2024_ii_9_chip_grid_vera_e": {
-          "distinct_numeric_assignments": 3,
-          "row_count": 8
-        }
-      },
-      "audit_normalized_delta": 0.0,
-      "methods_written": [
-        "vera_repro"
-      ],
-      "metrics": {
-        "aime_additional_vera_e_generation": {
-          "deterministic_replay_rate": 1.0,
-          "seed_consistency_rate": 1.0,
-          "valid_assignment_diversity_rate": 0.75,
-          "valid_rate": 1.0,
-          "valid_seed_answer_novelty_rate": 0.75,
-          "valid_spec_coverage_rate": 1.0,
-          "validation_gate_pass_rate": 1.0,
-          "verified_variant_count": 8.0
-        },
-        "aime_geometry_vera_e_generation": {
-          "deterministic_replay_rate": 1.0,
-          "seed_consistency_rate": 1.0,
-          "valid_assignment_diversity_rate": 1.0,
-          "valid_rate": 1.0,
-          "valid_seed_answer_novelty_rate": 0.75,
-          "validation_gate_pass_rate": 1.0,
-          "verified_variant_count": 4.0
-        },
-        "aime_geometry_vera_h_hardening": {
-          "h_candidate_pool_valid_rate": 1.0,
-          "h_pro_selected_from_valid_pool": 1.0,
-          "h_pro_selected_ranked": 1.0,
-          "noise_judge_pass_rate": 1.0,
-          "valid_assignment_diversity_rate": 0.75,
-          "valid_hardness_diversity_rate": 0.75,
-          "valid_mean_hardness_rank_rate": 0.75,
-          "valid_seed_answer_novelty_rate": 0.5,
-          "validation_gate_pass_rate": 1.0,
-          "verified_variant_count": 4.0
-        }
-      },
-      "missing_metrics": [],
-      "raw_weighted_delta": 0.0,
-      "score_file_stale_after_failure": false,
-      "test_returncode": 0
-    },
     "better_generator": {
       "artifact_stats": {
         "aime2024_i_11_polygon_rotation_vera_e": {
@@ -789,6 +728,69 @@
       "score_file_stale_after_failure": false,
       "test_returncode": 0
     },
+    "shortcut_ignored_baseline": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 6,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": 0.0,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_hardness_diversity_rate": 0.75,
+          "valid_mean_hardness_rank_rate": 0.75,
+          "valid_seed_answer_novelty_rate": 0.5,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "omitted_method": "baseline",
+      "omitted_method_rank_delta_under_skip_missing_rule": 0,
+      "raw_weighted_delta": 0.0,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
     "shortcut_moved_seed": {
       "artifact_stats": {
         "aime2024_i_11_polygon_rotation_vera_e": {
@@ -968,9 +970,11 @@
         }
       },
       "missing_metrics": [],
+      "omitted_method": "shortcut_failed_method",
       "omitted_method_rank_delta_under_skip_missing_rule": 0,
       "raw_weighted_delta": 0.28099999999999997,
       "score_file_stale_after_failure": false,
+      "scored_decoy_method": "vera_repro",
       "test_returncode": 0
     },
     "shortcut_unseen_hpro": {
@@ -1132,7 +1136,6 @@
   },
   "normalization": "population std across successful audit cases listed below; NOT a fixed future rank",
   "normalization_cohort": [
-    "baseline_ignored",
     "better_generator",
     "cached_reference",
     "failed_empty",
@@ -1145,6 +1148,7 @@
     "shortcut_empty_questions",
     "shortcut_enumeration",
     "shortcut_false_evidence",
+    "shortcut_ignored_baseline",
     "shortcut_moved_seed",
     "shortcut_nonfinite",
     "shortcut_omitted_method",
@@ -1357,6 +1361,20 @@
           4.0
         ]
       }
+    }
+  },
+  "quality_comparisons": {
+    "better_generator": {
+      "audit_normalized_delta": 0.05308543894320472,
+      "raw_weighted_delta": 0.01874999999999999
+    },
+    "more_samples64": {
+      "audit_normalized_delta": -0.6450400954615605,
+      "raw_weighted_delta": -0.251
+    },
+    "weaker_random_labels": {
+      "audit_normalized_delta": -5.773663730946363,
+      "raw_weighted_delta": -2.1142499999999993
     }
   },
   "recovered_seed_spread": {

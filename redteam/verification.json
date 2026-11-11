@@ -1,0 +1,33 @@
+{
+  "all_passed": true,
+  "checks": {
+    "cached_reference_exact": true,
+    "directions_and_coefficients": true,
+    "each_case_has_runner_and_scores": true,
+    "eighteen_successful_tests": true,
+    "empty_failure_all_worst": true,
+    "empty_question_same_scores_as_fixed": true,
+    "every_hidden_invocation_no_arguments": true,
+    "false_evidence_same_scores_as_fixed": true,
+    "gym_sources_unchanged": true,
+    "moved_seed_all_at_upper_bound": true,
+    "nonzero_standard_deviations": true,
+    "omitted_method_absent_from_test": true,
+    "omitted_method_present_in_train": true,
+    "python_sources_parse": true,
+    "scoring_files_restored": true,
+    "shell_syntax": true,
+    "shortcut_constant_dominates_reference": true,
+    "shortcut_empty_questions_dominates_reference": true,
+    "shortcut_false_evidence_dominates_reference": true,
+    "shortcut_moved_seed_dominates_reference": true,
+    "shortcut_unseen_hpro_dominates_reference": true,
+    "temporary_job_script_restored": true,
+    "twenty_cases": true,
+    "two_failed_cases_are_stale": true,
+    "unseen_hpro_not_in_pool": true,
+    "upper_bound_count_15": true,
+    "weighted_metrics_22": true
+  },
+  "note": "Lightweight analysis of already completed job records; no methods or evaluator rerun locally."
+}

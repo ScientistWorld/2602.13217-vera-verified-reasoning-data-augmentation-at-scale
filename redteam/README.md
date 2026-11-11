@@ -24,7 +24,7 @@ Quality controls: `better_generator` expands numerical supports while retaining
 the existing specification driver, validators, verifier snippets and H-Pro rule.
 `more_samples64` changes only sample count. `weaker_random_labels` applies the
 provided random-answer baseline to generated labels while retaining other
-artifacts, to isolate the penalty for incorrect answers. `baseline_ignored`
+artifacts, to isolate the penalty for incorrect answers. `shortcut_ignored_baseline`
 runs the supplied baseline without adaptation and checks method discovery.
 
 The audit saves and restores pre-existing outputs and both split-score files for
@@ -38,3 +38,8 @@ population standard deviations over successful audit runs. The latter implement
 the stated ranking rule for this explicit cohort; they cannot predict exact ranks
 under an unknown distribution of future attempts. A strict metric-wise dominance
 claim remains true under any positive per-metric scaling.
+
+The shortcut now named `shortcut_ignored_baseline` was measured under the name
+`baseline_ignored` in the bundled job. Its directory and runnable case were renamed
+only to make the shortcut terminology explicit; its original `run.json` and score
+files are retained unchanged.

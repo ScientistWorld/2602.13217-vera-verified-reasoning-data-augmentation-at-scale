@@ -59,6 +59,11 @@ def main():
             entry["metrics"]={e:v["results"].get("vera_repro",{}) for e,v in data["scores"].get("experiments",{}).items()}
             entry["methods_written"]=sorted({m for exp in data["scores"].get("experiments",{}).values() for m in exp.get("results",{})})
             if name=="shortcut_omitted_method":
+                entry["scored_decoy_method"]="vera_repro"
+                entry["omitted_method"]="shortcut_failed_method"
+                entry["omitted_method_rank_delta_under_skip_missing_rule"]=0
+            if name=="shortcut_ignored_baseline":
+                entry["omitted_method"]="baseline"
                 entry["omitted_method_rank_delta_under_skip_missing_rule"]=0
         art=RT/name/"artifacts/variants.jsonl"
         if art.exists():
@@ -85,6 +90,10 @@ def main():
                 summary["per_metric_recovered_seed_range"][e][m]={"values":vals,"range":max(vals)-min(vals)}
     summary["reference_at_upper_bound"]={e:[m for m,cfg in exp["metrics"].items()
         if abs(cfg["coefficient"])>0 and get({"experiments":REF},e,m)==1] for e,exp in CONFIG.items()}
+    summary["quality_comparisons"]={}
+    for name in ["better_generator","more_samples64","weaker_random_labels"]:
+        summary["quality_comparisons"][name]={key:summary["cases"][name][key]-seeds[0][key]
+            for key in ["raw_weighted_delta","audit_normalized_delta"]}
     (RT/"summary.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
     lines=["case\traw_delta\taudit_normalized_delta\ttest_returncode"]
     for name,entry in summary["cases"].items():
