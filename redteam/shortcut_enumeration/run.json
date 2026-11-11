@@ -1,0 +1,362 @@
+{
+  "artifact_directories_on_disk": [
+    "vera_repro"
+  ],
+  "case": "shortcut_enumeration",
+  "construction": {
+    "domain_sizes": {
+      "aime2024_i_11_polygon_rotation_vera_e": 5,
+      "aime2024_ii_10_vera_e": 21,
+      "aime2024_ii_10_vera_h": 5,
+      "aime2024_ii_9_chip_grid_vera_e": 5
+    },
+    "finite_domain_size": 36,
+    "lookup_table": [
+      {
+        "answer": 72.0,
+        "assignment": {
+          "R": 6,
+          "r": 2,
+          "style": "Find the product AB times AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 72.0,
+        "assignment": {
+          "R": 6,
+          "r": 2,
+          "style": "Compute AB * AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 72.0,
+        "assignment": {
+          "R": 6,
+          "r": 2,
+          "style": "Determine the value of AB\u00b7AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 180.0,
+        "assignment": {
+          "R": 10,
+          "r": 3,
+          "style": "Find the product AB times AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 180.0,
+        "assignment": {
+          "R": 10,
+          "r": 3,
+          "style": "Compute AB * AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 180.0,
+        "assignment": {
+          "R": 10,
+          "r": 3,
+          "style": "Determine the value of AB\u00b7AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 264.0,
+        "assignment": {
+          "R": 11,
+          "r": 4,
+          "style": "Find the product AB times AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 264.0,
+        "assignment": {
+          "R": 11,
+          "r": 4,
+          "style": "Compute AB * AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 264.0,
+        "assignment": {
+          "R": 11,
+          "r": 4,
+          "style": "Determine the value of AB\u00b7AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 468.0,
+        "assignment": {
+          "R": 13,
+          "r": 6,
+          "style": "Find the product AB times AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 468.0,
+        "assignment": {
+          "R": 13,
+          "r": 6,
+          "style": "Compute AB * AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 468.0,
+        "assignment": {
+          "R": 13,
+          "r": 6,
+          "style": "Determine the value of AB\u00b7AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 420.0,
+        "assignment": {
+          "R": 14,
+          "r": 5,
+          "style": "Find the product AB times AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 420.0,
+        "assignment": {
+          "R": 14,
+          "r": 5,
+          "style": "Compute AB * AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 420.0,
+        "assignment": {
+          "R": 14,
+          "r": 5,
+          "style": "Determine the value of AB\u00b7AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 714.0,
+        "assignment": {
+          "R": 17,
+          "r": 7,
+          "style": "Find the product AB times AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 714.0,
+        "assignment": {
+          "R": 17,
+          "r": 7,
+          "style": "Compute AB * AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 714.0,
+        "assignment": {
+          "R": 17,
+          "r": 7,
+          "style": "Determine the value of AB\u00b7AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 960.0,
+        "assignment": {
+          "R": 20,
+          "r": 8,
+          "style": "Find the product AB times AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 960.0,
+        "assignment": {
+          "R": 20,
+          "r": 8,
+          "style": "Compute AB * AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 960.0,
+        "assignment": {
+          "R": 20,
+          "r": 8,
+          "style": "Determine the value of AB\u00b7AC."
+        },
+        "spec_id": "aime2024_ii_10_vera_e"
+      },
+      {
+        "answer": 2.0,
+        "assignment": {
+          "color_a_count": 4,
+          "color_b_count": 3,
+          "cols": 2,
+          "rows": 1
+        },
+        "spec_id": "aime2024_ii_9_chip_grid_vera_e"
+      },
+      {
+        "answer": 14.0,
+        "assignment": {
+          "color_a_count": 6,
+          "color_b_count": 6,
+          "cols": 3,
+          "rows": 2
+        },
+        "spec_id": "aime2024_ii_9_chip_grid_vera_e"
+      },
+      {
+        "answer": 38.0,
+        "assignment": {
+          "color_a_count": 9,
+          "color_b_count": 9,
+          "cols": 3,
+          "rows": 3
+        },
+        "spec_id": "aime2024_ii_9_chip_grid_vera_e"
+      },
+      {
+        "answer": 30.0,
+        "assignment": {
+          "color_a_count": 8,
+          "color_b_count": 8,
+          "cols": 2,
+          "rows": 4
+        },
+        "spec_id": "aime2024_ii_9_chip_grid_vera_e"
+      },
+      {
+        "answer": 902.0,
+        "assignment": {
+          "color_a_count": 25,
+          "color_b_count": 25,
+          "cols": 5,
+          "rows": 5
+        },
+        "spec_id": "aime2024_ii_9_chip_grid_vera_e"
+      },
+      {
+        "answer": 47.0,
+        "assignment": {
+          "n": 6
+        },
+        "spec_id": "aime2024_i_11_polygon_rotation_vera_e"
+      },
+      {
+        "answer": 371.0,
+        "assignment": {
+          "n": 8
+        },
+        "spec_id": "aime2024_i_11_polygon_rotation_vera_e"
+      },
+      {
+        "answer": 681.0,
+        "assignment": {
+          "n": 10
+        },
+        "spec_id": "aime2024_i_11_polygon_rotation_vera_e"
+      },
+      {
+        "answer": 2595.0,
+        "assignment": {
+          "n": 12
+        },
+        "spec_id": "aime2024_i_11_polygon_rotation_vera_e"
+      },
+      {
+        "answer": 9961.0,
+        "assignment": {
+          "n": 14
+        },
+        "spec_id": "aime2024_i_11_polygon_rotation_vera_e"
+      },
+      {
+        "answer": 354.4149890302218,
+        "assignment": {
+          "R": 11,
+          "r": 3,
+          "theta": 45
+        },
+        "spec_id": "aime2024_ii_10_vera_h"
+      },
+      {
+        "answer": 600.0,
+        "assignment": {
+          "R": 15,
+          "r": 5,
+          "theta": 60
+        },
+        "spec_id": "aime2024_ii_10_vera_h"
+      },
+      {
+        "answer": 1542.7636481917061,
+        "assignment": {
+          "R": 22,
+          "r": 7,
+          "theta": 40
+        },
+        "spec_id": "aime2024_ii_10_vera_h"
+      },
+      {
+        "answer": 1942.844442941425,
+        "assignment": {
+          "R": 31,
+          "r": 8,
+          "theta": 70
+        },
+        "spec_id": "aime2024_ii_10_vera_h"
+      },
+      {
+        "answer": 2755.941038021204,
+        "assignment": {
+          "R": 38,
+          "r": 10,
+          "theta": 75
+        },
+        "spec_id": "aime2024_ii_10_vera_h"
+      }
+    ]
+  },
+  "fresh_process": true,
+  "hidden_invocation": [
+    "bash",
+    "scripts/evaluate_test.sh"
+  ],
+  "score_file_stale_after_failure": false,
+  "scores_file_rewritten": true,
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "returncode": 0,
+    "seconds": 0.36623719199269544,
+    "stderr_tail": ""
+  },
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "returncode": 0,
+    "seconds": 0.36747151501185726,
+    "stderr_tail": ""
+  },
+  "used_hidden_labels": false
+}

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/user/method/vera_repro/run_geometry_repro.py", line 7, in <module>
+    from .core import sample_instance, verify_assignment, write_jsonl
+ModuleNotFoundError: No module named 'method.vera_repro.core'

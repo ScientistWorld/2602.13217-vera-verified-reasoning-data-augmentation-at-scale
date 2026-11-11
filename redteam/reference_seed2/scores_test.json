@@ -1,0 +1,48 @@
+{
+  "experiments": {
+    "aime_additional_vera_e_generation": {
+      "results": {
+        "vera_repro": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        }
+      }
+    },
+    "aime_geometry_vera_e_generation": {
+      "results": {
+        "vera_repro": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      }
+    },
+    "aime_geometry_vera_h_hardening": {
+      "results": {
+        "vera_repro": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_hardness_diversity_rate": 0.5,
+          "valid_mean_hardness_rank_rate": 0.7,
+          "valid_seed_answer_novelty_rate": 0.5,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      }
+    }
+  },
+  "slice": "test"
+}

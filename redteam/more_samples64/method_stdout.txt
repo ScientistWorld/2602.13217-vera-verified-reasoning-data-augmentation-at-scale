@@ -1,0 +1,77 @@
+{
+  "artifact_contract": "eval reads spec_validation.jsonl, base_checks.jsonl, variants.jsonl, replay_checks.jsonl, h_candidate_pool.jsonl, vera_h_pro.jsonl, and method_summary.json; it does not import method code.",
+  "base_seed": 0,
+  "h_pro_selected": {
+    "answer": 2755.941038021204,
+    "assignment": {
+      "R": 38,
+      "r": 10,
+      "theta": 75
+    },
+    "elapsed_sec": 0.011431916005676612,
+    "hardness_rank": 5,
+    "mode": "VeRA-H",
+    "numeric_answer": 2755.941038021204,
+    "question": "Let triangle ABC have incenter I and circumcenter O. The angle between segments IA and OI is 75 degrees. Its circumradius is 38 and its inradius is 10. Find the value of AB * AC.",
+    "sample_index": 14,
+    "spec_id": "aime2024_ii_10_vera_h",
+    "validation_pass": true,
+    "variant_id": "aime2024_ii_10_vera_h_s014"
+  },
+  "method": "VeRA executable specification reproduction",
+  "samples_per_spec": 64,
+  "specs": [
+    {
+      "base_answer": 468.0,
+      "deterministic_replay_rate": 1.0,
+      "expected_base_answer": 468.0,
+      "generated": 64,
+      "max_answer": 960.0,
+      "mode": "VeRA-E",
+      "noise_judge_pass_rate": 1.0,
+      "seed_consistent": true,
+      "selected_h_pro_variant_id": null,
+      "spec_id": "aime2024_ii_10_vera_e",
+      "valid_rate": 1.0
+    },
+    {
+      "base_answer": 902,
+      "deterministic_replay_rate": 1.0,
+      "expected_base_answer": 902.0,
+      "generated": 64,
+      "max_answer": 902.0,
+      "mode": "VeRA-E",
+      "noise_judge_pass_rate": 1.0,
+      "seed_consistent": true,
+      "selected_h_pro_variant_id": null,
+      "spec_id": "aime2024_ii_9_chip_grid_vera_e",
+      "valid_rate": 1.0
+    },
+    {
+      "base_answer": 371,
+      "deterministic_replay_rate": 1.0,
+      "expected_base_answer": 371.0,
+      "generated": 64,
+      "max_answer": 9961.0,
+      "mode": "VeRA-E",
+      "noise_judge_pass_rate": 1.0,
+      "seed_consistent": true,
+      "selected_h_pro_variant_id": null,
+      "spec_id": "aime2024_i_11_polygon_rotation_vera_e",
+      "valid_rate": 1.0
+    },
+    {
+      "base_answer": 2755.941038021204,
+      "deterministic_replay_rate": 1.0,
+      "expected_base_answer": 2755.94103802,
+      "generated": 64,
+      "max_answer": 2755.941038021204,
+      "mode": "VeRA-H",
+      "noise_judge_pass_rate": 1.0,
+      "seed_consistent": true,
+      "selected_h_pro_variant_id": "aime2024_ii_10_vera_h_s014",
+      "spec_id": "aime2024_ii_10_vera_h",
+      "valid_rate": 1.0
+    }
+  ]
+}

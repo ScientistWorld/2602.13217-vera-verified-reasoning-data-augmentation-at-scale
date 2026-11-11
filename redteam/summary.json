@@ -1,0 +1,1406 @@
+{
+  "cases": {
+    "baseline_ignored": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 6,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": 0.0,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_hardness_diversity_rate": 0.75,
+          "valid_mean_hardness_rank_rate": 0.75,
+          "valid_seed_answer_novelty_rate": 0.5,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.0,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "better_generator": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 8,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 8,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": 0.06881309136522434,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_hardness_diversity_rate": 0.5,
+          "valid_mean_hardness_rank_rate": 0.4,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.043,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "cached_reference": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 6,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": 0.0,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_hardness_diversity_rate": 0.75,
+          "valid_mean_hardness_rank_rate": 0.75,
+          "valid_seed_answer_novelty_rate": 0.5,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.0,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "failed_empty": {
+      "artifact_stats": {},
+      "audit_normalized_delta": -15.187721179936968,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 0.0,
+          "seed_consistency_rate": 0.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "valid_spec_coverage_rate": 0.0,
+          "validation_gate_pass_rate": 0.0,
+          "verified_variant_count": 0.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 0.0,
+          "seed_consistency_rate": 0.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "validation_gate_pass_rate": 0.0,
+          "verified_variant_count": 0.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 0.0,
+          "h_pro_selected_from_valid_pool": 0.0,
+          "h_pro_selected_ranked": 0.0,
+          "noise_judge_pass_rate": 0.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_hardness_diversity_rate": 0.0,
+          "valid_mean_hardness_rank_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "validation_gate_pass_rate": 0.0,
+          "verified_variant_count": 0.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": -4.249999999999999,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "failed_incomplete": {
+      "artifact_stats": {},
+      "audit_normalized_delta": null,
+      "raw_weighted_delta": null,
+      "score_file_stale_after_failure": true,
+      "test_returncode": 1
+    },
+    "more_samples64": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 64
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 7,
+          "row_count": 64
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 64
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 64
+        }
+      },
+      "audit_normalized_delta": -0.6293124430395408,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.15625,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.90625,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 64.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.96875,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 32.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.15625,
+          "valid_hardness_diversity_rate": 0.15625,
+          "valid_mean_hardness_rank_rate": 0.5375,
+          "valid_seed_answer_novelty_rate": 0.90625,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 32.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": -0.22675,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "original_method": {
+      "audit_normalized_delta": null,
+      "raw_weighted_delta": null,
+      "score_file_stale_after_failure": true,
+      "test_returncode": 1
+    },
+    "reference_seed0": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 6,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": 0.015727652422019622,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.875,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_hardness_diversity_rate": 0.5,
+          "valid_mean_hardness_rank_rate": 0.4,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.024250000000000008,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "reference_seed1": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": 0.012119607237169469,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.625,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_hardness_diversity_rate": 0.75,
+          "valid_mean_hardness_rank_rate": 0.65,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.009250000000000012,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "reference_seed2": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": -0.08120330570689419,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.5,
+          "valid_hardness_diversity_rate": 0.5,
+          "valid_mean_hardness_rank_rate": 0.7,
+          "valid_seed_answer_novelty_rate": 0.5,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": -0.031000000000000007,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_constant": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        }
+      },
+      "audit_normalized_delta": 0.7749688045248012,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 2.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_hardness_diversity_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 0.8,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.28099999999999997,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_direct_scores": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 6,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": 0.0,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 8.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.75,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.75,
+          "valid_hardness_diversity_rate": 0.75,
+          "valid_mean_hardness_rank_rate": 0.75,
+          "valid_seed_answer_novelty_rate": 0.5,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 4.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.0,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_empty_questions": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        }
+      },
+      "audit_normalized_delta": 0.7749688045248012,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 2.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_hardness_diversity_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 0.8,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.28099999999999997,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_enumeration": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 10
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 7,
+          "row_count": 42
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 10
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 10
+        }
+      },
+      "audit_normalized_delta": 0.36077152271133966,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.8,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 10.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 0.8571428571428571,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 21.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_hardness_diversity_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 0.6,
+          "valid_seed_answer_novelty_rate": 0.8,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 5.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.142,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_false_evidence": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        }
+      },
+      "audit_normalized_delta": 0.7749688045248012,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 2.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_hardness_diversity_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 0.8,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.28099999999999997,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_moved_seed": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        }
+      },
+      "audit_normalized_delta": 0.9393157885424742,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 2.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_hardness_diversity_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.32999999999999996,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_nonfinite": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        }
+      },
+      "audit_normalized_delta": -5.757936078524343,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "valid_spec_coverage_rate": 0.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 0.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 0.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 0.0,
+          "noise_judge_pass_rate": 0.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_hardness_diversity_rate": 0.0,
+          "valid_mean_hardness_rank_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 0.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": -2.0899999999999994,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_omitted_method": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        }
+      },
+      "audit_normalized_delta": 0.7749688045248012,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 2.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_hardness_diversity_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 0.8,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        }
+      },
+      "missing_metrics": [],
+      "omitted_method_rank_delta_under_skip_missing_rule": 0,
+      "raw_weighted_delta": 0.28099999999999997,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "shortcut_unseen_hpro": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 1,
+          "row_count": 2
+        }
+      },
+      "audit_normalized_delta": 0.7749688045248012,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "valid_spec_coverage_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 2.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_rate": 1.0,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 1.0,
+          "noise_judge_pass_rate": 1.0,
+          "valid_assignment_diversity_rate": 1.0,
+          "valid_hardness_diversity_rate": 1.0,
+          "valid_mean_hardness_rank_rate": 0.8,
+          "valid_seed_answer_novelty_rate": 1.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 1.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": 0.28099999999999997,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    },
+    "weaker_random_labels": {
+      "artifact_stats": {
+        "aime2024_i_11_polygon_rotation_vera_e": {
+          "distinct_numeric_assignments": 4,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_e": {
+          "distinct_numeric_assignments": 6,
+          "row_count": 8
+        },
+        "aime2024_ii_10_vera_h": {
+          "distinct_numeric_assignments": 3,
+          "row_count": 8
+        },
+        "aime2024_ii_9_chip_grid_vera_e": {
+          "distinct_numeric_assignments": 5,
+          "row_count": 8
+        }
+      },
+      "audit_normalized_delta": -5.757936078524343,
+      "methods_written": [
+        "vera_repro"
+      ],
+      "metrics": {
+        "aime_additional_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "valid_spec_coverage_rate": 0.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 0.0
+        },
+        "aime_geometry_vera_e_generation": {
+          "deterministic_replay_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 0.0
+        },
+        "aime_geometry_vera_h_hardening": {
+          "h_candidate_pool_valid_rate": 1.0,
+          "h_pro_selected_from_valid_pool": 1.0,
+          "h_pro_selected_ranked": 0.0,
+          "noise_judge_pass_rate": 0.0,
+          "valid_assignment_diversity_rate": 0.0,
+          "valid_hardness_diversity_rate": 0.0,
+          "valid_mean_hardness_rank_rate": 0.0,
+          "valid_seed_answer_novelty_rate": 0.0,
+          "validation_gate_pass_rate": 1.0,
+          "verified_variant_count": 0.0
+        }
+      },
+      "missing_metrics": [],
+      "raw_weighted_delta": -2.0899999999999994,
+      "score_file_stale_after_failure": false,
+      "test_returncode": 0
+    }
+  },
+  "coefficient_source": "scoring/reference.json, absolute coefficients",
+  "metric_std": {
+    "aime_additional_vera_e_generation": {
+      "deterministic_replay_rate": 0.2290614236454256,
+      "seed_consistency_rate": 0.2290614236454256,
+      "valid_assignment_diversity_rate": 0.3819168234962221,
+      "valid_rate": 0.37267799624996495,
+      "valid_seed_answer_novelty_rate": 0.35320420012087156,
+      "valid_spec_coverage_rate": 0.37267799624996495,
+      "validation_gate_pass_rate": 0.2290614236454256,
+      "verified_variant_count": 14.039186779585874
+    },
+    "aime_geometry_vera_e_generation": {
+      "deterministic_replay_rate": 0.2290614236454256,
+      "seed_consistency_rate": 0.2290614236454256,
+      "valid_assignment_diversity_rate": 0.375,
+      "valid_rate": 0.37267799624996495,
+      "valid_seed_answer_novelty_rate": 0.3615864742770421,
+      "validation_gate_pass_rate": 0.2290614236454256,
+      "verified_variant_count": 8.036375634160796
+    },
+    "aime_geometry_vera_h_hardening": {
+      "h_candidate_pool_valid_rate": 0.2290614236454256,
+      "h_pro_selected_from_valid_pool": 0.2290614236454256,
+      "h_pro_selected_ranked": 0.37267799624996495,
+      "noise_judge_pass_rate": 0.37267799624996495,
+      "valid_assignment_diversity_rate": 0.3708985130504363,
+      "valid_hardness_diversity_rate": 0.3708985130504363,
+      "valid_mean_hardness_rank_rate": 0.29814967577823503,
+      "valid_seed_answer_novelty_rate": 0.36544425468095815,
+      "validation_gate_pass_rate": 0.2290614236454256,
+      "verified_variant_count": 7.019593389792937
+    }
+  },
+  "normalization": "population std across successful audit cases listed below; NOT a fixed future rank",
+  "normalization_cohort": [
+    "baseline_ignored",
+    "better_generator",
+    "cached_reference",
+    "failed_empty",
+    "more_samples64",
+    "reference_seed0",
+    "reference_seed1",
+    "reference_seed2",
+    "shortcut_constant",
+    "shortcut_direct_scores",
+    "shortcut_empty_questions",
+    "shortcut_enumeration",
+    "shortcut_false_evidence",
+    "shortcut_moved_seed",
+    "shortcut_nonfinite",
+    "shortcut_omitted_method",
+    "shortcut_unseen_hpro",
+    "weaker_random_labels"
+  ],
+  "per_metric_recovered_seed_range": {
+    "aime_additional_vera_e_generation": {
+      "deterministic_replay_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "seed_consistency_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "valid_assignment_diversity_rate": {
+        "range": 0.5,
+        "values": [
+          1.0,
+          0.75,
+          0.5
+        ]
+      },
+      "valid_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "valid_seed_answer_novelty_rate": {
+        "range": 0.375,
+        "values": [
+          0.875,
+          0.625,
+          1.0
+        ]
+      },
+      "valid_spec_coverage_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "validation_gate_pass_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "verified_variant_count": {
+        "range": 0.0,
+        "values": [
+          8.0,
+          8.0,
+          8.0
+        ]
+      }
+    },
+    "aime_geometry_vera_e_generation": {
+      "deterministic_replay_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "seed_consistency_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "valid_assignment_diversity_rate": {
+        "range": 0.25,
+        "values": [
+          1.0,
+          0.75,
+          1.0
+        ]
+      },
+      "valid_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "valid_seed_answer_novelty_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "validation_gate_pass_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "verified_variant_count": {
+        "range": 0.0,
+        "values": [
+          4.0,
+          4.0,
+          4.0
+        ]
+      }
+    },
+    "aime_geometry_vera_h_hardening": {
+      "h_candidate_pool_valid_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "h_pro_selected_from_valid_pool": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "h_pro_selected_ranked": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "noise_judge_pass_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "valid_assignment_diversity_rate": {
+        "range": 0.25,
+        "values": [
+          0.5,
+          0.75,
+          0.5
+        ]
+      },
+      "valid_hardness_diversity_rate": {
+        "range": 0.25,
+        "values": [
+          0.5,
+          0.75,
+          0.5
+        ]
+      },
+      "valid_mean_hardness_rank_rate": {
+        "range": 0.29999999999999993,
+        "values": [
+          0.4,
+          0.65,
+          0.7
+        ]
+      },
+      "valid_seed_answer_novelty_rate": {
+        "range": 0.5,
+        "values": [
+          1.0,
+          0.75,
+          0.5
+        ]
+      },
+      "validation_gate_pass_rate": {
+        "range": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "verified_variant_count": {
+        "range": 0.0,
+        "values": [
+          4.0,
+          4.0,
+          4.0
+        ]
+      }
+    }
+  },
+  "recovered_seed_spread": {
+    "audit_normalized_delta": {
+      "population_std": 0.04486745258624495,
+      "range": 0.09693095812891381,
+      "values": [
+        0.015727652422019622,
+        0.012119607237169469,
+        -0.08120330570689419
+      ]
+    },
+    "raw_weighted_delta": {
+      "population_std": 0.023327677886055352,
+      "range": 0.055250000000000014,
+      "values": [
+        0.024250000000000008,
+        0.009250000000000012,
+        -0.031000000000000007
+      ]
+    }
+  },
+  "reference_at_upper_bound": {
+    "aime_additional_vera_e_generation": [
+      "seed_consistency_rate",
+      "valid_rate",
+      "valid_spec_coverage_rate",
+      "validation_gate_pass_rate",
+      "deterministic_replay_rate"
+    ],
+    "aime_geometry_vera_e_generation": [
+      "seed_consistency_rate",
+      "valid_rate",
+      "valid_assignment_diversity_rate",
+      "validation_gate_pass_rate",
+      "deterministic_replay_rate"
+    ],
+    "aime_geometry_vera_h_hardening": [
+      "noise_judge_pass_rate",
+      "validation_gate_pass_rate",
+      "h_candidate_pool_valid_rate",
+      "h_pro_selected_from_valid_pool",
+      "h_pro_selected_ranked"
+    ]
+  },
+  "reference_source": "audit-start scoring/scores_test.json"
+}

@@ -1,0 +1,35 @@
+{
+  "artifact_directories_on_disk": [
+    "vera_repro"
+  ],
+  "case": "shortcut_direct_scores",
+  "construction": {
+    "reuse": "cached reference artifacts; no labels inferred from hidden scores"
+  },
+  "fresh_process": true,
+  "hidden_invocation": [
+    "bash",
+    "scripts/evaluate_test.sh"
+  ],
+  "score_file_stale_after_failure": false,
+  "scores_file_rewritten": true,
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "returncode": 0,
+    "seconds": 0.36720956399221905,
+    "stderr_tail": ""
+  },
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "returncode": 0,
+    "seconds": 0.3175089700089302,
+    "stderr_tail": ""
+  },
+  "used_hidden_labels": false
+}

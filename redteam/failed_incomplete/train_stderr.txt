@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/user/eval/train/evaluate.py", line 402, in <module>
+    main()
+  File "/home/user/eval/train/evaluate.py", line 385, in main
+    artifact_map = discover_artifacts(Path(args.artifacts_root), [Path(p) for p in args.artifacts], wanted)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/eval/train/evaluate.py", line 270, in discover_artifacts
+    raise FileNotFoundError(f"No complete method artifact directories found under {root}.")
+FileNotFoundError: No complete method artifact directories found under outputs.

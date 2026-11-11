@@ -1,0 +1,51 @@
+{
+  "artifact_directories_on_disk": [
+    "vera_repro"
+  ],
+  "case": "better_generator",
+  "construction": {
+    "method_run": {
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "redteam.recovered_runner",
+        "--out_dir",
+        "/home/user/redteam/better_generator/artifacts",
+        "--base_seed",
+        "0",
+        "--samples_per_spec",
+        "8",
+        "--broader-generator"
+      ],
+      "returncode": 0,
+      "seconds": 1.9209158459998434,
+      "stderr_tail": ""
+    }
+  },
+  "fresh_process": true,
+  "hidden_invocation": [
+    "bash",
+    "scripts/evaluate_test.sh"
+  ],
+  "score_file_stale_after_failure": false,
+  "scores_file_rewritten": true,
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "returncode": 0,
+    "seconds": 0.3168519879982341,
+    "stderr_tail": ""
+  },
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "returncode": 0,
+    "seconds": 0.9191076230054023,
+    "stderr_tail": ""
+  },
+  "used_hidden_labels": false
+}

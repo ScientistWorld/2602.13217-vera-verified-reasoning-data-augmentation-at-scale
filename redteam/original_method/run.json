@@ -1,0 +1,40 @@
+{
+  "artifact_directories_on_disk": [],
+  "case": "original_method",
+  "construction": {},
+  "fresh_process": true,
+  "hidden_invocation": [
+    "bash",
+    "scripts/evaluate_test.sh"
+  ],
+  "method_run": {
+    "command": [
+      "bash",
+      "scripts/method.sh"
+    ],
+    "returncode": 1,
+    "seconds": 0.21753567999985535,
+    "stderr_tail": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/home/user/method/vera_repro/run_geometry_repro.py\", line 7, in <module>\n    from .core import sample_instance, verify_assignment, write_jsonl\nModuleNotFoundError: No module named 'method.vera_repro.core'\n"
+  },
+  "score_file_stale_after_failure": true,
+  "scores_file_rewritten": false,
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "returncode": 1,
+    "seconds": 0.2660046219971264,
+    "stderr_tail": "Traceback (most recent call last):\n  File \"/home/user/eval/test/evaluate.py\", line 402, in <module>\n    main()\n  File \"/home/user/eval/test/evaluate.py\", line 385, in main\n    artifact_map = discover_artifacts(Path(args.artifacts_root), [Path(p) for p in args.artifacts], wanted)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/eval/test/evaluate.py\", line 262, in discover_artifacts\n    raise FileNotFoundError(\nFileNotFoundError: Missing artifact directories for methods: vera_repro. Looked under outputs and explicit paths [].\n"
+  },
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "returncode": 1,
+    "seconds": 0.26755153499834705,
+    "stderr_tail": "Traceback (most recent call last):\n  File \"/home/user/eval/train/evaluate.py\", line 402, in <module>\n    main()\n  File \"/home/user/eval/train/evaluate.py\", line 385, in main\n    artifact_map = discover_artifacts(Path(args.artifacts_root), [Path(p) for p in args.artifacts], wanted)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/eval/train/evaluate.py\", line 270, in discover_artifacts\n    raise FileNotFoundError(f\"No complete method artifact directories found under {root}.\")\nFileNotFoundError: No complete method artifact directories found under outputs.\n"
+  },
+  "used_hidden_labels": false
+}
