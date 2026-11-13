@@ -1,38 +1,33 @@
 # Evaluation Targets
 
-## Primary: aime_geometry_vera_e_generation
+Both experiments are scored on the hidden test split by
+`bash scripts/evaluate_test.sh` (no arguments; every directory under
+`outputs/` is a method) and on the visible train split by
+`bash scripts/evaluate_train.sh`. Experiment weights: 0.5 each.
 
-Tests whether a renewable reasoning item family preserves the known seed
-answer while generating replayable valid variants.
+## Primary: gsm8k_vera_e_3step
 
-- **Primary metric**: `valid_seed_answer_novelty_rate` (higher is better)
-- **Constraint metrics**: `seed_consistency_rate`, `valid_rate`, and
-  `validation_gate_pass_rate`, and `deterministic_replay_rate` (higher is
-  better)
-- **How to run**: `bash scripts/reproduce.sh`, then inspect
-  `scoring/scores.json`
+Renewable verified families for seeds whose calculation has three steps.
 
-## Primary: aime_geometry_vera_h_hardening
+- **Primary metric**: `verified_fresh_yield` (higher is better, coefficient 1.0)
+- **Benefit metric**: `certified_spec_rate` (higher is better, coefficient 0.5)
+- **Constraint metric**: `mislabeled_spec_rate` (lower is better,
+  coefficient 1.0); pooled `label_precision` below 0.7 fails the run
+- **Diagnostics (coefficient 0)**: `label_precision`, `seed_consistency_rate`
 
-Tests whether a harder paired variant can be selected from a pool of verified
-candidates while preserving label integrity.
+## Primary: gsm8k_vera_e_multistep
 
-- **Primary metric**: `valid_mean_hardness_rank_rate` (higher is better)
-- **Constraint metrics**: `h_pro_selected_ranked`, `valid_hardness_diversity_rate`,
-  `h_pro_selected_from_valid_pool`, `h_candidate_pool_valid_rate`,
-  `valid_seed_answer_novelty_rate`, `validation_gate_pass_rate`, and
-  `noise_judge_pass_rate` (higher is better)
-- **How to run**: `bash scripts/reproduce.sh`, then inspect
-  `scoring/scores.json`
+The same targets for seeds whose calculation has four or more steps.
 
-## Primary: aime_additional_vera_e_generation
+- **Primary metric**: `verified_fresh_yield` (higher is better, coefficient 1.0)
+- **Benefit metric**: `certified_spec_rate` (higher is better, coefficient 0.5)
+- **Constraint metric**: `mislabeled_spec_rate` (lower is better,
+  coefficient 1.0); pooled `label_precision` below 0.7 fails the run
+- **Diagnostics (coefficient 0)**: `label_precision`, `seed_consistency_rate`
 
-Tests the same renewable-evaluation mechanics on two additional provided seed
-families: chip-grid maximal placements and polygon rotation probability.
+## Reference and baselines
 
-- **Primary metric**: `valid_seed_answer_novelty_rate` (higher is better)
-- **Constraint metrics**: `seed_consistency_rate`, `valid_rate`, and
-  `validation_gate_pass_rate`, and `deterministic_replay_rate` (higher is
-  better)
-- **How to run**: `bash scripts/reproduce.sh`, then inspect
-  `scoring/scores.json`
+`scoring/reference.json` holds this gym's reference run (`vera_e`) and the
+baselines (`label_copy`, `expression_search`, both failing the precision
+floor), plus the paper's own GSM8K numbers under `_paper_reported` (not on
+this gym's scale).

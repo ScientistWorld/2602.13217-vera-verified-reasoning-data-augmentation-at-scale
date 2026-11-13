@@ -8,13 +8,13 @@ through the paper's validation gates:
   hash-seeded samples, (4) non-degenerate yield, and (5) VeRA-E seed-anchored
   consistency  V(theta_seed) == (True, a).
 
-Failures are turned into structured feedback and the Teacher retries (default
-cap 20 attempts per seed, Table 1).  Accepted specifications are packaged with
-the paper's sampler semantics (generator retried until the verifier accepts)
-and written to outputs/<variant>/specs.jsonl.
+Failures are turned into structured feedback and the Teacher retries (cap 20
+attempts per seed, Sec. 4.1 / Table 1).  Accepted specifications are packaged
+with the paper's sampler semantics (generator retried until the verifier
+accepts) and written to outputs/vera_e/specs.jsonl (the reference).
 
-Variants written by one run (they share the Teacher calls):
-  vera_e         paper gates, up to --max_attempts attempts (reference)
+With --variants_out DIR the same run also writes comparison variants under DIR
+(not under outputs/, so they are not part of the reference score files):
   vera_e_1try    the same pipeline restricted to the first attempt (Table 1 "1 try")
   vera_e_seed1   the reference pipeline with a different retry sampling seed
                  (measures run-to-run noise of the reference)
@@ -286,14 +286,17 @@ def solve_spec_text(seed: dict, solve_code: str | None) -> str | None:
 def write_outputs(state: dict, by_id: dict, variants: dict, out_root: Path, args) -> dict:
     """Write specs/logs for every variant (called after each round, so a preempted run keeps its progress)."""
     summary = {}
-    for name, rows in (
-        ("vera_e", {sid: st["accepted"] for sid, st in state["vera_e"].items()}),
-        ("vera_e_1try", {sid: (st["accepted"] if st["accepted"] and st["accepted"]["attempt"] == 1 else None)
-                         for sid, st in state["vera_e"].items()}),
-        ("vera_e_seed1", {sid: st["accepted"] for sid, st in state["vera_e_seed1"].items()}),
-        ("vera_e_xcheck", {sid: st["xcheck"] for sid, st in state["vera_e"].items()}),
-    ):
-        d = out_root / name
+    outputs = [("vera_e", {sid: st["accepted"] for sid, st in state["vera_e"].items()})]
+    if args.variants_out:
+        outputs += [
+            ("vera_e_1try", {sid: (st["accepted"] if st["accepted"] and st["accepted"]["attempt"] == 1 else None)
+                             for sid, st in state["vera_e"].items()}),
+            ("vera_e_seed1", {sid: st["accepted"] for sid, st in state["vera_e_seed1"].items()}),
+            ("vera_e_xcheck", {sid: st["xcheck"] for sid, st in state["vera_e"].items()}),
+        ]
+    dirs = {name: (out_root if name == "vera_e" else Path(args.variants_out)) / name for name, _ in outputs}
+    for name, rows in outputs:
+        d = dirs[name]
         d.mkdir(parents=True, exist_ok=True)
         with (d / "specs.jsonl").open("w", encoding="utf-8") as f:
             for sid in by_id:
@@ -318,7 +321,7 @@ def write_outputs(state: dict, by_id: dict, variants: dict, out_root: Path, args
         with (d / "method_summary.json").open("w", encoding="utf-8") as f:
             json.dump({"variant": name, "teacher": os.path.basename(args.teacher.rstrip("/")), **summary[name]}, f, indent=2)
     for v in variants:
-        with (out_root / v / "synthesis_log.jsonl").open("w", encoding="utf-8") as f:
+        with (dirs[v] / "synthesis_log.jsonl").open("w", encoding="utf-8") as f:
             for sid, st in state[v].items():
                 f.write(json.dumps({"seed_id": sid, "accepted_attempt": st["accepted"]["attempt"] if st["accepted"] else None,
                                     "attempts": [{k: a[k] for k in ("attempt", "stage", "feedback")} for a in st["attempts"]]},
@@ -339,7 +342,9 @@ def main() -> None:
     ap.add_argument("--seeds", nargs="+", default=["data/gsm8k_vera/train_seeds.jsonl", "data/gsm8k_vera/test_seeds.jsonl"])
     ap.add_argument("--teacher", default="data/downloads/Qwen2.5-7B-Instruct")
     ap.add_argument("--outputs", default="outputs")
-    ap.add_argument("--max_attempts", type=int, default=6)
+    ap.add_argument("--variants_out", default="",
+                    help="also write the comparison variants (1try, seed1, xcheck) under this directory")
+    ap.add_argument("--max_attempts", type=int, default=20, help="Teacher attempts per seed (paper: 20)")
     ap.add_argument("--temperature", type=float, default=0.7)
     ap.add_argument("--batch_size", type=int, default=48)
     ap.add_argument("--limit", type=int, default=0, help="debug: only the first N seeds")
@@ -353,9 +358,11 @@ def main() -> None:
     if args.limit:
         seeds = seeds[: args.limit]
     out_root = Path(args.outputs)
-    cache_dir = out_root / "_teacher_cache"
+    # The Teacher cache lives inside the reference's own method directory:
+    # every directory under outputs/ is scored as a method.
+    cache_dir = out_root / "vera_e"
     cache_dir.mkdir(parents=True, exist_ok=True)
-    cache_file = cache_dir / "generations.jsonl"
+    cache_file = cache_dir / "teacher_cache.jsonl"
     if args.replay_only:
         from .llm import ReplayLM
 
@@ -381,15 +388,17 @@ def main() -> None:
     # name -> retry sampling-seed offset.  vera_e_seed1 reruns the reference with
     # different retry samples (noise estimate); vera_e_1try and vera_e_xcheck are
     # derived from vera_e's own trajectory.
-    variants = {"vera_e": 0, "vera_e_seed1": 1}
+    variants = {"vera_e": 0, "vera_e_seed1": 1} if args.variants_out else {"vera_e": 0}
     state = {v: {s["seed_id"]: {"attempts": [], "accepted": None, "feedback": None, "previous": None, "xcheck": None}
                  for s in seeds} for v in variants}
     by_id = {s["seed_id"]: s for s in seeds}
     t0 = time.time()
     # Independent solve() programs for the cross-check variant (one greedy call per seed).
-    solve_texts = lm.generate([prompts.solve_messages(s) for s in seeds], temperature=0.0, seed=1001, max_new_tokens=400)
-    solves = {s["seed_id"]: parse_solve(t) for s, t in zip(seeds, solve_texts)}
-    flush_cache(flushed)
+    solves = {}
+    if args.variants_out:
+        solve_texts = lm.generate([prompts.solve_messages(s) for s in seeds], temperature=0.0, seed=1001, max_new_tokens=400)
+        solves = {s["seed_id"]: parse_solve(t) for s, t in zip(seeds, solve_texts)}
+        flush_cache(flushed)
     for attempt in range(1, args.max_attempts + 1):
         pending = [(v, sid) for v in variants for sid, st in state[v].items()
                    if st["accepted"] is None and len(st["attempts"]) < attempt]
@@ -409,7 +418,7 @@ def main() -> None:
         def check(i):
             v, sid = pending[i]
             res = validate(texts[i], by_id[sid], attempt)
-            if res["ok"] and v == "vera_e":
+            if res["ok"] and v == "vera_e" and args.variants_out:
                 pk, info = xcheck_package(res["spec"], by_id[sid], attempt, solves.get(sid))
                 res["xcheck"] = {"attempt": attempt, **pk, "info": info}
             return res
@@ -445,7 +454,7 @@ def main() -> None:
         return sid, {"attempt": args.max_attempts + 1, **res["packaged"],
                      "info": {"cross_checked": False, "solve_fallback": True}}
 
-    missing = [sid for sid, st in state["vera_e"].items() if st["accepted"] is None]
+    missing = [sid for sid, st in state["vera_e"].items() if st["accepted"] is None] if args.variants_out else []
     with cf.ThreadPoolExecutor(max_workers=args.workers) as pool:
         for sid, row in pool.map(fallback, missing):
             if row:

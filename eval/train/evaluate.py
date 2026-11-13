@@ -14,6 +14,20 @@ recomputes every label with the seed's reference program
 (eval/train/references.jsonl).  The hidden split uses the same protocol on
 different seeds, references and keys.  Scores are computed from those raw
 executions only.
+
+Per seed (K_SAMPLES generator calls):
+  * a sample is *fresh* if its assignment differs from the seed assignment;
+  * a fresh sample is *counted* if the verifier accepts it with the reference
+    label, the generator replays it from the same key (in an independent
+    namespace, keys walked in reverse order), and the template renders it;
+  * the seed is *certified* if the verifier reproduces the seed answer, no
+    accepted fresh sample has a wrong label, at least one sample is counted,
+    and every slot takes a non-seed value in some counted sample.
+A seed is *mislabeled* if its spec accepts any fresh sample whose label is
+wrong (a family that silently propagates wrong labels).  A method whose pooled
+label precision is below PRECISION_FLOOR fails and gets the worst value of
+every metric in every experiment; so does a method directory without a
+readable specs.jsonl.
 """
 from __future__ import annotations
 
@@ -44,8 +58,10 @@ EXPERIMENTS = {
     "gsm8k_vera_e_3step": lambda ref: ref["n_steps"] == 3,
     "gsm8k_vera_e_multistep": lambda ref: ref["n_steps"] >= 4,
 }
-METRICS = ["verified_fresh_yield", "label_precision", "certified_spec_rate", "seed_consistency_rate"]
-WORST = {m: 0.0 for m in METRICS}
+METRICS = ["verified_fresh_yield", "certified_spec_rate", "mislabeled_spec_rate", "label_precision",
+           "seed_consistency_rate"]
+# Worst value of every metric (mislabeled_spec_rate is lower-is-better).
+WORST = {m: (1.0 if m == "mislabeled_spec_rate" else 0.0) for m in METRICS}
 ALLOWED_IMPORTS = {"math", "random", "fractions", "itertools", "functools"}
 FORBIDDEN_NAMES = {
     "eval", "exec", "compile", "open", "getattr", "setattr", "delattr", "globals",
@@ -153,11 +169,14 @@ def static_problem(spec: dict, slot_names: list[str]) -> str | None:
             if isinstance(node, ast.Constant) and isinstance(node.value, str) and "__" in node.value:
                 return "dunder_string"
     try:
-        fields = [f for _, f, _, _ in string.Formatter().parse(spec["template"]) if f is not None]
+        parsed = [(f, fmt, conv) for _, f, fmt, conv in string.Formatter().parse(spec["template"]) if f is not None]
     except ValueError:
         return "template_format"
+    fields = [f for f, _, _ in parsed]
     if set(fields) != set(slot_names) or any(not f.isidentifier() for f in fields):
         return "template_fields"
+    if any(fmt or conv for _, fmt, conv in parsed):
+        return "template_format_spec"  # only plain {slot} placeholders
     return None
 
 
@@ -288,7 +307,13 @@ def score_seed(spec: dict | None, ref: dict, question_len: int) -> dict:
     # A seed counts as seed-consistent only if its spec is also renewable
     # (it certifies at least one fresh variant); replaying the seed alone is not.
     res["seed_consistent"] = bool(res["seed_consistent"] and res["accepted_fresh"] >= 1)
-    res["certified"] = bool(res["seed_consistent"] and wrong == 0 and counted)
+    # The family must parameterize the whole seed: every slot takes a non-seed
+    # value in at least one counted variant, so the reference program checks
+    # the verifier's dependence on every number of the question.
+    seed_values = [ref["seed_assignment"][k] for k in ref["slot_kinds"]]
+    res["all_slots_varied"] = bool(counted) and all(
+        any(key[i] != seed_values[i] for key in counted) for i in range(len(seed_values)))
+    res["certified"] = bool(res["seed_consistent"] and wrong == 0 and counted and res["all_slots_varied"])
     res["yield"] = len(counted) / K_SAMPLES if res["certified"] else 0.0
     return res
 
@@ -325,16 +350,32 @@ def aggregate(rows: list[dict]) -> dict:
         "verified_fresh_yield": sum(r["yield"] for r in rows) / n,
         "label_precision": cor / acc if acc else 0.0,
         "certified_spec_rate": sum(r["certified"] for r in rows) / n,
+        "mislabeled_spec_rate": sum(r.get("wrong_fresh", 0) > 0 for r in rows) / n,
         "seed_consistency_rate": sum(r["seed_consistent"] for r in rows) / n,
     }
 
 
+def safe_score_seed(spec, ref: dict, question_len: int) -> dict:
+    try:
+        return score_seed(spec, ref, question_len)
+    except Exception as exc:  # noqa: BLE001  (a malformed spec scores zero, never crashes the run)
+        return {"seed_consistent": False, "certified": False, "yield": 0.0, "accepted_fresh": 0,
+                "correct_fresh": 0, "wrong_fresh": 0, "error": f"evaluator:{type(exc).__name__}"}
+
+
 def score_method(method_dir: Path, refs: list[dict], questions: dict) -> tuple[dict, dict]:
+    try:
+        return _score_method(method_dir, refs, questions)
+    except Exception as exc:  # noqa: BLE001
+        return {exp: dict(WORST) for exp in EXPERIMENTS}, {"status": "failed", "reason": f"evaluator:{type(exc).__name__}"}
+
+
+def _score_method(method_dir: Path, refs: list[dict], questions: dict) -> tuple[dict, dict]:
     specs, problem = load_specs(method_dir / "specs.jsonl")
     if specs is None:
         return {exp: dict(WORST) for exp in EXPERIMENTS}, {"status": "failed", "reason": problem}
     with cf.ThreadPoolExecutor(max_workers=max(1, min(16, os.cpu_count() or 1))) as pool:
-        per_seed = list(pool.map(lambda r: score_seed(specs.get(r["seed_id"]), r, questions.get(r["seed_id"], 0)), refs))
+        per_seed = list(pool.map(lambda r: safe_score_seed(specs.get(r["seed_id"]), r, questions.get(r["seed_id"], 0)), refs))
     by_id = {r["seed_id"]: row for r, row in zip(refs, per_seed)}
     overall = aggregate(per_seed)
     status = {"status": "ok", "overall": overall,
@@ -368,7 +409,9 @@ def main() -> None:
                 row = json.loads(line)
                 questions[row["seed_id"]] = len(row["question"])
     root = Path(args.outputs)
-    methods = sorted(p for p in root.iterdir() if p.is_dir() and not p.name.startswith((".", "_"))) if root.is_dir() else []
+    # Every directory under outputs/ is a method, whatever its name; one
+    # without a readable specs.jsonl is scored as a failed run.
+    methods = sorted(p for p in root.iterdir() if p.is_dir()) if root.is_dir() else []
 
     scores: dict = {"slice": SLICE, "experiments": {exp: {"results": {}} for exp in EXPERIMENTS}, "_meta": {
         "k_samples": K_SAMPLES, "n_seeds": {exp: sum(1 for r in refs if m(r)) for exp, m in EXPERIMENTS.items()},

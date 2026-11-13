@@ -1,27 +1,24 @@
 # Experiment Overview
 
-## aime_geometry_vera_e_generation
+Both experiments ask the same question on different seeds: given a fixed
+reasoning seed (a math word problem, its answer and the numbers in it), can a
+method produce a renewable family of fresh questions whose labels are right,
+and avoid families that look right at the seed but mislabel what they
+generate? The hidden evaluator executes each submitted family on secret
+sampling keys and compares every label with the seed's own underlying
+calculation, so coverage (how many seeds become trustworthy families, with how
+many fresh variants) and label integrity (how many families emit a wrong
+label) are measured directly rather than taken from the method.
 
-Tests whether the environment can produce fresh variants of a reasoning seed
-while preserving the known answer and replaying the same generated items from
-fixed identifiers. This experiment establishes the core renewable-evaluation
-claim in a controlled geometry setting. The evaluator checks generated
-assignments and replay pairs directly rather than trusting self-reported rates.
-It also checks that the submitted task artifacts pass pre-sampling validation
-gates.
+## gsm8k_vera_e_3step
 
-## aime_geometry_vera_h_hardening
+Seeds whose underlying calculation has three steps. Establishes the core
+renewable-evaluation claim on the easier half of the problem distribution:
+fresh variants at scale with labels that stay correct.
 
-Tests whether a more difficult paired item can be selected from verified
-candidates while keeping labels trustworthy. This experiment checks a
-boundary-evaluation setting where success requires both increased challenge and
-continued label reliability. The evaluator recomputes labels from assignments
-and verifies that the selected item comes from the submitted eligible candidate
-pool under the fixed paired selection rule.
+## gsm8k_vera_e_multistep
 
-## aime_additional_vera_e_generation
-
-Tests whether the same renewable-evaluation mechanics hold beyond the geometry
-family. The evaluator recomputes answers for two additional seed families and
-checks that fresh generated variants remain valid, replayable, and generated
-only after the corresponding submitted artifacts pass validation.
+Seeds whose calculation has four or more steps. The same claim where it is
+hardest to keep labels correct off the seed; this slice separates methods that
+only reproduce the seed answer from methods that capture the whole
+calculation.

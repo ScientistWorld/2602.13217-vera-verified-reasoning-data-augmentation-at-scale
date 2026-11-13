@@ -1,36 +1,42 @@
 # Scientist Constraints
 
-## Data
+## Inputs
 
-Use the provided AIME seed families and the artifact contract defined by this
-workspace: AIME-2024-II-10 geometry, AIME-2024-II-9 chip grid, and
-AIME-2024-I-11 polygon rotation. Do not add external benchmark datasets when
-reporting scores for the existing experiments; doing so would change the
-evaluation surface rather than improve the method.
+- A method may use, for each seed, only what `data/gsm8k_vera/*_seeds.jsonl`
+  provides (question, final answer, slot schema; the worked solution exists
+  only for train seeds) plus the train reference programs in
+  `eval/train/references.jsonl`.
+- Do not use any external source of the test seeds' solutions: the public
+  GSM8K worked solutions or calculator annotations (including any copy under
+  `shared/datasets/`), the VeRA paper's released datasets or generator logs
+  (github.com/Marco-Cheng/VeRA artifacts), or other labeled rewrites of GSM8K.
+  These contain the hidden test's ground truth.
+- Do not author specifications for test seeds by hand or with any model other
+  than the provided Teacher. Specifications must come from an automated
+  pipeline that runs the same way on any seed.
 
-## Evaluation Protocol
+## Teacher and compute
 
-`eval/` must remain independent of `method/`. A scientist may change the method
-implementation, but `scripts/evaluate.sh` must score only the artifacts written
-by the method. The same metric names and experiment names in
-`scoring/reference.json` must be preserved.
+- The only language model is the provided Teacher,
+  `data/downloads/Qwen2.5-7B-Instruct` (fetched by `scripts/download.sh`), run
+  locally. No paid APIs, private endpoints, or other LLMs.
+- The number of Teacher calls, prompts, sampling settings, validation and
+  filtering procedures are free to change; report the Teacher budget you use.
 
-## Label Integrity
+## Evaluation protocol
 
-Reported answers must come from deterministic verification or a strictly
-stronger independently checkable procedure. Hardcoded score values, copied
-paper numbers in `scores.json`, or labels produced by model agreement alone are
-not valid.
-
-## Resource Scope
-
-Do not use paid APIs or private endpoints. The benchmark is intended to be
-runnable offline in the compute environment after `scripts/download.sh`.
+- `eval/` must remain independent of `method/` and unchanged. Experiment and
+  metric names in `scoring/reference.json` must be preserved.
+- Submissions are `outputs/<method>/specs.jsonl` only. Every directory under
+  `outputs/` is scored; a directory without a readable `specs.jsonl` is a
+  failed run, so do not leave unrelated directories there.
+- Labels must come from executing the submitted verifier; the evaluator
+  re-runs everything itself.
 
 ## Compliance Checklist
 
-- [ ] Existing experiment names and metric names are unchanged
-- [ ] `eval/` does not import from `method/`
-- [ ] No external benchmark data is added to the reported experiments
-- [ ] Labels are deterministic and not copied from paper score tables
-- [ ] No paid or private API endpoints are required
+- [ ] Specifications for test seeds use only the seed file inputs and the Teacher
+- [ ] No GSM8K solutions, VeRA release artifacts, or hand-written test specs
+- [ ] `eval/` untouched and not importing from `method/`
+- [ ] Only `Qwen2.5-7B-Instruct` as language model, run locally
+- [ ] `outputs/` contains only method directories

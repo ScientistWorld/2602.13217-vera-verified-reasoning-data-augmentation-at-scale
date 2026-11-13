@@ -2,28 +2,31 @@
 
 ## Research Problem
 
-The research problem is renewable reasoning evaluation: turning fixed reasoning
-seeds into fresh, reliably labeled variants that remain useful when static
-benchmarks become familiar or saturated.
+Renewable reasoning evaluation: turning fixed reasoning seeds into executable
+families that generate fresh, reliably labeled variants, so evaluation can
+scale without relabeling and without trusting labels that were never checked.
 
 ## Core Contribution
 
-Work must stay centered on executable benchmark specifications: a structured
-way to render variants, generate valid parameters, and compute labels through
-deterministic verification. Improvements should strengthen validity,
-generality, reproducibility, or difficulty calibration within that framework.
+Work must stay centered on executable benchmark specifications (template,
+generator, verifier) synthesized automatically from a seed and validated
+before their labels are trusted. Improvements should raise how many seeds
+become trustworthy families and lower how many accepted families mislabel
+fresh variants.
 
 ## Approach Scope
 
-Scientists may improve specification synthesis, generator quality, verifier
-coverage, validation filters, replay controls, candidate selection, or
-artifact/evaluation interfaces. They may add more seed families if they also
-extend the reference and score structure consistently.
+In scope: specification synthesis prompts and feedback, retry and sampling
+strategies for the provided Teacher, stronger spec-level validation (e.g.
+independent re-derivation, randomized fuzzing, consistency checks across
+candidate specifications), generator design (coverage of every slot, sensible
+ranges, exact divisions), abstaining on seeds that cannot be validated, and
+combining the Teacher with program search.
 
 ## Out of Bounds
 
+- Using worked solutions or other external labels for the test seeds
+- Replacing the Teacher with a stronger or remote model, or hand-writing
+  specifications for test seeds
 - Replacing deterministic verification with model-only answer voting
-- Reporting static benchmark accuracy without generating fresh variants
-- Changing the problem into general LLM benchmark evaluation without executable
-  specifications
-- Beating scores by adding unrelated easier seeds or changing metric direction
+- Changing the evaluator, the seeds, or metric directions

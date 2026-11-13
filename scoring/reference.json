@@ -1,86 +1,142 @@
 {
   "experiments": {
-    "aime_geometry_vera_e_generation": {
-      "description": "VeRA-E executable specification on the AIME-2024-II-10 geometry seed: seed-consistent verifier and deterministic generation of equivalent variants.",
-      "notes": "Paper reports this family as a qualitative running example rather than this exact reduced metric suite. Values here are scaled gym targets for the packaged offline reproduction: perfect seed consistency, valid generation, replay, and nontrivial answer novelty.",
-      "weight": 0.35,
-      "primary_metric": "valid_seed_answer_novelty_rate",
+    "gsm8k_vera_e_3step": {
+      "description": "VeRA-E executable-specification synthesis on GSM8K seeds whose reference solution has exactly three arithmetic steps: for each seed, submit a template, generator and verifier; the hidden evaluator samples fresh variants with secret keys and checks every verifier label against the seed's latent program.",
+      "notes": "Scaled setup: 403 hidden test seeds (221 visible train seeds across both experiments) drawn from GSM8K problems whose calculator annotations map unambiguously onto the question's numbers; 8 fresh samples per seed; Teacher = local Qwen2.5-7B-Instruct with up to 20 attempts (the paper uses frontier Teacher models and shows them the full GSM8K solution). Values under results are this gym's reference run, not paper numbers; the paper's own Table 1 / Table 3 GSM8K numbers are kept under _paper_reported.",
+      "weight": 0.5,
+      "primary_metric": "verified_fresh_yield",
       "metrics": {
-        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic count of slice variants whose labels match the executable verifier; unweighted because raw output volume is gameable."},
-        "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of seed checks whose executable verifier reproduces the known seed answer."},
-        "valid_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Fraction of generated slice variants with verifier-consistent numeric answers."},
-        "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of slice rows that are distinct valid slot assignments, penalizing duplicated or memorized variants."},
-        "valid_seed_answer_novelty_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of slice rows that are valid and have an answer different from the corresponding seed answer, penalizing seed replay."},
-        "validation_gate_pass_rate": {"higher_is_better": true, "coefficient": 0.8, "description": "Fraction of expected executable specifications that pass schema, compile/runtime, yield, and mode-specific validation gates before amortized sampling."},
-        "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of slice rows that regenerate the same assignment and answer under deterministic replay."}
+        "verified_fresh_yield": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Mean over all seeds of the fraction of the 8 secret-key samples that are distinct fresh variants with a correct label, deterministic replay and a renderable question; a seed contributes zero unless its whole family is certified."
+        },
+        "certified_spec_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Fraction of all seeds whose specification reproduces the seed answer, labels every accepted fresh sample correctly, varies every number of the question, and yields at least one counted variant."
+        },
+        "mislabeled_spec_rate": {
+          "higher_is_better": false,
+          "coefficient": 1.0,
+          "description": "Fraction of all seeds whose submitted specification accepts at least one fresh variant with a wrong label (a renewable family that silently emits wrong labels; the analogue of the paper's label-artifact rate). Lower is better; a failed run scores 1.0."
+        },
+        "label_precision": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Diagnostic and failure gate: fraction of accepted fresh variants (pooled over seeds) whose verifier label equals the hidden reference label. Pooled precision below 0.7 over all seeds fails the run. Unweighted because a ratio rewards submitting fewer specifications; label errors are scored through mislabeled_spec_rate."
+        },
+        "seed_consistency_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Diagnostic: fraction of all seeds whose verifier reproduces the seed answer and accepts at least one fresh sample (the paper's VeRA-E acceptance gate). Unweighted because it also rewards keeping seed-consistent specifications that mislabel fresh variants."
+        }
       },
       "results": {
-        "vera_repro": {
+        "vera_e": {
           "type": "proposed",
-          "verified_variant_count": 5,
-          "seed_consistency_rate": 1.0,
-          "valid_rate": 1.0,
-          "valid_seed_answer_novelty_rate": 0.875,
-          "validation_gate_pass_rate": 1.0,
-          "deterministic_replay_rate": 1.0
+          "verified_fresh_yield": 0.6213,
+          "certified_spec_rate": 0.6377,
+          "label_precision": 0.8878,
+          "seed_consistency_rate": 0.7643,
+          "mislabeled_spec_rate": 0.0
+        },
+        "label_copy": {
+          "type": "baseline",
+          "verified_fresh_yield": 0.0,
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "mislabeled_spec_rate": 1.0
+        },
+        "expression_search": {
+          "type": "baseline",
+          "verified_fresh_yield": 0.0,
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "mislabeled_spec_rate": 1.0
         }
+      },
+      "_paper_reported": {
+        "source": "Table 1 (VeRA-E synthesis reliability) and Table 3 (GSM8K row) of arXiv 2602.13217",
+        "gsm8k_seeds": 1319,
+        "gsm8k_specs_accepted_first_try": 1319,
+        "gsm8k_specs_accepted_within_20_tries": 1319,
+        "gsm8k_fallback_seeds": 0,
+        "gsm8k_verified_variants": 2638,
+        "gsm8k_avg_at_5_seeds_to_variants": [
+          94.85,
+          95.2
+        ],
+        "gsm8k_both_models_wrong_rate_seeds_to_variants": [
+          0.0212,
+          0.0076
+        ],
+        "note": "Not on this gym's scale: the paper's acceptance is the seed-consistency gate (comparable to seed_consistency_rate, not to hidden-program agreement), its frontier Teacher sees the worked GSM8K solution, and it does not split seeds by step count."
       }
     },
-    "aime_additional_vera_e_generation": {
-      "description": "Additional paper-shown VeRA-E executable specifications: chip-grid maximal placements and polygon rotation probability.",
-      "notes": "Paper shows these families as diagnostic examples rather than reporting this exact reduced metric suite. Values here document the packaged offline target for two additional seed families.",
-      "weight": 0.3,
-      "primary_metric": "valid_seed_answer_novelty_rate",
+    "gsm8k_vera_e_multistep": {
+      "description": "The same VeRA-E synthesis task on GSM8K seeds whose reference solution has four or more arithmetic steps, where a seed-anchored specification is hardest to get right.",
+      "notes": "Scaled setup: 224 hidden test seeds; otherwise identical protocol to gsm8k_vera_e_3step. This slice is where the paper's seed-consistency gate lets the most wrong specifications through, so it carries the most headroom.",
+      "weight": 0.5,
+      "primary_metric": "verified_fresh_yield",
       "metrics": {
-        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic count of slice variants whose labels match the executable verifier across the additional specifications; unweighted because raw output volume is gameable."},
-        "seed_consistency_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of additional seed checks whose executable verifiers reproduce the known seed answers."},
-        "valid_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Fraction of generated slice variants with verifier-consistent numeric answers across the additional specifications."},
-        "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of slice rows that are distinct valid slot assignments across the additional specifications."},
-        "valid_seed_answer_novelty_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of additional slice rows that are valid and have answers different from their corresponding seed answers."},
-        "valid_spec_coverage_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of expected additional specifications represented by at least one valid slice variant."},
-        "validation_gate_pass_rate": {"higher_is_better": true, "coefficient": 0.8, "description": "Fraction of expected additional executable specifications that pass schema, compile/runtime, yield, and seed-consistency validation gates before amortized sampling."},
-        "deterministic_replay_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of additional slice rows that regenerate the same assignment and answer under deterministic replay."}
+        "verified_fresh_yield": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Mean over all seeds of the fraction of the 8 secret-key samples that are distinct fresh variants with a correct label, deterministic replay and a renderable question; a seed contributes zero unless its whole family is certified."
+        },
+        "certified_spec_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Fraction of all seeds whose specification reproduces the seed answer, labels every accepted fresh sample correctly, varies every number of the question, and yields at least one counted variant."
+        },
+        "mislabeled_spec_rate": {
+          "higher_is_better": false,
+          "coefficient": 1.0,
+          "description": "Fraction of all seeds whose submitted specification accepts at least one fresh variant with a wrong label (a renewable family that silently emits wrong labels; the analogue of the paper's label-artifact rate). Lower is better; a failed run scores 1.0."
+        },
+        "label_precision": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Diagnostic and failure gate: fraction of accepted fresh variants (pooled over seeds) whose verifier label equals the hidden reference label. Pooled precision below 0.7 over all seeds fails the run. Unweighted because a ratio rewards submitting fewer specifications; label errors are scored through mislabeled_spec_rate."
+        },
+        "seed_consistency_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Diagnostic: fraction of all seeds whose verifier reproduces the seed answer and accepts at least one fresh sample (the paper's VeRA-E acceptance gate). Unweighted because it also rewards keeping seed-consistent specifications that mislabel fresh variants."
+        }
       },
       "results": {
-        "vera_repro": {
+        "vera_e": {
           "type": "proposed",
-          "verified_variant_count": 10,
-          "seed_consistency_rate": 1.0,
-          "valid_rate": 1.0,
-          "valid_seed_answer_novelty_rate": 0.6875,
-          "validation_gate_pass_rate": 1.0,
-          "deterministic_replay_rate": 1.0
+          "verified_fresh_yield": 0.4369,
+          "certified_spec_rate": 0.4464,
+          "label_precision": 0.7923,
+          "seed_consistency_rate": 0.6473,
+          "mislabeled_spec_rate": 0.0
+        },
+        "label_copy": {
+          "type": "baseline",
+          "verified_fresh_yield": 0.0,
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "mislabeled_spec_rate": 1.0
+        },
+        "expression_search": {
+          "type": "baseline",
+          "verified_fresh_yield": 0.0,
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "mislabeled_spec_rate": 1.0
         }
-      }
-    },
-    "aime_geometry_vera_h_hardening": {
-      "description": "VeRA-H and VeRA-H Pro on the same geometry seed: verified hardened candidates and hardest-candidate selection.",
-      "notes": "Paper reports large-scale model Avg@5 drops for hardened splits; this gym target isolates the offline generation, validation, candidate-pool integrity, and fixed hard-case selection mechanics for the shown geometry family.",
-      "weight": 0.35,
-      "primary_metric": "valid_mean_hardness_rank_rate",
-      "metrics": {
-        "verified_variant_count": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic count of hardened slice variants whose labels match the executable verifier; unweighted because raw output volume is gameable."},
-        "noise_judge_pass_rate": {"higher_is_better": true, "coefficient": 1.0, "description": "Fraction of hardened slice variants whose correct answer is accepted and nearby wrong answers are rejected by the offline checker."},
-        "valid_assignment_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of hardened slice rows that are distinct valid slot assignments."},
-        "valid_seed_answer_novelty_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of hardened slice rows that are valid and have answers different from the original hardened seed answer."},
-        "valid_hardness_diversity_rate": {"higher_is_better": true, "coefficient": 0.4, "description": "Fraction of hardened slice rows covering distinct valid difficulty ranks."},
-        "valid_mean_hardness_rank_rate": {"higher_is_better": true, "coefficient": 0.7, "description": "Mean valid hardened-candidate difficulty rank normalized by the maximum fixed rank."},
-        "validation_gate_pass_rate": {"higher_is_better": true, "coefficient": 0.8, "description": "Fraction of expected hardened executable specifications that pass schema, compile/runtime, yield, and noise-discrimination validation gates before amortized sampling."},
-        "h_candidate_pool_valid_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of emitted H-Pro candidate-pool rows that remain valid under independent evaluator recomputation."},
-        "h_pro_selected_from_valid_pool": {"higher_is_better": true, "coefficient": 0.6, "description": "Whether the H-Pro artifact is selected from the emitted verified candidate pool as the highest-ranked valid candidate."},
-        "h_pro_selected_ranked": {"higher_is_better": true, "coefficient": 0.6, "description": "Whether the selected VeRA-H Pro artifact is valid and matches the hardest generated rank."}
       },
-      "results": {
-        "vera_repro": {
-          "type": "proposed",
-          "verified_variant_count": 5,
-          "noise_judge_pass_rate": 1.0,
-          "valid_mean_hardness_rank_rate": 0.775,
-          "validation_gate_pass_rate": 1.0,
-          "h_candidate_pool_valid_rate": 1.0,
-          "h_pro_selected_from_valid_pool": 1.0,
-          "h_pro_selected_ranked": 1.0
-        }
+      "_paper_reported": {
+        "source": "Table 1 and Table 3 of arXiv 2602.13217 (GSM8K is reported as one benchmark; no step-count split)",
+        "note": "See gsm8k_vera_e_3step._paper_reported; the paper reports no per-step-count numbers."
       }
     }
   }

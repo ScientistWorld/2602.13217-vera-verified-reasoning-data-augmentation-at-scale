@@ -1,6 +1,8 @@
 """Teacher prompts, adapted from the official VeRA GSM8K teacher prompt
-(method/VeRA/src/vera/prompt_templates.py::teacher_messages) to the fixed
-slot schema of this benchmark (one slot per digit-written number)."""
+(github.com/Marco-Cheng/VeRA, src/vera/prompt_templates.py::teacher_messages)
+to the fixed slot schema of this benchmark (one slot per digit-written number).
+As for the paper's AIME seeds, the Teacher sees the seed question and its final
+answer, not a worked solution."""
 from __future__ import annotations
 
 SYSTEM = (

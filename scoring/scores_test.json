@@ -9,6 +9,7 @@
         "overall": {
           "certified_spec_rate": 0.3843700159489633,
           "label_precision": 0.45290858725761773,
+          "mislabeled_spec_rate": 0.49760765550239233,
           "seed_consistency_rate": 0.8740031897926634,
           "verified_fresh_yield": 0.37978468899521534
         },
@@ -20,6 +21,7 @@
         "overall": {
           "certified_spec_rate": 0.004784688995215311,
           "label_precision": 0.009179804430253442,
+          "mislabeled_spec_rate": 0.9952153110047847,
           "seed_consistency_rate": 1.0,
           "verified_fresh_yield": 0.004784688995215311
         },
@@ -31,46 +33,11 @@
           "no_spec": 174
         },
         "overall": {
-          "certified_spec_rate": 0.569377990430622,
+          "certified_spec_rate": 0.5566188197767146,
           "label_precision": 0.8572630398205272,
+          "mislabeled_spec_rate": 0.15311004784688995,
           "seed_consistency_rate": 0.722488038277512,
-          "verified_fresh_yield": 0.5554226475279107
-        },
-        "status": "ok"
-      },
-      "vera_e_1try": {
-        "errors": {
-          "no_spec": 334
-        },
-        "overall": {
-          "certified_spec_rate": 0.3748006379585327,
-          "label_precision": 0.8767301038062284,
-          "seed_consistency_rate": 0.46730462519936206,
-          "verified_fresh_yield": 0.3664274322169059
-        },
-        "status": "ok"
-      },
-      "vera_e_seed1": {
-        "errors": {
-          "no_spec": 173
-        },
-        "overall": {
-          "certified_spec_rate": 0.5725677830940988,
-          "label_precision": 0.8564633463905987,
-          "seed_consistency_rate": 0.7240829346092504,
-          "verified_fresh_yield": 0.5588118022328549
-        },
-        "status": "ok"
-      },
-      "vera_e_xcheck": {
-        "errors": {
-          "no_spec": 48
-        },
-        "overall": {
-          "certified_spec_rate": 0.8006379585326954,
-          "label_precision": 0.9057649667405765,
-          "seed_consistency_rate": 0.9218500797448166,
-          "verified_fresh_yield": 0.7759170653907496
+          "verified_fresh_yield": 0.5432615629984051
         },
         "status": "ok"
       }
@@ -86,38 +53,23 @@
         "expression_search": {
           "certified_spec_rate": 0.0,
           "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "seed_consistency_rate": 0.0,
           "verified_fresh_yield": 0.0
         },
         "label_copy": {
           "certified_spec_rate": 0.0,
           "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "seed_consistency_rate": 0.0,
           "verified_fresh_yield": 0.0
         },
         "vera_e": {
-          "certified_spec_rate": 0.6377171215880894,
+          "certified_spec_rate": 0.6253101736972705,
           "label_precision": 0.8878350515463918,
+          "mislabeled_spec_rate": 0.12655086848635236,
           "seed_consistency_rate": 0.7642679900744417,
-          "verified_fresh_yield": 0.6212779156327544
-        },
-        "vera_e_1try": {
-          "certified_spec_rate": 0.4218362282878412,
-          "label_precision": 0.9012658227848102,
-          "seed_consistency_rate": 0.49627791563275436,
-          "verified_fresh_yield": 0.4116004962779156
-        },
-        "vera_e_seed1": {
-          "certified_spec_rate": 0.6501240694789082,
-          "label_precision": 0.8887987012987013,
-          "seed_consistency_rate": 0.7741935483870968,
-          "verified_fresh_yield": 0.6358560794044665
-        },
-        "vera_e_xcheck": {
-          "certified_spec_rate": 0.8387096774193549,
-          "label_precision": 0.9268209666439755,
-          "seed_consistency_rate": 0.9330024813895782,
-          "verified_fresh_yield": 0.8120347394540943
+          "verified_fresh_yield": 0.6088709677419355
         }
       }
     },
@@ -126,38 +78,23 @@
         "expression_search": {
           "certified_spec_rate": 0.0,
           "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "seed_consistency_rate": 0.0,
           "verified_fresh_yield": 0.0
         },
         "label_copy": {
           "certified_spec_rate": 0.0,
           "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "seed_consistency_rate": 0.0,
           "verified_fresh_yield": 0.0
         },
         "vera_e": {
-          "certified_spec_rate": 0.44642857142857145,
-          "label_precision": 0.7922874671340929,
-          "seed_consistency_rate": 0.6473214285714286,
-          "verified_fresh_yield": 0.4369419642857143
-        },
-        "vera_e_1try": {
-          "certified_spec_rate": 0.29017857142857145,
-          "label_precision": 0.8237704918032787,
-          "seed_consistency_rate": 0.41517857142857145,
-          "verified_fresh_yield": 0.28515625
-        },
-        "vera_e_seed1": {
           "certified_spec_rate": 0.4330357142857143,
-          "label_precision": 0.7846846846846847,
-          "seed_consistency_rate": 0.6339285714285714,
-          "verified_fresh_yield": 0.42020089285714285
-        },
-        "vera_e_xcheck": {
-          "certified_spec_rate": 0.7321428571428571,
-          "label_precision": 0.8664122137404581,
-          "seed_consistency_rate": 0.9017857142857143,
-          "verified_fresh_yield": 0.7109375
+          "label_precision": 0.7922874671340929,
+          "mislabeled_spec_rate": 0.20089285714285715,
+          "seed_consistency_rate": 0.6473214285714286,
+          "verified_fresh_yield": 0.4252232142857143
         }
       }
     }
