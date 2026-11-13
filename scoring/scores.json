@@ -1,47 +1,166 @@
 {
+  "_meta": {
+    "k_samples": 8,
+    "methods": {
+      "expression_search": {
+        "errors": {
+          "no_spec": 25
+        },
+        "overall": {
+          "certified_spec_rate": 0.36199095022624433,
+          "label_precision": 0.42143326758711375,
+          "seed_consistency_rate": 0.8733031674208145,
+          "verified_fresh_yield": 0.3512443438914027
+        },
+        "reason": "label precision 0.421 < 0.7",
+        "status": "failed"
+      },
+      "label_copy": {
+        "errors": {},
+        "overall": {
+          "certified_spec_rate": 0.00904977375565611,
+          "label_precision": 0.014705882352941176,
+          "seed_consistency_rate": 1.0,
+          "verified_fresh_yield": 0.00904977375565611
+        },
+        "reason": "label precision 0.015 < 0.7",
+        "status": "failed"
+      },
+      "vera_e": {
+        "errors": {
+          "no_spec": 62
+        },
+        "overall": {
+          "certified_spec_rate": 0.5927601809954751,
+          "label_precision": 0.866293034427542,
+          "seed_consistency_rate": 0.7194570135746606,
+          "verified_fresh_yield": 0.5763574660633484
+        },
+        "status": "ok"
+      },
+      "vera_e_1try": {
+        "errors": {
+          "no_spec": 115
+        },
+        "overall": {
+          "certified_spec_rate": 0.39819004524886875,
+          "label_precision": 0.8758949880668258,
+          "seed_consistency_rate": 0.4796380090497738,
+          "verified_fresh_yield": 0.3919683257918552
+        },
+        "status": "ok"
+      },
+      "vera_e_seed1": {
+        "errors": {
+          "no_spec": 65
+        },
+        "overall": {
+          "certified_spec_rate": 0.5656108597285068,
+          "label_precision": 0.855973813420622,
+          "seed_consistency_rate": 0.7013574660633484,
+          "verified_fresh_yield": 0.5531674208144797
+        },
+        "status": "ok"
+      },
+      "vera_e_xcheck": {
+        "errors": {
+          "no_spec": 19
+        },
+        "overall": {
+          "certified_spec_rate": 0.7873303167420814,
+          "label_precision": 0.9017632241813602,
+          "seed_consistency_rate": 0.9049773755656109,
+          "verified_fresh_yield": 0.7664027149321267
+        },
+        "status": "ok"
+      }
+    },
+    "n_seeds": {
+      "gsm8k_vera_e_3step": 142,
+      "gsm8k_vera_e_multistep": 79
+    }
+  },
   "experiments": {
-    "aime_additional_vera_e_generation": {
+    "gsm8k_vera_e_3step": {
       "results": {
-        "vera_repro": {
-          "deterministic_replay_rate": 1.0,
-          "seed_consistency_rate": 1.0,
-          "valid_assignment_diversity_rate": 0.5,
-          "valid_rate": 1.0,
-          "valid_seed_answer_novelty_rate": 0.6875,
-          "valid_spec_coverage_rate": 1.0,
-          "validation_gate_pass_rate": 1.0,
-          "verified_variant_count": 16
+        "expression_search": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "label_copy": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "vera_e": {
+          "certified_spec_rate": 0.6549295774647887,
+          "label_precision": 0.881199538638985,
+          "seed_consistency_rate": 0.7746478873239436,
+          "verified_fresh_yield": 0.6390845070422535
+        },
+        "vera_e_1try": {
+          "certified_spec_rate": 0.4295774647887324,
+          "label_precision": 0.8835978835978836,
+          "seed_consistency_rate": 0.5070422535211268,
+          "verified_fresh_yield": 0.42077464788732394
+        },
+        "vera_e_seed1": {
+          "certified_spec_rate": 0.6126760563380281,
+          "label_precision": 0.8697225572979493,
+          "seed_consistency_rate": 0.7394366197183099,
+          "verified_fresh_yield": 0.5994718309859155
+        },
+        "vera_e_xcheck": {
+          "certified_spec_rate": 0.8380281690140845,
+          "label_precision": 0.9224952741020794,
+          "seed_consistency_rate": 0.9295774647887324,
+          "verified_fresh_yield": 0.8186619718309859
         }
       }
     },
-    "aime_geometry_vera_e_generation": {
+    "gsm8k_vera_e_multistep": {
       "results": {
-        "vera_repro": {
-          "deterministic_replay_rate": 1.0,
-          "seed_consistency_rate": 1.0,
-          "valid_assignment_diversity_rate": 0.875,
-          "valid_rate": 1.0,
-          "valid_seed_answer_novelty_rate": 0.875,
-          "validation_gate_pass_rate": 1.0,
-          "verified_variant_count": 8
-        }
-      }
-    },
-    "aime_geometry_vera_h_hardening": {
-      "results": {
-        "vera_repro": {
-          "h_candidate_pool_valid_rate": 1.0,
-          "h_pro_selected_from_valid_pool": 1.0,
-          "h_pro_selected_ranked": 1.0,
-          "noise_judge_pass_rate": 1.0,
-          "valid_assignment_diversity_rate": 0.5,
-          "valid_hardness_diversity_rate": 0.5,
-          "valid_mean_hardness_rank_rate": 0.775,
-          "valid_seed_answer_novelty_rate": 0.5,
-          "validation_gate_pass_rate": 1.0,
-          "verified_variant_count": 8
+        "expression_search": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "label_copy": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "vera_e": {
+          "certified_spec_rate": 0.4810126582278481,
+          "label_precision": 0.8324607329842932,
+          "seed_consistency_rate": 0.620253164556962,
+          "verified_fresh_yield": 0.46360759493670883
+        },
+        "vera_e_1try": {
+          "certified_spec_rate": 0.34177215189873417,
+          "label_precision": 0.8597785977859779,
+          "seed_consistency_rate": 0.43037974683544306,
+          "verified_fresh_yield": 0.3401898734177215
+        },
+        "vera_e_seed1": {
+          "certified_spec_rate": 0.4810126582278481,
+          "label_precision": 0.8269720101781171,
+          "seed_consistency_rate": 0.6329113924050633,
+          "verified_fresh_yield": 0.4699367088607595
+        },
+        "vera_e_xcheck": {
+          "certified_spec_rate": 0.6962025316455697,
+          "label_precision": 0.8603773584905661,
+          "seed_consistency_rate": 0.8607594936708861,
+          "verified_fresh_yield": 0.6724683544303798
         }
       }
     }
-  }
+  },
+  "slice": "train"
 }
