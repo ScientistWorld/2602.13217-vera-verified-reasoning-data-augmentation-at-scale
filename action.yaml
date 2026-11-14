@@ -1,8 +1,6 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: submit
-gpus: 1
-test: false
+action: done
 milestone: core_claim_plus
-notes: "Hardening check: VeRA-E Teacher synthesis resumed to the paper's 20 attempts (reference + seed1/1try/xcheck variants), baselines, train/test scoring with the hardened evaluator, then redteam/hardening/run_checks.sh (shortcuts and variants before/after through the hidden test)."
+notes: "Hardened GSM8K VeRA-E gym: key-only replay, every-slot variation, mislabeled_spec_rate constraint (coef 1.5), all output dirs scored, sandbox file access blocked, leaked VeRA release removed, paper's 20-attempt Teacher cap restored; reference 0.631/0.457 yield, better variant +1.37 vs noise ≤0.11; details in HARDENING.md."
