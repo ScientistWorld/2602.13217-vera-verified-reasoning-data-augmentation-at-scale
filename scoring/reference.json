@@ -18,7 +18,7 @@
         },
         "mislabeled_spec_rate": {
           "higher_is_better": false,
-          "coefficient": 1.0,
+          "coefficient": 1.5,
           "description": "Fraction of all seeds whose submitted specification accepts at least one fresh variant with a wrong label (a renewable family that silently emits wrong labels; the analogue of the paper's label-artifact rate). Lower is better; a failed run scores 1.0."
         },
         "label_precision": {
@@ -35,27 +35,27 @@
       "results": {
         "vera_e": {
           "type": "proposed",
-          "verified_fresh_yield": 0.6213,
-          "certified_spec_rate": 0.6377,
-          "label_precision": 0.8878,
-          "seed_consistency_rate": 0.7643,
-          "mislabeled_spec_rate": 0.0
+          "verified_fresh_yield": 0.6309,
+          "certified_spec_rate": 0.6476,
+          "mislabeled_spec_rate": 0.1315,
+          "label_precision": 0.8888,
+          "seed_consistency_rate": 0.7965
         },
         "label_copy": {
           "type": "baseline",
           "verified_fresh_yield": 0.0,
           "certified_spec_rate": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "label_precision": 0.0,
-          "seed_consistency_rate": 0.0,
-          "mislabeled_spec_rate": 1.0
+          "seed_consistency_rate": 0.0
         },
         "expression_search": {
           "type": "baseline",
           "verified_fresh_yield": 0.0,
           "certified_spec_rate": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "label_precision": 0.0,
-          "seed_consistency_rate": 0.0,
-          "mislabeled_spec_rate": 1.0
+          "seed_consistency_rate": 0.0
         }
       },
       "_paper_reported": {
@@ -94,7 +94,7 @@
         },
         "mislabeled_spec_rate": {
           "higher_is_better": false,
-          "coefficient": 1.0,
+          "coefficient": 1.5,
           "description": "Fraction of all seeds whose submitted specification accepts at least one fresh variant with a wrong label (a renewable family that silently emits wrong labels; the analogue of the paper's label-artifact rate). Lower is better; a failed run scores 1.0."
         },
         "label_precision": {
@@ -111,27 +111,27 @@
       "results": {
         "vera_e": {
           "type": "proposed",
-          "verified_fresh_yield": 0.4369,
-          "certified_spec_rate": 0.4464,
-          "label_precision": 0.7923,
-          "seed_consistency_rate": 0.6473,
-          "mislabeled_spec_rate": 0.0
+          "verified_fresh_yield": 0.457,
+          "certified_spec_rate": 0.4688,
+          "mislabeled_spec_rate": 0.2366,
+          "label_precision": 0.7709,
+          "seed_consistency_rate": 0.7277
         },
         "label_copy": {
           "type": "baseline",
           "verified_fresh_yield": 0.0,
           "certified_spec_rate": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "label_precision": 0.0,
-          "seed_consistency_rate": 0.0,
-          "mislabeled_spec_rate": 1.0
+          "seed_consistency_rate": 0.0
         },
         "expression_search": {
           "type": "baseline",
           "verified_fresh_yield": 0.0,
           "certified_spec_rate": 0.0,
+          "mislabeled_spec_rate": 1.0,
           "label_precision": 0.0,
-          "seed_consistency_rate": 0.0,
-          "mislabeled_spec_rate": 1.0
+          "seed_consistency_rate": 0.0
         }
       },
       "_paper_reported": {

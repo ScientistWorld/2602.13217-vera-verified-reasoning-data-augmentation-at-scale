@@ -34,6 +34,8 @@ def rank(scores: dict, ref_method: str, reference: dict) -> dict:
                 c = abs(mdef["coefficient"])
                 if c == 0:
                     continue
+                if metric not in res[m] or metric not in res[ref_method]:
+                    continue  # e.g. a metric the pre-hardening evaluator did not report
                 vals = [r[metric] for r in res.values() if metric in r]
                 sd = statistics.pstdev(vals) if len(vals) > 1 else 0.0
                 d = (1 if mdef["higher_is_better"] else -1) * (res[m][metric] - res[ref_method][metric])

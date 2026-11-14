@@ -44,5 +44,17 @@
 - Tightened method-agnostic documentation in evaluation and scoring overview files for from-scratch scientist use.
 - Reran `bash scripts/evaluate.sh`, `bash scripts/evaluate_train.sh`, `bash scripts/evaluate_test.sh`, and `python validate.py --compare`; all checks passed.
 
+### [2026-11-14] - core_claim_plus
+- Hardening (iteration 11): the gym now measures the paper's VeRA-E synthesis
+  loop on GSM8K seeds against hidden latent programs. The previous AIME gym was
+  replaced because its evaluator trusted method artifacts.
+- The reference (Qwen2.5-7B Teacher, paper's gates, up to 20 attempts) scores
+  verified_fresh_yield 0.631 / 0.457 on the hidden test. Retries raise
+  certified specs (1 try → 20 tries: 0.422 → 0.648, 0.286 → 0.469), the
+  paper's Table 1 direction. A cross-checked variant scores 0.800 / 0.696.
+- Closed shortcuts: key-blind generators, held-fixed slots, speculative
+  low-precision fill, hidden failed methods, the leaked VeRA release data,
+  and sandbox file reads. Details in `HARDENING.md`.
+
 ## Stop Justification
 - Completed at milestone `core_claim_plus`.

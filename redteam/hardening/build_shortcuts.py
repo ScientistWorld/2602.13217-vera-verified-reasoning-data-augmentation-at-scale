@@ -12,7 +12,7 @@ visible seed files only; none of them reads eval/ or any hidden answer.
   sc_seed_echo          only the seed assignment, labelled with the seed answer
   sc_speculative_fill   reference specs plus brute-force expression specs for
                         every seed the reference did not certify at the gates
-  sc_abstain            only 25 specifications, each confirmed by an independent
+  sc_abstain            only 25 specifications per split, each confirmed by an independent
                         cross-check (needs --xcheck): near-perfect precision,
                         almost no coverage
   _sc_hidden_failed     a failed method whose directory name starts with "_"
@@ -137,7 +137,8 @@ def main() -> None:
     write(out, "sc_speculative_fill", ref + [r for sid, r in expr.items() if sid not in covered])
     if args.xcheck and Path(args.xcheck).is_file():
         checked = [r for r in load_jsonl(args.xcheck) if "independent_solve" in r["generator_code"]]
-        write(out, "sc_abstain", checked[:25])
+        write(out, "sc_abstain", [r for r in checked if r["seed_id"].startswith("te")][:25]
+              + [r for r in checked if r["seed_id"].startswith("tr")][:25])
     write(out, "_sc_hidden_failed", None)
     write(out, ".sc_dot_empty", [])
     print(f"shortcuts written to {out}")
