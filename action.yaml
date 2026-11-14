@@ -1,8 +1,8 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: pending
-gpus: 0
+action: submit
+gpus: 1
 test: false
 milestone: core_claim_plus
-notes: ""
+notes: "Hardening check: VeRA-E Teacher synthesis resumed to the paper's 20 attempts (reference + seed1/1try/xcheck variants), baselines, train/test scoring with the hardened evaluator, then redteam/hardening/run_checks.sh (shortcuts and variants before/after through the hidden test)."

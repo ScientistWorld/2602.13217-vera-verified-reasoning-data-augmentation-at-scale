@@ -1,0 +1,358 @@
+{
+  "_meta": {
+    "k_samples": 8,
+    "methods": {
+      "expression_search": {
+        "errors": {
+          "no_spec": 68
+        },
+        "overall": {
+          "certified_spec_rate": 0.3843700159489633,
+          "label_precision": 0.45290858725761773,
+          "seed_consistency_rate": 0.8740031897926634,
+          "verified_fresh_yield": 0.37978468899521534
+        },
+        "reason": "label precision 0.453 < 0.7",
+        "status": "failed"
+      },
+      "label_copy": {
+        "errors": {},
+        "overall": {
+          "certified_spec_rate": 0.004784688995215311,
+          "label_precision": 0.009179804430253442,
+          "seed_consistency_rate": 1.0,
+          "verified_fresh_yield": 0.004784688995215311
+        },
+        "reason": "label precision 0.009 < 0.7",
+        "status": "failed"
+      },
+      "sc_abstain": {
+        "errors": {
+          "no_spec": 627
+        },
+        "overall": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "reason": "label precision 0.000 < 0.7",
+        "status": "failed"
+      },
+      "sc_consensus_bruteforce": {
+        "errors": {
+          "no_spec": 435
+        },
+        "overall": {
+          "certified_spec_rate": 0.19617224880382775,
+          "label_precision": 0.656,
+          "seed_consistency_rate": 0.30303030303030304,
+          "verified_fresh_yield": 0.1941786283891547
+        },
+        "reason": "label precision 0.656 < 0.7",
+        "status": "failed"
+      },
+      "sc_counter_generator": {
+        "errors": {
+          "no_spec": 174
+        },
+        "overall": {
+          "certified_spec_rate": 0.5709728867623605,
+          "label_precision": 0.8495104895104895,
+          "seed_consistency_rate": 0.722488038277512,
+          "verified_fresh_yield": 0.5590111642743222
+        },
+        "status": "ok"
+      },
+      "sc_garbage_template": {
+        "errors": {
+          "no_spec": 174
+        },
+        "overall": {
+          "certified_spec_rate": 0.569377990430622,
+          "label_precision": 0.8572630398205272,
+          "seed_consistency_rate": 0.722488038277512,
+          "verified_fresh_yield": 0.5554226475279107
+        },
+        "status": "ok"
+      },
+      "sc_hold_slots": {
+        "errors": {
+          "no_spec": 174
+        },
+        "overall": {
+          "certified_spec_rate": 0.5917065390749602,
+          "label_precision": 0.8870783304745569,
+          "seed_consistency_rate": 0.6985645933014354,
+          "verified_fresh_yield": 0.47268740031897927
+        },
+        "status": "ok"
+      },
+      "sc_nonfinite": {
+        "errors": {},
+        "overall": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 1.0,
+          "verified_fresh_yield": 0.0
+        },
+        "reason": "label precision 0.000 < 0.7",
+        "status": "failed"
+      },
+      "sc_seed_echo": {
+        "errors": {},
+        "overall": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "reason": "label precision 0.000 < 0.7",
+        "status": "failed"
+      },
+      "sc_speculative_fill": {
+        "errors": {
+          "no_spec": 17
+        },
+        "overall": {
+          "certified_spec_rate": 0.6555023923444976,
+          "label_precision": 0.7325215200503884,
+          "seed_consistency_rate": 0.9665071770334929,
+          "verified_fresh_yield": 0.6385566188197768
+        },
+        "status": "ok"
+      },
+      "vera_e": {
+        "errors": {
+          "no_spec": 174
+        },
+        "overall": {
+          "certified_spec_rate": 0.569377990430622,
+          "label_precision": 0.8572630398205272,
+          "seed_consistency_rate": 0.722488038277512,
+          "verified_fresh_yield": 0.5554226475279107
+        },
+        "status": "ok"
+      },
+      "vera_e_1try": {
+        "errors": {
+          "no_spec": 334
+        },
+        "overall": {
+          "certified_spec_rate": 0.3748006379585327,
+          "label_precision": 0.8767301038062284,
+          "seed_consistency_rate": 0.46730462519936206,
+          "verified_fresh_yield": 0.3664274322169059
+        },
+        "status": "ok"
+      },
+      "vera_e_seed1": {
+        "errors": {
+          "no_spec": 173
+        },
+        "overall": {
+          "certified_spec_rate": 0.5725677830940988,
+          "label_precision": 0.8564633463905987,
+          "seed_consistency_rate": 0.7240829346092504,
+          "verified_fresh_yield": 0.5588118022328549
+        },
+        "status": "ok"
+      },
+      "vera_e_xcheck": {
+        "errors": {
+          "no_spec": 48
+        },
+        "overall": {
+          "certified_spec_rate": 0.8006379585326954,
+          "label_precision": 0.9057649667405765,
+          "seed_consistency_rate": 0.9218500797448166,
+          "verified_fresh_yield": 0.7759170653907496
+        },
+        "status": "ok"
+      }
+    },
+    "n_seeds": {
+      "gsm8k_vera_e_3step": 403,
+      "gsm8k_vera_e_multistep": 224
+    }
+  },
+  "experiments": {
+    "gsm8k_vera_e_3step": {
+      "results": {
+        "expression_search": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "label_copy": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_abstain": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_consensus_bruteforce": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_counter_generator": {
+          "certified_spec_rate": 0.6377171215880894,
+          "label_precision": 0.8824979457682827,
+          "seed_consistency_rate": 0.7642679900744417,
+          "verified_fresh_yield": 0.625
+        },
+        "sc_garbage_template": {
+          "certified_spec_rate": 0.6377171215880894,
+          "label_precision": 0.8878350515463918,
+          "seed_consistency_rate": 0.7642679900744417,
+          "verified_fresh_yield": 0.6212779156327544
+        },
+        "sc_hold_slots": {
+          "certified_spec_rate": 0.6501240694789082,
+          "label_precision": 0.9065108514190318,
+          "seed_consistency_rate": 0.7444168734491315,
+          "verified_fresh_yield": 0.5179900744416873
+        },
+        "sc_nonfinite": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_seed_echo": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_speculative_fill": {
+          "certified_spec_rate": 0.7468982630272953,
+          "label_precision": 0.8106183230819035,
+          "seed_consistency_rate": 0.9801488833746899,
+          "verified_fresh_yield": 0.7270471464019851
+        },
+        "vera_e": {
+          "certified_spec_rate": 0.6377171215880894,
+          "label_precision": 0.8878350515463918,
+          "seed_consistency_rate": 0.7642679900744417,
+          "verified_fresh_yield": 0.6212779156327544
+        },
+        "vera_e_1try": {
+          "certified_spec_rate": 0.4218362282878412,
+          "label_precision": 0.9012658227848102,
+          "seed_consistency_rate": 0.49627791563275436,
+          "verified_fresh_yield": 0.4116004962779156
+        },
+        "vera_e_seed1": {
+          "certified_spec_rate": 0.6501240694789082,
+          "label_precision": 0.8887987012987013,
+          "seed_consistency_rate": 0.7741935483870968,
+          "verified_fresh_yield": 0.6358560794044665
+        },
+        "vera_e_xcheck": {
+          "certified_spec_rate": 0.8387096774193549,
+          "label_precision": 0.9268209666439755,
+          "seed_consistency_rate": 0.9330024813895782,
+          "verified_fresh_yield": 0.8120347394540943
+        }
+      }
+    },
+    "gsm8k_vera_e_multistep": {
+      "results": {
+        "expression_search": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "label_copy": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_abstain": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_consensus_bruteforce": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_counter_generator": {
+          "certified_spec_rate": 0.45089285714285715,
+          "label_precision": 0.7791411042944786,
+          "seed_consistency_rate": 0.6473214285714286,
+          "verified_fresh_yield": 0.44029017857142855
+        },
+        "sc_garbage_template": {
+          "certified_spec_rate": 0.44642857142857145,
+          "label_precision": 0.7922874671340929,
+          "seed_consistency_rate": 0.6473214285714286,
+          "verified_fresh_yield": 0.4369419642857143
+        },
+        "sc_hold_slots": {
+          "certified_spec_rate": 0.48660714285714285,
+          "label_precision": 0.8448275862068966,
+          "seed_consistency_rate": 0.6160714285714286,
+          "verified_fresh_yield": 0.3911830357142857
+        },
+        "sc_nonfinite": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_seed_echo": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_speculative_fill": {
+          "certified_spec_rate": 0.49107142857142855,
+          "label_precision": 0.5884109916367981,
+          "seed_consistency_rate": 0.9419642857142857,
+          "verified_fresh_yield": 0.47935267857142855
+        },
+        "vera_e": {
+          "certified_spec_rate": 0.44642857142857145,
+          "label_precision": 0.7922874671340929,
+          "seed_consistency_rate": 0.6473214285714286,
+          "verified_fresh_yield": 0.4369419642857143
+        },
+        "vera_e_1try": {
+          "certified_spec_rate": 0.29017857142857145,
+          "label_precision": 0.8237704918032787,
+          "seed_consistency_rate": 0.41517857142857145,
+          "verified_fresh_yield": 0.28515625
+        },
+        "vera_e_seed1": {
+          "certified_spec_rate": 0.4330357142857143,
+          "label_precision": 0.7846846846846847,
+          "seed_consistency_rate": 0.6339285714285714,
+          "verified_fresh_yield": 0.42020089285714285
+        },
+        "vera_e_xcheck": {
+          "certified_spec_rate": 0.7321428571428571,
+          "label_precision": 0.8664122137404581,
+          "seed_consistency_rate": 0.9017857142857143,
+          "verified_fresh_yield": 0.7109375
+        }
+      }
+    }
+  },
+  "slice": "test"
+}

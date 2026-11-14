@@ -1,0 +1,472 @@
+{
+  "_meta": {
+    "k_samples": 8,
+    "methods": {
+      ".sc_dot_empty": {
+        "errors": {
+          "no_spec": 221
+        },
+        "overall": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "reason": "label precision 0.000 < 0.7",
+        "status": "failed"
+      },
+      "_sc_hidden_failed": {
+        "reason": "missing specs.jsonl",
+        "status": "failed"
+      },
+      "expression_search": {
+        "errors": {
+          "no_spec": 25
+        },
+        "overall": {
+          "certified_spec_rate": 0.36199095022624433,
+          "label_precision": 0.42143326758711375,
+          "mislabeled_spec_rate": 0.5158371040723982,
+          "seed_consistency_rate": 0.8733031674208145,
+          "verified_fresh_yield": 0.3512443438914027
+        },
+        "reason": "label precision 0.421 < 0.7",
+        "status": "failed"
+      },
+      "label_copy": {
+        "errors": {},
+        "overall": {
+          "certified_spec_rate": 0.00904977375565611,
+          "label_precision": 0.014705882352941176,
+          "mislabeled_spec_rate": 0.9909502262443439,
+          "seed_consistency_rate": 1.0,
+          "verified_fresh_yield": 0.00904977375565611
+        },
+        "reason": "label precision 0.015 < 0.7",
+        "status": "failed"
+      },
+      "sc_abstain": {
+        "errors": {
+          "no_spec": 196
+        },
+        "overall": {
+          "certified_spec_rate": 0.09049773755656108,
+          "label_precision": 0.9242424242424242,
+          "mislabeled_spec_rate": 0.013574660633484163,
+          "seed_consistency_rate": 0.10407239819004525,
+          "verified_fresh_yield": 0.08880090497737557
+        },
+        "status": "ok"
+      },
+      "sc_consensus_bruteforce": {
+        "errors": {
+          "no_spec": 142
+        },
+        "overall": {
+          "certified_spec_rate": 0.24434389140271492,
+          "label_precision": 0.6978653530377669,
+          "mislabeled_spec_rate": 0.1085972850678733,
+          "seed_consistency_rate": 0.35294117647058826,
+          "verified_fresh_yield": 0.23812217194570134
+        },
+        "reason": "label precision 0.698 < 0.7",
+        "status": "failed"
+      },
+      "sc_counter_generator": {
+        "errors": {
+          "no_spec": 58
+        },
+        "overall": {
+          "certified_spec_rate": 0.004524886877828055,
+          "label_precision": 0.8543461237274863,
+          "mislabeled_spec_rate": 0.13574660633484162,
+          "seed_consistency_rate": 0.7375565610859729,
+          "verified_fresh_yield": 0.0005656108597285068
+        },
+        "status": "ok"
+      },
+      "sc_garbage_template": {
+        "errors": {
+          "no_spec": 58
+        },
+        "overall": {
+          "certified_spec_rate": 0.579185520361991,
+          "label_precision": 0.8564705882352941,
+          "mislabeled_spec_rate": 0.13574660633484162,
+          "seed_consistency_rate": 0.7375565610859729,
+          "verified_fresh_yield": 0.5650452488687783
+        },
+        "status": "ok"
+      },
+      "sc_hold_slots": {
+        "errors": {
+          "no_spec": 58
+        },
+        "overall": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.9183508488278093,
+          "mislabeled_spec_rate": 0.08144796380090498,
+          "seed_consistency_rate": 0.7013574660633484,
+          "verified_fresh_yield": 0.0
+        },
+        "status": "ok"
+      },
+      "sc_nonfinite": {
+        "errors": {},
+        "overall": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 1.0,
+          "verified_fresh_yield": 0.0
+        },
+        "reason": "label precision 0.000 < 0.7",
+        "status": "failed"
+      },
+      "sc_seed_echo": {
+        "errors": {},
+        "overall": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "reason": "label precision 0.000 < 0.7",
+        "status": "failed"
+      },
+      "sc_speculative_fill": {
+        "errors": {
+          "no_spec": 10
+        },
+        "overall": {
+          "certified_spec_rate": 0.6334841628959276,
+          "label_precision": 0.7290006131207848,
+          "mislabeled_spec_rate": 0.2895927601809955,
+          "seed_consistency_rate": 0.9457013574660633,
+          "verified_fresh_yield": 0.6153846153846154
+        },
+        "status": "ok"
+      },
+      "vera_e": {
+        "errors": {
+          "no_spec": 58
+        },
+        "overall": {
+          "certified_spec_rate": 0.579185520361991,
+          "label_precision": 0.8564705882352941,
+          "mislabeled_spec_rate": 0.13574660633484162,
+          "seed_consistency_rate": 0.7375565610859729,
+          "verified_fresh_yield": 0.5650452488687783
+        },
+        "status": "ok"
+      },
+      "vera_e_1try": {
+        "errors": {
+          "no_spec": 115
+        },
+        "overall": {
+          "certified_spec_rate": 0.39819004524886875,
+          "label_precision": 0.8758949880668258,
+          "mislabeled_spec_rate": 0.08144796380090498,
+          "seed_consistency_rate": 0.4796380090497738,
+          "verified_fresh_yield": 0.3919683257918552
+        },
+        "status": "ok"
+      },
+      "vera_e_6try": {
+        "errors": {
+          "no_spec": 62
+        },
+        "overall": {
+          "certified_spec_rate": 0.5746606334841629,
+          "label_precision": 0.866293034427542,
+          "mislabeled_spec_rate": 0.12669683257918551,
+          "seed_consistency_rate": 0.7194570135746606,
+          "verified_fresh_yield": 0.5605203619909502
+        },
+        "status": "ok"
+      },
+      "vera_e_seed1": {
+        "errors": {
+          "no_spec": 54
+        },
+        "overall": {
+          "certified_spec_rate": 0.6018099547511312,
+          "label_precision": 0.8549618320610687,
+          "mislabeled_spec_rate": 0.14479638009049775,
+          "seed_consistency_rate": 0.751131221719457,
+          "verified_fresh_yield": 0.5893665158371041
+        },
+        "status": "ok"
+      },
+      "vera_e_xcheck": {
+        "errors": {
+          "no_spec": 18
+        },
+        "overall": {
+          "certified_spec_rate": 0.7692307692307693,
+          "label_precision": 0.8981132075471698,
+          "mislabeled_spec_rate": 0.11764705882352941,
+          "seed_consistency_rate": 0.9095022624434389,
+          "verified_fresh_yield": 0.7505656108597285
+        },
+        "status": "ok"
+      }
+    },
+    "n_seeds": {
+      "gsm8k_vera_e_3step": 142,
+      "gsm8k_vera_e_multistep": 79
+    }
+  },
+  "experiments": {
+    "gsm8k_vera_e_3step": {
+      "results": {
+        ".sc_dot_empty": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "_sc_hidden_failed": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "expression_search": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "label_copy": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_abstain": {
+          "certified_spec_rate": 0.14084507042253522,
+          "label_precision": 0.9242424242424242,
+          "mislabeled_spec_rate": 0.02112676056338028,
+          "seed_consistency_rate": 0.1619718309859155,
+          "verified_fresh_yield": 0.1382042253521127
+        },
+        "sc_consensus_bruteforce": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_counter_generator": {
+          "certified_spec_rate": 0.007042253521126761,
+          "label_precision": 0.875,
+          "mislabeled_spec_rate": 0.11971830985915492,
+          "seed_consistency_rate": 0.7816901408450704,
+          "verified_fresh_yield": 0.0008802816901408451
+        },
+        "sc_garbage_template": {
+          "certified_spec_rate": 0.6408450704225352,
+          "label_precision": 0.8822857142857143,
+          "mislabeled_spec_rate": 0.11971830985915492,
+          "seed_consistency_rate": 0.7816901408450704,
+          "verified_fresh_yield": 0.6267605633802817
+        },
+        "sc_hold_slots": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.94021101992966,
+          "mislabeled_spec_rate": 0.07042253521126761,
+          "seed_consistency_rate": 0.7535211267605634,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_nonfinite": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_seed_echo": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_speculative_fill": {
+          "certified_spec_rate": 0.704225352112676,
+          "label_precision": 0.7992424242424242,
+          "mislabeled_spec_rate": 0.22535211267605634,
+          "seed_consistency_rate": 0.9507042253521126,
+          "verified_fresh_yield": 0.6839788732394366
+        },
+        "vera_e": {
+          "certified_spec_rate": 0.6408450704225352,
+          "label_precision": 0.8822857142857143,
+          "mislabeled_spec_rate": 0.11971830985915492,
+          "seed_consistency_rate": 0.7816901408450704,
+          "verified_fresh_yield": 0.6267605633802817
+        },
+        "vera_e_1try": {
+          "certified_spec_rate": 0.4295774647887324,
+          "label_precision": 0.8835978835978836,
+          "mislabeled_spec_rate": 0.07746478873239436,
+          "seed_consistency_rate": 0.5070422535211268,
+          "verified_fresh_yield": 0.42077464788732394
+        },
+        "vera_e_6try": {
+          "certified_spec_rate": 0.6338028169014085,
+          "label_precision": 0.881199538638985,
+          "mislabeled_spec_rate": 0.11971830985915492,
+          "seed_consistency_rate": 0.7746478873239436,
+          "verified_fresh_yield": 0.6197183098591549
+        },
+        "vera_e_seed1": {
+          "certified_spec_rate": 0.6619718309859155,
+          "label_precision": 0.8712206047032475,
+          "mislabeled_spec_rate": 0.13380281690140844,
+          "seed_consistency_rate": 0.795774647887324,
+          "verified_fresh_yield": 0.6487676056338029
+        },
+        "vera_e_xcheck": {
+          "certified_spec_rate": 0.8169014084507042,
+          "label_precision": 0.9224952741020794,
+          "mislabeled_spec_rate": 0.09154929577464789,
+          "seed_consistency_rate": 0.9295774647887324,
+          "verified_fresh_yield": 0.7992957746478874
+        }
+      }
+    },
+    "gsm8k_vera_e_multistep": {
+      "results": {
+        ".sc_dot_empty": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "_sc_hidden_failed": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "expression_search": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "label_copy": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_abstain": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 0.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_consensus_bruteforce": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_counter_generator": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.8085642317380353,
+          "mislabeled_spec_rate": 0.16455696202531644,
+          "seed_consistency_rate": 0.6582278481012658,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_garbage_template": {
+          "certified_spec_rate": 0.46835443037974683,
+          "label_precision": 0.8,
+          "mislabeled_spec_rate": 0.16455696202531644,
+          "seed_consistency_rate": 0.6582278481012658,
+          "verified_fresh_yield": 0.4541139240506329
+        },
+        "sc_hold_slots": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.8697916666666666,
+          "mislabeled_spec_rate": 0.10126582278481013,
+          "seed_consistency_rate": 0.6075949367088608,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_nonfinite": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_seed_echo": {
+          "certified_spec_rate": 0.0,
+          "label_precision": 0.0,
+          "mislabeled_spec_rate": 1.0,
+          "seed_consistency_rate": 0.0,
+          "verified_fresh_yield": 0.0
+        },
+        "sc_speculative_fill": {
+          "certified_spec_rate": 0.5063291139240507,
+          "label_precision": 0.6,
+          "mislabeled_spec_rate": 0.4050632911392405,
+          "seed_consistency_rate": 0.9367088607594937,
+          "verified_fresh_yield": 0.4920886075949367
+        },
+        "vera_e": {
+          "certified_spec_rate": 0.46835443037974683,
+          "label_precision": 0.8,
+          "mislabeled_spec_rate": 0.16455696202531644,
+          "seed_consistency_rate": 0.6582278481012658,
+          "verified_fresh_yield": 0.4541139240506329
+        },
+        "vera_e_1try": {
+          "certified_spec_rate": 0.34177215189873417,
+          "label_precision": 0.8597785977859779,
+          "mislabeled_spec_rate": 0.08860759493670886,
+          "seed_consistency_rate": 0.43037974683544306,
+          "verified_fresh_yield": 0.3401898734177215
+        },
+        "vera_e_6try": {
+          "certified_spec_rate": 0.46835443037974683,
+          "label_precision": 0.8324607329842932,
+          "mislabeled_spec_rate": 0.13924050632911392,
+          "seed_consistency_rate": 0.620253164556962,
+          "verified_fresh_yield": 0.4541139240506329
+        },
+        "vera_e_seed1": {
+          "certified_spec_rate": 0.4936708860759494,
+          "label_precision": 0.8201438848920863,
+          "mislabeled_spec_rate": 0.16455696202531644,
+          "seed_consistency_rate": 0.6708860759493671,
+          "verified_fresh_yield": 0.4825949367088608
+        },
+        "vera_e_xcheck": {
+          "certified_spec_rate": 0.6835443037974683,
+          "label_precision": 0.849624060150376,
+          "mislabeled_spec_rate": 0.16455696202531644,
+          "seed_consistency_rate": 0.8734177215189873,
+          "verified_fresh_yield": 0.6629746835443038
+        }
+      }
+    }
+  },
+  "slice": "train"
+}
